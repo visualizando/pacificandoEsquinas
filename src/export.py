@@ -14,7 +14,7 @@ import geopandas as gpd
 import pandas as pd
 
 from config import Config
-from geo_utils import nearby_bool
+from geo_utils import nearby_bool, nearby_count
 from ingest import GEOGRAPHIC_CRS, IngestResult
 from scoring import ScoringResult
 
@@ -61,8 +61,40 @@ def build_export_gdf(
     merged["near_ciclovia"] = _context_flag(
         corners_indexed, ingest, "ciclovias", config.radii.get("ciclovia_radius_m", 15.0)
     )
+    _add_crash_details(merged, corners_indexed, ingest, config)
     merged = merged.reset_index()
     return gpd.GeoDataFrame(merged, geometry="geometry", crs=GEOGRAPHIC_CRS)
+
+
+def _add_crash_details(merged, corners_indexed, ingest: IngestResult, config: Config) -> None:
+    """Conteos de siniestros para la sección de análisis del sitio: cantidad
+    total, desglose por gravedad y por ventana temporal (para detectar
+    esquinas que venían con siniestros y dejaron de tenerlos — candidatas a
+    haber sido ya pacificadas). crash_history_raw sigue siendo el eje
+    ponderado del índice; esto es informativo."""
+    cols = {
+        "crash_count": None, "crash_grave_count": None, "crash_mortal_count": None,
+        "crash_early_count": None, "crash_late_count": None,
+    }
+    if not ingest.is_available("siniestros"):
+        for c in cols:
+            merged[c] = float("nan")
+        return
+    sin = ingest.get("siniestros")
+    radius = config.radii["crash_radius_m"]
+    severity = sin["gravedad_siniestro"].astype(str).str.upper().str.strip()
+    anio = pd.to_numeric(sin["anio_siniestro"], errors="coerce")
+    e0, e1 = config.crash_trend_early
+    l0, l1 = config.crash_trend_late
+
+    def count(subset) -> pd.Series:
+        return nearby_count(corners_indexed, subset, radius).astype(float)
+
+    merged["crash_count"] = count(sin).to_numpy()
+    merged["crash_grave_count"] = count(sin[severity == "GRAVE"]).to_numpy()
+    merged["crash_mortal_count"] = count(sin[severity == "MORTAL"]).to_numpy()
+    merged["crash_early_count"] = count(sin[anio.between(e0, e1)]).to_numpy()
+    merged["crash_late_count"] = count(sin[anio.between(l0, l1)]).to_numpy()
 
 
 def save_gpkg(gdf: gpd.GeoDataFrame, path: str | Path) -> None:
@@ -324,6 +356,7 @@ def build_run_metadata(
         "n_corners": n_corners,
         "fuentes_disponibles": sorted(ingest.layers.keys()),
         "fuentes_no_disponibles": ingest.unavailable,
+        "crash_trend": {"early": list(config.crash_trend_early), "late": list(config.crash_trend_late)},
         "pesos_configurados": config.flat_weights(),
         "pesos_aplicados_esta_corrida": scoring_result.included_weights,
         "ejes_excluidos": scoring_result.excluded_axes,

@@ -43,6 +43,10 @@ crash_severity_weights:   # pondera crash_history por gravedad (spec 5.3)
   GRAVE: 3.0
   MORTAL: 5.0
 
+crash_trend:              # ventanas para la tendencia por esquina (¿mejoró/empeoró?)
+  early: [2019, 2021]     # mismas longitudes, con 2022 como año buffer
+  late: [2023, 2025]
+
 ped_flow_weights:         # peso de cada fuente de transporte en ped_flow_proxy
   paradas: 1.0            # parada de colectivo
   subte: 3.0              # boca/estación de subte mueve mucha más gente

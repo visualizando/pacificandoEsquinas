@@ -104,6 +104,10 @@ class Config:
     # umbral (sobre el eje normalizado 0-1) a partir del cual un eje "dispara"
     # una recomendación de intervención (ej. cruce entre el 25% más largo)
     intervention_threshold: float = 0.75
+    # ventanas para la tendencia de siniestros por esquina (¿mejoró/empeoró?);
+    # mismas longitudes para que sean comparables, con año buffer en el medio
+    crash_trend_early: tuple[int, int] = (2019, 2021)
+    crash_trend_late: tuple[int, int] = (2023, 2025)
     crash_severity_weights: dict[str, float] = field(
         default_factory=lambda: dict(DEFAULT_CRASH_SEVERITY_WEIGHTS)
     )
@@ -216,6 +220,8 @@ def load_config(path: str | Path | None = None) -> Config:
             else int(raw["report"]["fichas_top_n"])
         ),
         intervention_threshold=float(raw.get("report", {}).get("intervention_threshold", 0.75)),
+        crash_trend_early=tuple(raw.get("crash_trend", {}).get("early", (2019, 2021))),
+        crash_trend_late=tuple(raw.get("crash_trend", {}).get("late", (2023, 2025))),
         crash_severity_weights={
             k.upper(): float(v)
             for k, v in raw.get("crash_severity_weights", DEFAULT_CRASH_SEVERITY_WEIGHTS).items()

@@ -160,6 +160,10 @@
     .axis-picker input { accent-color: #7b0000; margin: 0; }
     .axis-picker .grp { font-size: 11px; color: var(--muted); align-self: center; margin-left: 4px; }
 
+    /* evolución: scatter + tabla de mayores caídas lado a lado */
+    .evo-wrap { display: grid; grid-template-columns: 55% 1fr; gap: 20px; align-items: start; }
+    @media (max-width: 860px) { .evo-wrap { grid-template-columns: 1fr; } }
+
     .chart-tip {
       position: fixed; pointer-events: none; z-index: 50; opacity: 0;
       background: var(--surface); color: var(--ink); border: 1px solid var(--border);
@@ -303,6 +307,34 @@
           </p>
           <div class="axis-picker" id="axis-picker"></div>
           <svg id="chart-scatter" viewBox="0 0 900 380" role="img" aria-label="Dispersión del índice seleccionado contra siniestros"></svg>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>Análisis de siniestros</h2>
+      <p class="note">Foco en los incidentes viales con víctimas: qué tan graves son donde ocurren, en qué tipo de esquina se concentran, y qué esquinas venían con siniestros y dejaron de tenerlos. Respeta el filtro de comuna del mapa.</p>
+      <div class="charts">
+        <div class="card">
+          <h3>Severidad vs. cantidad</h3>
+          <p class="sub">Cada punto es una esquina con siniestros: cuántos tuvo y qué tan graves en promedio (1 = leve · 3 = grave · 5 = mortal). Borde negro = al menos una víctima fatal.</p>
+          <svg id="chart-sev" viewBox="0 0 460 300" role="img" aria-label="Severidad media contra cantidad de siniestros por esquina"></svg>
+        </div>
+        <div class="card">
+          <h3>¿Dónde se concentra el riesgo?</h3>
+          <p class="sub">Score de siniestros promedio por esquina, según tipo de vía y cantidad de ramales.</p>
+          <svg id="chart-groups" viewBox="0 0 460 300" role="img" aria-label="Siniestralidad promedio por tipo de esquina"></svg>
+        </div>
+        <div class="card full">
+          <h3>Evolución: ¿qué esquinas mejoraron?</h3>
+          <p class="sub" id="evo-sub">Siniestros por esquina en la ventana temprana vs. la reciente. Debajo de la diagonal = mejoró. Las de mayor caída son candidatas a verificar si ya fueron pacificadas.</p>
+          <div class="evo-wrap">
+            <svg id="chart-evo" viewBox="0 0 520 380" role="img" aria-label="Siniestros antes contra después por esquina"></svg>
+            <div>
+              <p class="col-h" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 0 8px">Mayores caídas</p>
+              <div id="evo-table" class="top-table"></div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -605,6 +637,30 @@
       buildAxisPicker();
       drawScatter();
       renderTopTable();
+      drawSeverityScatter();
+      drawGroupBars();
+      drawEvolution();
+    }
+
+    // jitter determinístico por esquina (para separar counts discretos empatados)
+    function jitter(id, salt) {
+      let h = 0;
+      const s = String(id) + salt;
+      for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+      return ((h >>> 0) % 1000) / 1000 - 0.5;
+    }
+
+    // muestrea a ~cap puntos para no saturar el SVG, pero conserva SIEMPRE
+    // los que cumplen `keep` (mortales, grandes caídas, etc.)
+    function samplePoints(arr, cap, keep) {
+      if (arr.length <= cap) return arr;
+      const kept = keep ? arr.filter(keep) : [];
+      const rest = keep ? arr.filter(p => !keep(p)) : arr;
+      const budget = Math.max(0, cap - kept.length);
+      const step = rest.length / budget;
+      const sampled = [];
+      for (let i = 0; i < rest.length && sampled.length < budget; i += step) sampled.push(rest[Math.floor(i)]);
+      return kept.concat(sampled);
     }
 
     // Ejes elegibles para el índice ad-hoc del scatter. crash_history queda
@@ -872,6 +928,173 @@
           </tbody>
         </table>`;
       document.getElementById("top-table").innerHTML = html;
+    }
+
+    // ---------- Sección: análisis de siniestros ----------
+
+    // Severidad media vs. cantidad: qué esquinas acumulan muchos incidentes y
+    // qué tan graves son en promedio (score ponderado / cantidad, escala 1-5).
+    function drawSeverityScatter() {
+      const svg = document.getElementById("chart-sev");
+      svg.innerHTML = "";
+      const W = 460, H = 300, m = { t: 14, r: 14, b: 44, l: 44 };
+      const iw = W - m.l - m.r, ih = H - m.t - m.b;
+      const pts = activeProps().filter(p => p.crash_count > 0 && p.crash_history_raw != null);
+      if (!pts.length) {
+        el("text", { x: W/2, y: H/2, "text-anchor": "middle", class: "ax-title" }, svg).textContent = "Sin siniestros en el scope.";
+        return;
+      }
+      const maxN = Math.max(...pts.map(p => p.crash_count));
+      const x = n => m.l + (Math.sqrt(n) / Math.sqrt(maxN)) * iw;   // sqrt: outliers no aplastan la masa
+      const y = s => m.t + ih - ((s - 1) / 4) * ih;                  // severidad media 1..5
+
+      [1, 2, 3, 4, 5].forEach(s => {
+        const yy = y(s);
+        el("line", { x1: m.l, y1: yy, x2: m.l + iw, y2: yy, class: "grid-line" }, svg);
+        const lbl = s === 1 ? "1 leve" : s === 3 ? "3 grave" : s === 5 ? "5 mortal" : s;
+        el("text", { x: m.l - 6, y: yy + 3, "text-anchor": "end", class: "ax-label" }, svg).textContent = lbl;
+      });
+      [1, 5, 10, 20, Math.round(maxN)].filter((v,i,a) => v <= maxN && a.indexOf(v) === i).forEach(n => {
+        el("text", { x: x(n), y: H - 24, "text-anchor": "middle", class: "ax-label" }, svg).textContent = n;
+      });
+      el("line", { x1: m.l, y1: m.t + ih, x2: m.l + iw, y2: m.t + ih, class: "axis-line" }, svg);
+      el("text", { x: m.l + iw / 2, y: H - 6, "text-anchor": "middle", class: "ax-title" }, svg).textContent = "Cantidad de siniestros (2019–2025)";
+      el("text", { x: m.l - 32, y: m.t + ih / 2, "text-anchor": "middle", class: "ax-title", transform: `rotate(-90 ${m.l - 32} ${m.t + ih / 2})` }, svg).textContent = "Severidad media";
+
+      samplePoints(pts, 2500, p => p.crash_mortal_count > 0).forEach(p => {
+        const sev = p.crash_history_raw / p.crash_count;
+        const hasMortal = p.crash_mortal_count > 0;
+        const c = el("circle", {
+          cx: x(p.crash_count) + jitter(p.corner_id, "x") * 5,
+          cy: y(Math.min(5, sev)) + jitter(p.corner_id, "y") * 4,
+          r: hasMortal ? 3.4 : 2.6,
+          fill: riskColor(idx(p)), "fill-opacity": 0.55,
+          stroke: hasMortal ? "var(--ink)" : "none", "stroke-width": hasMortal ? 1.2 : 0,
+        }, svg);
+        c.style.cursor = "pointer";
+        c.addEventListener("mousemove", ev => showTip(
+          `<div class="t">${p.calles || "esquina"}</div>` +
+          `${p.crash_count} siniestros · severidad media ${sev.toFixed(1)}<br>` +
+          `${p.crash_grave_count || 0} graves · ${p.crash_mortal_count || 0} mortales`, ev));
+        c.addEventListener("mouseleave", hideTip);
+      });
+    }
+
+    // Score de siniestros promedio por tipo de esquina (avenida vs. calle, ramales)
+    function drawGroupBars() {
+      const svg = document.getElementById("chart-groups");
+      svg.innerHTML = "";
+      const P = activeProps().filter(p => p.crash_history_raw != null);
+      if (!P.length) return;
+      const mean = arr => arr.length ? arr.reduce((a, p) => a + p.crash_history_raw, 0) / arr.length : 0;
+      const pct = arr => arr.length ? Math.round(100 * arr.filter(p => p.crash_count > 0).length / arr.length) : 0;
+      const groups = [
+        { hdr: "Tipo de vía" },
+        { label: "Con avenida", sub: P.filter(p => p.has_avenida === true) },
+        { label: "Solo calles", sub: P.filter(p => p.has_avenida !== true) },
+        { hdr: "Ramales que confluyen" },
+        { label: "3 ramales", sub: P.filter(p => p.n_branches === 3) },
+        { label: "4 ramales", sub: P.filter(p => p.n_branches === 4) },
+        { label: "5 ramales", sub: P.filter(p => p.n_branches === 5) },
+        { label: "6 o más", sub: P.filter(p => p.n_branches >= 6) },
+      ];
+      const rows = groups.map(g => g.hdr ? g : { ...g, val: mean(g.sub), pct: pct(g.sub), n: g.sub.length });
+      const maxVal = Math.max(...rows.filter(r => !r.hdr).map(r => r.val), 1);
+      const W = 460, rowH = 26, m = { t: 8, l: 108, r: 118 };
+      const iw = W - m.l - m.r;
+      let yy = m.t;
+      rows.forEach(r => {
+        if (r.hdr) {
+          yy += 8;
+          el("text", { x: 0, y: yy + 10, class: "ax-title" }, svg).textContent = r.hdr;
+          yy += 20;
+          return;
+        }
+        el("text", { x: m.l - 8, y: yy + rowH / 2 + 4, "text-anchor": "end", class: "bar-name" }, svg).textContent = r.label;
+        const bw = Math.max(1.5, (r.val / maxVal) * iw);
+        // color por severidad relativa dentro del gráfico (misma escala de riesgo)
+        const rect = el("rect", { x: m.l, y: yy + 4, width: bw, height: rowH - 8, rx: 3, fill: riskColor(r.val / maxVal) }, svg);
+        el("text", { x: m.l + bw + 6, y: yy + rowH / 2 + 4, class: "bar-lbl" }, svg)
+          .textContent = `${r.val.toFixed(1)} pts · ${r.pct}% con siniestros`;
+        rect.addEventListener("mousemove", ev => showTip(
+          `<div class="t">${r.label}</div>${r.n.toLocaleString("es-AR")} esquinas · score promedio ${r.val.toFixed(2)}<br>${r.pct}% tuvo al menos un siniestro`, ev));
+        rect.addEventListener("mouseleave", hideTip);
+        yy += rowH;
+      });
+      svg.setAttribute("viewBox", `0 0 ${W} ${yy + 8}`);
+    }
+
+    // Antes vs. después: siniestros por esquina en las dos ventanas temporales.
+    // Verde = bajó, rojo = subió (diverging semántico, no la escala de índice).
+    function drawEvolution() {
+      const svg = document.getElementById("chart-evo");
+      svg.innerHTML = "";
+      const P = activeProps().filter(p => (p.crash_early_count || 0) + (p.crash_late_count || 0) > 0
+        && p.crash_early_count != null);
+      const tableHolder = document.getElementById("evo-table");
+      if (!P.length) { tableHolder.innerHTML = ""; return; }
+
+      const W = 520, H = 380, m = { t: 16, r: 16, b: 46, l: 46 };
+      const iw = W - m.l - m.r, ih = H - m.t - m.b;
+      const maxV = Math.max(...P.map(p => Math.max(p.crash_early_count, p.crash_late_count)), 2);
+      const sc = v => Math.sqrt(v) / Math.sqrt(maxV);
+      const x = v => m.l + sc(v) * iw;
+      const y = v => m.t + ih - sc(v) * ih;
+
+      const ticks = [0, 1, 2, 5, 10, 20, Math.round(maxV)].filter((v,i,a) => v <= maxV && a.indexOf(v) === i);
+      ticks.forEach(v => {
+        el("line", { x1: m.l, y1: y(v), x2: m.l + iw, y2: y(v), class: "grid-line" }, svg);
+        el("line", { x1: x(v), y1: m.t, x2: x(v), y2: m.t + ih, class: "grid-line" }, svg);
+        el("text", { x: m.l - 6, y: y(v) + 3, "text-anchor": "end", class: "ax-label" }, svg).textContent = v;
+        el("text", { x: x(v), y: H - 26, "text-anchor": "middle", class: "ax-label" }, svg).textContent = v;
+      });
+      // diagonal y = x (sqrt en ambos ejes la mantiene recta)
+      el("line", { x1: x(0), y1: y(0), x2: x(maxV), y2: y(maxV), stroke: "var(--axis)", "stroke-width": 1.5, "stroke-dasharray": "5 4" }, svg);
+      const lblUp = el("text", { x: m.l + 8, y: m.t + 14, class: "ax-title" }, svg);
+      lblUp.textContent = "↑ empeoraron"; lblUp.setAttribute("fill", "#c0392b");
+      const lblDown = el("text", { x: m.l + iw - 8, y: m.t + ih - 8, "text-anchor": "end", class: "ax-title" }, svg);
+      lblDown.textContent = "↓ mejoraron"; lblDown.setAttribute("fill", "#1e8449");
+
+      samplePoints(P, 2500, p => Math.abs(p.crash_late_count - p.crash_early_count) >= 4).forEach(p => {
+        const e = p.crash_early_count, l = p.crash_late_count;
+        const delta = l - e;
+        const color = delta < 0 ? "#2ecc71" : delta > 0 ? "#e74c3c" : "#9aa0a0";
+        const c = el("circle", {
+          cx: x(e) + jitter(p.corner_id, "ex") * 6,
+          cy: y(l) + jitter(p.corner_id, "ey") * 6,
+          r: 2.7, fill: color, "fill-opacity": 0.5,
+        }, svg);
+        c.style.cursor = "pointer";
+        c.addEventListener("mousemove", ev => showTip(
+          `<div class="t">${p.calles || "esquina"}</div>` +
+          `Antes: ${e} · Después: ${l} (${delta > 0 ? "+" : ""}${delta})`, ev));
+        c.addEventListener("mouseleave", hideTip);
+      });
+
+      const ct = META?.crash_trend;
+      const earlyLbl = ct ? `Siniestros ${ct.early[0]}–${ct.early[1]}` : "Siniestros ventana temprana";
+      const lateLbl = ct ? `Siniestros ${ct.late[0]}–${ct.late[1]}` : "Siniestros ventana reciente";
+      el("text", { x: m.l + iw / 2, y: H - 6, "text-anchor": "middle", class: "ax-title" }, svg).textContent = earlyLbl;
+      el("text", { x: m.l - 32, y: m.t + ih / 2, "text-anchor": "middle", class: "ax-title", transform: `rotate(-90 ${m.l - 32} ${m.t + ih / 2})` }, svg).textContent = lateLbl;
+
+      // tabla: mayores caídas (candidatas a "ya pacificadas")
+      const drops = P.map(p => ({ p, drop: p.crash_early_count - p.crash_late_count }))
+        .filter(d => d.drop >= 2)
+        .sort((a, b) => b.drop - a.drop || b.p.crash_early_count - a.p.crash_early_count)
+        .slice(0, 12);
+      tableHolder.innerHTML = `
+        <table>
+          <thead><tr><th>Esquina</th><th>Barrio</th><th style="text-align:right">Antes</th><th style="text-align:right">Después</th><th style="text-align:right">Δ</th></tr></thead>
+          <tbody>${drops.map(({ p, drop }) => `
+            <tr>
+              <td class="calles">${p.calles || "(sin nombre)"}</td>
+              <td>${p.barrio || "—"}</td>
+              <td style="text-align:right">${p.crash_early_count}</td>
+              <td style="text-align:right">${p.crash_late_count}</td>
+              <td style="text-align:right;color:#1e8449;font-weight:700">−${drop}</td>
+            </tr>`).join("")}
+          </tbody>
+        </table>`;
     }
 
     boot();

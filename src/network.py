@@ -29,7 +29,7 @@ COORD_PRECISION = 7  # ~1 cm en grados: suficiente para snapear extremos coincid
 
 CORNER_COLUMNS = [
     "corner_id", "comuna", "barrio", "n_branches", "n_merged_nodes", "is_diagonal",
-    "acute_angle_raw", "has_formal_crossing", "branches_json", "geometry",
+    "has_avenida", "acute_angle_raw", "has_formal_crossing", "branches_json", "geometry",
 ]
 
 
@@ -247,6 +247,8 @@ def _build_corner_record(cluster_nodes, node_metric, node_segments, segments, co
         comuna=comuna,
         barrio=barrio,
         n_branches=len(branches),
+        # al menos un ramal es avenida (para análisis avenida vs calle)
+        has_avenida=any(b["tipo_c"] == "AVENIDA" for b in branches),
         n_merged_nodes=len(cluster_nodes),
         is_diagonal=is_diagonal,
         acute_angle_raw=acute_angle_raw,
