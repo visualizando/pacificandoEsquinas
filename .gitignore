@@ -1,0 +1,30 @@
+# --- Entorno y caché ---
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# --- Secretos y config local ---
+.env
+.claude/settings.local.json
+
+# --- Datasets crudos (data/raw/) ---
+# Se ignoran: son pesados y con licencia propia. veredas-2019.geojson pesa
+# 215 MB, por encima del límite de 100 MB por archivo de GitHub — ni siquiera
+# se puede pushear. Cada fuente queda DOCUMENTADA en data/raw/MANIFEST.md
+# (que sí se versiona) para poder reconstruir data/raw/ desde Buenos Aires Data.
+data/raw/*
+!data/raw/MANIFEST.md
+
+# --- Derivados regenerables y pesados ---
+# Todo esto lo regenera `python run.py` a partir de data/raw/.
+data/interim/
+# capa GIS completa (14 MB), no la usa el sitio web:
+data/processed/esquinas.gpkg
+# 200 fichas sueltas; el sitio usa reporte.json:
+data/processed/fichas/
+data/processed/imgs/
+
+# NOTA: sí se versionan los livianos que el sitio web necesita para funcionar
+# en un clon sin correr el pipeline: data/processed/esquinas.geojson,
+# reporte.json, run_metadata.json y validation_report.json.

@@ -1,0 +1,90 @@
+{
+  "generado_en": "2026-07-09T13:31:32.155312+00:00",
+  "scope": {
+    "mode": "all",
+    "comuna": 12,
+    "barrio": null,
+    "bbox": null
+  },
+  "corner_definition": "hybrid",
+  "node_merge_threshold_m": 25.0,
+  "angle_normal_range": [
+    70.0,
+    110.0
+  ],
+  "radii": {
+    "school_radius_m": 150.0,
+    "crash_radius_m": 30.0,
+    "ped_flow_radius_m": 100.0,
+    "ped_signal_radius_m": 30.0,
+    "traffic_calming_radius_m": 30.0,
+    "heavy_traffic_radius_m": 20.0,
+    "sendero_escolar_radius_m": 20.0,
+    "ciclovia_radius_m": 15.0
+  },
+  "normalization": "percentile",
+  "n_corners": 15203,
+  "fuentes_disponibles": [
+    "ampliaciones_veredas",
+    "callejero",
+    "ciclovias",
+    "cruces_semaforizados",
+    "escuelas",
+    "ferrocarril",
+    "paradas",
+    "semaforos",
+    "senderos_escolares",
+    "siniestros",
+    "subte",
+    "transito_pesado",
+    "veredas"
+  ],
+  "fuentes_no_disponibles": {
+    "censo": "archivo no encontrado: data/raw/censo.shp",
+    "sendas_peatonales": "archivo no encontrado: data/raw/sendas_peatonales.geojson"
+  },
+  "pesos_configurados": {
+    "crossing_length": 1.0,
+    "n_branches": 0.8,
+    "acute_angle": 1.0,
+    "roadway_width": 0.9,
+    "no_refuge": 1.0,
+    "speed_limit": 0.7,
+    "has_ped_signal": 0.8,
+    "traffic_calming": 0.6,
+    "crossing_marked": 0.5,
+    "near_school": 1.5,
+    "crash_history": 1.0,
+    "ped_flow_proxy": 0.7,
+    "heavy_traffic": 0.8
+  },
+  "pesos_aplicados_esta_corrida": {
+    "crossing_length": 1.2417582417582418,
+    "n_branches": 0.9934065934065934,
+    "acute_angle": 1.2417582417582418,
+    "roadway_width": 1.1175824175824176,
+    "has_ped_signal": 0.9934065934065934,
+    "traffic_calming": 0.7450549450549451,
+    "near_school": 1.8626373626373627,
+    "crash_history": 1.2417582417582418,
+    "ped_flow_proxy": 0.8692307692307693,
+    "heavy_traffic": 0.9934065934065934
+  },
+  "ejes_excluidos": {
+    "no_refuge": "requiere geometría de refugios/canteros centrales (ej. OSM crossing:island; no presente en data/raw/)",
+    "speed_limit": "requiere velocidad máxima por tramo (no está en callejero.geojson ni en otra fuente de data/raw/)",
+    "crossing_marked": "requiere dataset de sendas peatonales pintadas/demarcadas (no presente en data/raw/)"
+  },
+  "metodos_normalizacion_por_eje": {
+    "crossing_length": "percentile",
+    "n_branches": "percentile",
+    "acute_angle": "percentile",
+    "roadway_width": "percentile",
+    "has_ped_signal": "binary",
+    "traffic_calming": "binary",
+    "near_school": "binary",
+    "crash_history": "zero_inflated",
+    "ped_flow_proxy": "zero_inflated",
+    "heavy_traffic": "binary"
+  }
+}

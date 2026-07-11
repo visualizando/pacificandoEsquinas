@@ -1,0 +1,39 @@
+{
+  "status": "ok",
+  "n_corners": 15203,
+  "spearman_indice_compuesto_vs_siniestros": {
+    "rho": 0.5286774292783157,
+    "p_value": 0.0
+  },
+  "spearman_indice_geometrico_vs_siniestros": {
+    "rho": 0.4237964167123236,
+    "p_value": 0.0
+  },
+  "residuos": {
+    "nota": "geometria_alta_pocos_siniestros: ¿mitigación efectiva o poco flujo? geometria_baja_muchos_siniestros: ¿falta un eje geométrico relevante?",
+    "geometria_alta_pocos_siniestros": [
+      "c77e6fef2b0",
+      "cf8791f00f7",
+      "c7e3c36f74f",
+      "ceefc4080cb",
+      "c2a9b578abd",
+      "c7e4575f513",
+      "cfe40fcd5e7",
+      "cba3507049b",
+      "cb0613dff67",
+      "cba55123103"
+    ],
+    "geometria_baja_muchos_siniestros": [
+      "ceb039882cd",
+      "caf89492af9",
+      "c0b10f7232f",
+      "c832cf97730",
+      "c9fa7633cf2",
+      "ca01c8ae575",
+      "c5bdbdc9b9c",
+      "cdd7b597b51",
+      "c286c46dcca",
+      "cc51e035a17"
+    ]
+  }
+}

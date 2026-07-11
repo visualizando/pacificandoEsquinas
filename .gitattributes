@@ -1,0 +1,3 @@
+# Normaliza saltos de línea a LF en el repo (evita el ruido CRLF de Windows
+# en los .geojson/.json de datos y mantiene los diffs limpios entre plataformas).
+* text=auto eol=lf

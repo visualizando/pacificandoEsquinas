@@ -1,0 +1,72 @@
+scope:
+  mode: all           # comuna | barrio | bbox | all
+  comuna: 12          # usado solo si mode: comuna
+  buffer_m: 40        # buffer alrededor de las calles del scope para recortar capas sin atributo de comuna/barrio
+
+corner_definition: hybrid   # all_intersections | formal_crossings_only | hybrid
+node_merge_threshold_m: 25
+angle_normal_range: [70, 110]
+
+network:
+  bearing_sample_m: 15          # metros a lo largo del ramal para estimar su rumbo
+  branch_dedupe_bucket_deg: 30  # ramales del mismo nombre dentro de este sector angular se colapsan (avenidas con calzadas separadas)
+  min_branches: 3               # ramales mínimos para que un nodo cuente como esquina
+
+crossing_measurement:           # medición de ancho de calzada por transectos contra las veredas
+  offset_m: 12                  # a cuántos metros del centro de la esquina se mide (pasada la ochava)
+  max_width_m: 40               # huecos más anchos se descartan como no confiables (autopista, parque, borde del scope)
+  sidewalk_search_radius_m: 80  # radio de búsqueda de polígonos de vereda alrededor de la esquina
+
+radii:
+  school_radius_m: 150
+  crash_radius_m: 30
+  ped_flow_radius_m: 100
+  ped_signal_radius_m: 30       # radio para asociar un cruce semaforizado a una esquina
+  traffic_calming_radius_m: 30  # radio para asociar una ampliación de vereda a una esquina
+  heavy_traffic_radius_m: 20    # la red de tránsito pesado va por el eje de la calle: 20 m alcanza para tocar la esquina
+  sendero_escolar_radius_m: 20  # flag de contexto: la esquina está sobre un sendero escolar
+  ciclovia_radius_m: 15         # flag de contexto: hay ciclovía en la esquina
+
+normalization: percentile   # minmax | percentile (método global, para ejes continuos y el índice final)
+
+# Override del método de normalización por eje. Métodos:
+#   minmax | percentile | binary (deja 0/1 tal cual) | zero_inflated (0 queda
+#   en 0, los positivos se rankean entre sí — para conteos llenos de ceros).
+# Los ejes cuyo valor crudo es solo 0/1 se detectan solos como binary; no
+# hace falta listarlos acá.
+axis_normalization:
+  crash_history: zero_inflated
+  ped_flow_proxy: zero_inflated
+
+crash_severity_weights:   # pondera crash_history por gravedad (spec 5.3)
+  LEVE: 1.0
+  GRAVE: 3.0
+  MORTAL: 5.0
+
+ped_flow_weights:         # peso de cada fuente de transporte en ped_flow_proxy
+  paradas: 1.0            # parada de colectivo
+  subte: 3.0              # boca/estación de subte mueve mucha más gente
+  ferrocarril: 2.0        # estación de tren
+
+weights:
+  geometry:
+    crossing_length: 1.0
+    n_branches: 0.8
+    acute_angle: 1.0
+    roadway_width: 0.9
+    no_refuge: 1.0
+    speed_limit: 0.7
+  mitigation:
+    has_ped_signal: 0.8
+    traffic_calming: 0.6
+    crossing_marked: 0.5
+  exposure:
+    near_school: 1.5        # peso alto: foco en infancias
+    crash_history: 1.0
+    ped_flow_proxy: 0.7
+    heavy_traffic: 0.8      # esquina sobre la red de tránsito pesado (camiones)
+
+report:
+  top_n: 100                  # esquinas del informe pormenorizado
+  fichas_top_n: 200           # cuántas fichas JSON escribir (null o "all" = todas). A escala ciudad conviene limitar.
+  intervention_threshold: 0.75 # un eje dispara una intervención sugerida si su valor normalizado supera esto

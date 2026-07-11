@@ -1,0 +1,880 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Índice de Esquinas Peligrosas — CABA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <style>
+    /* Paleta: chrome/ink del sistema de dataviz; la escala de RIESGO
+       (verde→rojo) es la convención semántica del dominio (semáforo) y se usa
+       igual en mapa y gráficos, así el histograma de distribución funciona
+       como leyenda compartida. */
+    :root {
+      --page: #f9f9f7;
+      --surface: #fcfcfb;
+      --ink: #0b0b0b;
+      --ink-2: #52514e;
+      --muted: #898781;
+      --grid: #e1e0d9;
+      --axis: #c3c2b7;
+      --border: rgba(11,11,11,0.10);
+      --shadow: 0 1px 6px rgba(0,0,0,0.14);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink-2: #c3c2b7;
+        --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+        --border: rgba(255,255,255,0.10); --shadow: 0 1px 6px rgba(0,0,0,0.5);
+      }
+    }
+    :root[data-theme="light"] {
+      --page: #f9f9f7; --surface: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e;
+      --muted: #898781; --grid: #e1e0d9; --axis: #c3c2b7;
+      --border: rgba(11,11,11,0.10); --shadow: 0 1px 6px rgba(0,0,0,0.14);
+    }
+    :root[data-theme="dark"] {
+      --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink-2: #c3c2b7;
+      --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+      --border: rgba(255,255,255,0.10); --shadow: 0 1px 6px rgba(0,0,0,0.5);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: var(--page); color: var(--ink); line-height: 1.5;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+    header { padding: 40px 0 8px; }
+    h1 { font-size: 30px; margin: 0 0 6px; letter-spacing: -0.02em; }
+    .lede { font-size: 17px; color: var(--ink-2); margin: 0 0 12px; max-width: 70ch; }
+    details.more {
+      border: 1px solid var(--border); border-radius: 10px;
+      background: var(--surface); margin: 8px 0 4px; max-width: 80ch;
+    }
+    details.more > summary {
+      cursor: pointer; padding: 12px 16px; font-weight: 600; color: var(--ink);
+      list-style: none; user-select: none;
+    }
+    details.more > summary::-webkit-details-marker { display: none; }
+    details.more > summary::before { content: "▸ "; color: var(--muted); }
+    details.more[open] > summary::before { content: "▾ "; }
+    details.more .body { padding: 0 16px 16px; color: var(--ink-2); font-size: 14.5px; }
+    details.more .body h3 { color: var(--ink); font-size: 15px; margin: 16px 0 4px; }
+    details.more .body ul { margin: 4px 0; padding-left: 20px; }
+    details.more .body code { background: var(--grid); padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+
+    /* CTA reporte */
+    .cta-row { margin: 18px 0 4px; }
+    .cta {
+      display: inline-block; text-decoration: none; font-weight: 700; font-size: 15px;
+      color: #fff; background: #7b0000; padding: 11px 18px; border-radius: 10px;
+      box-shadow: var(--shadow); transition: transform .08s, background .1s;
+    }
+    .cta:hover { background: #9a1414; transform: translateY(-1px); }
+    @media (prefers-color-scheme: dark) { .cta { background: #b81c1c; } .cta:hover { background: #d13030; } }
+
+    /* Stat tiles */
+    .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 22px 0 6px; }
+    .tile {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+      padding: 14px 16px; box-shadow: var(--shadow);
+    }
+    .tile .val { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; }
+    .tile .lbl { font-size: 12.5px; color: var(--ink-2); margin-top: 2px; }
+    @media (max-width: 720px) { .tiles { grid-template-columns: repeat(2, 1fr); } }
+
+    section.block { margin: 34px 0; }
+    .block > h2 { font-size: 20px; margin: 0 0 4px; letter-spacing: -0.01em; }
+    .block > p.note { font-size: 14px; color: var(--ink-2); margin: 0 0 14px; max-width: 78ch; }
+
+    /* Map */
+    #map-wrap { position: relative; height: 68vh; min-height: 460px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow); }
+    #map { position: absolute; inset: 0; }
+    #panel {
+      position: absolute; top: 12px; left: 12px; z-index: 1;
+      background: var(--surface); border-radius: 10px; padding: 14px 16px;
+      box-shadow: var(--shadow); font-size: 13px; width: 250px; color: var(--ink);
+      border: 1px solid var(--border);
+    }
+    #panel .ttl { font-size: 13px; font-weight: 700; margin: 0 0 8px; }
+    #panel label { display: block; margin: 10px 0 4px; font-weight: 600; font-size: 12.5px; }
+    #panel select, #panel input[type=range] { width: 100%; }
+    #panel select { padding: 4px; border-radius: 6px; border: 1px solid var(--axis); background: var(--surface); color: var(--ink); }
+    #count { margin-top: 10px; color: var(--ink-2); font-size: 12px; }
+    #legend { display: flex; height: 10px; border-radius: 3px; overflow: hidden; margin-top: 4px; }
+    #legend div { flex: 1; }
+    #legend-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); }
+
+    .maplibregl-popup-content { font-size: 12px; max-width: 270px; background: var(--surface); color: var(--ink); }
+    .maplibregl-popup-content hr { border: none; border-top: 1px solid var(--border); margin: 6px 0; }
+    .popup-title { font-weight: 700; margin-bottom: 4px; }
+    .popup-badges { margin: 2px 0 0; font-size: 11.5px; }
+    .popup-axis { display: flex; justify-content: space-between; gap: 8px; }
+    .popup-axis .missing { color: var(--muted); font-style: italic; }
+
+    /* Charts */
+    .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 860px) { .charts { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 16px 18px; box-shadow: var(--shadow);
+    }
+    .card.full { grid-column: 1 / -1; }
+    .card h3 { font-size: 15px; margin: 0 0 2px; }
+    .card .sub { font-size: 12.5px; color: var(--ink-2); margin: 0 0 12px; }
+    .card svg { width: 100%; height: auto; display: block; overflow: visible; }
+    text { font-family: system-ui, sans-serif; }
+    .ax-label { fill: var(--muted); font-size: 11px; }
+    .ax-title { fill: var(--ink-2); font-size: 12px; font-weight: 600; }
+    .grid-line { stroke: var(--grid); stroke-width: 1; }
+    .axis-line { stroke: var(--axis); stroke-width: 1; }
+    .bar-lbl { fill: var(--ink); font-size: 11px; font-variant-numeric: tabular-nums; }
+    .bar-name { fill: var(--ink-2); font-size: 11px; }
+
+    /* Tabla top 15 */
+    .top-table { overflow-x: auto; overflow-y: auto; max-height: 330px; border: 1px solid var(--border); border-radius: 8px; }
+    .top-table table { width: 100%; border-collapse: collapse; font-size: 11px; }
+    .top-table thead th {
+      position: sticky; top: 0; background: var(--surface);
+      text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em;
+      color: var(--muted); font-weight: 700; padding: 5px 7px; border-bottom: 1px solid var(--axis);
+    }
+    .top-table td { padding: 4px 7px; border-bottom: 1px solid var(--grid); color: var(--ink-2); vertical-align: top; }
+    .top-table td.rank { color: var(--muted); font-variant-numeric: tabular-nums; }
+    .top-table td.calles { color: var(--ink); font-weight: 600; }
+    .top-table td.mapa { text-align: center; }
+    .top-table td.mapa a { text-decoration: none; font-size: 14px; }
+
+    /* Selector de factores del scatter */
+    .axis-picker { display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0 14px; }
+    .axis-picker label {
+      display: inline-flex; align-items: center; gap: 6px; cursor: pointer; user-select: none;
+      font-size: 12.5px; color: var(--ink-2); border: 1px solid var(--border); border-radius: 999px;
+      padding: 4px 11px; background: var(--page);
+    }
+    .axis-picker label:has(input:checked) { background: var(--grid); color: var(--ink); border-color: var(--axis); }
+    .axis-picker input { accent-color: #7b0000; margin: 0; }
+    .axis-picker .grp { font-size: 11px; color: var(--muted); align-self: center; margin-left: 4px; }
+
+    .chart-tip {
+      position: fixed; pointer-events: none; z-index: 50; opacity: 0;
+      background: var(--surface); color: var(--ink); border: 1px solid var(--border);
+      border-radius: 8px; padding: 7px 10px; font-size: 12px; box-shadow: var(--shadow);
+      transition: opacity .08s; max-width: 240px;
+    }
+    .chart-tip .t { font-weight: 700; margin-bottom: 2px; }
+
+    footer { color: var(--muted); font-size: 12.5px; padding: 20px 0 50px; border-top: 1px solid var(--border); margin-top: 20px; }
+    footer a { color: var(--ink-2); }
+    .theme-toggle {
+      position: fixed; top: 14px; right: 16px; z-index: 60;
+      background: var(--surface); border: 1px solid var(--border); color: var(--ink);
+      border-radius: 8px; padding: 6px 10px; cursor: pointer; font-size: 13px; box-shadow: var(--shadow);
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" id="theme-toggle" title="Cambiar tema">◑</button>
+  <div class="wrap">
+    <header>
+      <h1>Índice de Esquinas Peligrosas — CABA</h1>
+      <p class="lede">
+        Un puntaje de peligrosidad para cada intersección de la ciudad, pensado para
+        <strong>peatones e infancias</strong>. Combina la geometría del cruce, la mitigación existente
+        (semáforos, reductores) y la exposición (escuelas, siniestros, flujo de transporte).
+        <span id="lede-scope"></span>
+      </p>
+
+      <details class="more">
+        <summary>Cómo se calcula y por qué se puede confiar en el índice</summary>
+        <div class="body">
+          <p>
+            Cada esquina se detecta como un nodo de la red vial donde confluyen 3 o más calles.
+            Para cada una se computan <strong>ejes de riesgo</strong> que se normalizan a [0,1] y se
+            combinan en un índice compuesto con pesos configurables. El puntaje no colapsa la
+            información: cada esquina conserva el <strong>desglose por eje</strong>, para poder
+            explicar <em>por qué</em> puntúa alto.
+          </p>
+
+          <h3>Ejes de geometría</h3>
+          <ul>
+            <li><strong>Longitud de cruce</strong> y <strong>ancho de calzada</strong>: cuánto asfalto expuesto cruza el peatón, medido entre las veredas enfrentadas.</li>
+            <li><strong>Ángulo agudo</strong>: cruces diagonales, donde los giros son más rápidos y la visibilidad peor.</li>
+            <li><strong>N° de ramales</strong>: cuántas calles confluyen (más ramales, más conflictos).</li>
+          </ul>
+
+          <h3>Mitigación (resta riesgo)</h3>
+          <ul>
+            <li><strong>Semáforo peatonal</strong> cercano · <strong>Reductor de velocidad</strong> / oreja de vereda.</li>
+          </ul>
+
+          <h3>Exposición y vulnerabilidad</h3>
+          <ul>
+            <li><strong>Cerca de escuela</strong> (peso alto: foco en infancias) · <strong>Siniestros</strong> con víctimas, ponderados por gravedad · <strong>Flujo peatonal</strong> (paradas, subte, tren) · <strong>Tránsito pesado</strong> (rutas de camiones).</li>
+          </ul>
+
+          <h3>¿Predice, o solo asume?</h3>
+          <p id="validation-text">
+            El índice es híbrido, así que se valida contra siniestros reales. La correlación entre el
+            <strong>índice geométrico puro</strong> (sin mirar siniestros) y los siniestros reales es la
+            métrica que blinda el proyecto: muestra que la geometría <em>predice</em> la siniestralidad,
+            no que la asume.
+          </p>
+          <p style="color:var(--muted); font-size:13px;">
+            Ejes aún sin fuente de datos en este scope quedan marcados como “sin dato”, no como cero, y no
+            distorsionan el puntaje.
+          </p>
+        </div>
+      </details>
+
+      <div class="cta-row">
+        <a class="cta" href="report.html">Ver reporte detallado de intervenciones →</a>
+      </div>
+
+      <div class="tiles" id="tiles"></div>
+    </header>
+
+    <section class="block">
+      <h2>Mapa de esquinas</h2>
+      <p class="note">Cada punto es una esquina, coloreada por su índice (verde = bajo riesgo, rojo = alto). Clic para ver el desglose. El deslizador filtra por umbral de índice.</p>
+      <div id="map-wrap">
+        <div id="map"></div>
+        <div id="panel">
+          <p class="ttl">Controles</p>
+
+          <label for="comuna">Comuna</label>
+          <select id="comuna"><option value="">Toda la ciudad</option></select>
+
+          <label for="index-field">Ranking del índice</label>
+          <select id="index-field">
+            <option value="indice">Global (toda CABA)</option>
+            <option value="indice_comuna">Relativo a cada comuna</option>
+          </select>
+
+          <label for="color-by">Colorear por</label>
+          <select id="color-by">
+            <option value="__index__">Índice compuesto</option>
+            <option value="crossing_length_norm">Longitud de cruce</option>
+            <option value="roadway_width_norm">Ancho de calzada</option>
+            <option value="acute_angle_norm">Ángulo agudo (diagonal)</option>
+            <option value="n_branches_norm">N° de ramales</option>
+            <option value="near_school_norm">Cerca de escuela</option>
+            <option value="crash_history_norm">Siniestros (ponderado)</option>
+            <option value="ped_flow_proxy_norm">Flujo peatonal (proxy)</option>
+            <option value="heavy_traffic_norm">Tránsito pesado</option>
+            <option value="has_ped_signal_norm">Semáforo peatonal</option>
+            <option value="traffic_calming_norm">Reductor de velocidad</option>
+          </select>
+          <div id="legend"></div>
+          <div id="legend-labels"><span>bajo</span><span>alto</span></div>
+
+          <label for="threshold">Umbral mínimo de índice: <span id="threshold-value">0.00</span></label>
+          <input type="range" id="threshold" min="0" max="1" step="0.01" value="0" />
+
+          <div id="count"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>Distribución y validación</h2>
+      <p class="note">Más allá del mapa: cómo se reparte el riesgo, si la geometría efectivamente anticipa los siniestros, y qué esquinas encabezan el ranking. Los gráficos siguen el filtro de comuna y el ranking (global / por comuna) elegidos arriba.</p>
+      <div class="charts">
+        <div class="card">
+          <h3>Longitud de los cruces peatonales</h3>
+          <p class="sub">Cuántos metros de calzada cruza el peatón. Los cruces largos (cola derecha) son los candidatos a acortar con orejas o refugios.</p>
+          <svg id="chart-hist" viewBox="0 0 460 300" role="img" aria-label="Histograma de longitud de cruce en metros"></svg>
+        </div>
+        <div class="card">
+          <h3>Top 15 esquinas más peligrosas</h3>
+          <p class="sub">Las de índice más alto en el scope, con el factor que más las castiga.</p>
+          <div id="top-table" class="top-table"></div>
+        </div>
+        <div class="card full">
+          <h3>¿Qué factores predicen los siniestros?</h3>
+          <p class="sub">
+            Cada punto es una esquina: el índice armado <strong>solo con los factores que elijas</strong> vs. los
+            siniestros reales. Activá y desactivá factores para ver cuáles correlacionan más
+            (la ρ de Spearman se recalcula en vivo). Los siniestros nunca entran al índice acá: son la vara contra la que se mide.
+          </p>
+          <div class="axis-picker" id="axis-picker"></div>
+          <svg id="chart-scatter" viewBox="0 0 900 380" role="img" aria-label="Dispersión del índice seleccionado contra siniestros"></svg>
+        </div>
+      </div>
+    </section>
+
+    <footer class="wrap" id="footer"></footer>
+  </div>
+
+  <div class="chart-tip" id="tip"></div>
+
+  <script>
+    const DATA_URL = "../data/processed/esquinas.geojson";
+    const META_URL = "../data/processed/run_metadata.json";
+    const VALIDATION_URL = "../data/processed/validation_report.json";
+
+    // Escala de riesgo compartida por mapa y gráficos (verde=bajo → rojo=alto).
+    const COLOR_STOPS = [
+      [0.0, "#2ecc71"], [0.25, "#f1c40f"], [0.5, "#e67e22"],
+      [0.75, "#e74c3c"], [1.0, "#7b0000"],
+    ];
+    function riskColor(t) {
+      if (t == null || isNaN(t)) return "#bbbbbb";
+      t = Math.max(0, Math.min(1, t));
+      for (let i = 1; i < COLOR_STOPS.length; i++) {
+        const [t0, c0] = COLOR_STOPS[i - 1], [t1, c1] = COLOR_STOPS[i];
+        if (t <= t1) return lerpColor(c0, c1, (t - t0) / (t1 - t0));
+      }
+      return COLOR_STOPS[COLOR_STOPS.length - 1][1];
+    }
+    function lerpColor(a, b, u) {
+      const pa = [parseInt(a.slice(1,3),16), parseInt(a.slice(3,5),16), parseInt(a.slice(5,7),16)];
+      const pb = [parseInt(b.slice(1,3),16), parseInt(b.slice(3,5),16), parseInt(b.slice(5,7),16)];
+      const p = pa.map((v,i) => Math.round(v + (pb[i]-v)*u));
+      return `rgb(${p[0]},${p[1]},${p[2]})`;
+    }
+
+    const AXIS_LABELS = {
+      crossing_length: "Longitud de cruce", n_branches: "N° de ramales",
+      acute_angle: "Ángulo agudo", roadway_width: "Ancho de calzada",
+      no_refuge: "Sin refugio", speed_limit: "Velocidad máx.",
+      has_ped_signal: "Semáforo peatonal", traffic_calming: "Reductor de velocidad",
+      crossing_marked: "Senda demarcada", near_school: "Cerca de escuela",
+      crash_history: "Siniestros", ped_flow_proxy: "Flujo peatonal (proxy)",
+      heavy_traffic: "Tránsito pesado",
+    };
+    const COMUNA_NAMES = {
+      1:"Retiro, San Nicolás, Puerto Madero, San Telmo, Montserrat, Constitución",
+      2:"Recoleta", 3:"Balvanera, San Cristóbal", 4:"La Boca, Barracas, Parque Patricios, Nueva Pompeya",
+      5:"Almagro, Boedo", 6:"Caballito", 7:"Flores, Parque Chacabuco",
+      8:"Villa Soldati, Villa Lugano, Villa Riachuelo", 9:"Liniers, Mataderos, Parque Avellaneda",
+      10:"Villa Real, Monte Castro, Versalles, Floresta, Vélez Sarsfield, Villa Luro",
+      11:"Villa Gral. Mitre, Villa Devoto, Villa del Parque, Villa Santa Rita",
+      12:"Coghlan, Saavedra, Villa Urquiza, Villa Pueyrredón", 13:"Núñez, Belgrano, Colegiales",
+      14:"Palermo", 15:"Chacarita, Villa Crespo, La Paternal, Villa Ortúzar, Agronomía, Parque Chas",
+    };
+
+    const tip = document.getElementById("tip");
+    function showTip(html, ev) {
+      tip.innerHTML = html;
+      tip.style.opacity = "1";
+      const pad = 14;
+      let x = ev.clientX + pad, y = ev.clientY + pad;
+      const r = tip.getBoundingClientRect();
+      if (x + r.width > window.innerWidth) x = ev.clientX - r.width - pad;
+      if (y + r.height > window.innerHeight) y = ev.clientY - r.height - pad;
+      tip.style.left = x + "px"; tip.style.top = y + "px";
+    }
+    function hideTip() { tip.style.opacity = "0"; }
+
+    const SVGNS = "http://www.w3.org/2000/svg";
+    function el(name, attrs, parent) {
+      const n = document.createElementNS(SVGNS, name);
+      for (const k in attrs) n.setAttribute(k, attrs[k]);
+      if (parent) parent.appendChild(n);
+      return n;
+    }
+
+    // ---------- Theme toggle ----------
+    const toggle = document.getElementById("theme-toggle");
+    toggle.addEventListener("click", () => {
+      const cur = document.documentElement.getAttribute("data-theme");
+      const isDark = cur ? cur === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.setAttribute("data-theme", isDark ? "light" : "dark");
+      if (window.__redraw) window.__redraw();
+    });
+
+    // ---------- Map ----------
+    const map = new maplibregl.Map({
+      container: "map",
+      style: {
+        version: 8,
+        sources: { basemap: {
+          type: "raster",
+          tiles: ["https://basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"],
+          tileSize: 256, attribution: "&copy; OpenStreetMap contributors &copy; CARTO",
+        }},
+        layers: [{ id: "basemap", type: "raster", source: "basemap" }],
+      },
+      center: [-58.445, -34.615], zoom: 11,
+    });
+    map.addControl(new maplibregl.NavigationControl(), "top-right");
+
+    // Estado de los filtros del front, compartido por mapa, tiles y gráficos.
+    const STATE = { comuna: null, indexField: "indice" };
+
+    function buildColorExpression(field) {
+      const expr = ["interpolate", ["linear"], ["coalesce", ["get", field], -1]];
+      for (const [stop, color] of COLOR_STOPS) expr.push(stop, color);
+      return ["case", ["==", ["get", field], null], "#bbbbbb", expr];
+    }
+    function renderLegend() {
+      const legend = document.getElementById("legend");
+      legend.innerHTML = "";
+      for (const [, color] of COLOR_STOPS) {
+        const d = document.createElement("div"); d.style.background = color; legend.appendChild(d);
+      }
+    }
+
+    let DATA = null, META = null, VALIDATION = null;
+
+    async function boot() {
+      const [geo, meta, val] = await Promise.all([
+        fetch(DATA_URL).then(r => r.json()),
+        fetch(META_URL).then(r => r.json()).catch(() => null),
+        fetch(VALIDATION_URL).then(r => r.json()).catch(() => null),
+      ]);
+      DATA = geo; META = meta; VALIDATION = val;
+      // coordenadas al alcance de p.* (activeProps solo propaga properties)
+      DATA.features.forEach(f => {
+        const [lon, lat] = f.geometry.coordinates;
+        f.properties._lon = lon; f.properties._lat = lat;
+      });
+      populateComunas();
+      renderHeader();
+      window.__redraw = refreshAll;
+      refreshAll();
+      if (map.loaded()) initMapLayer(); else map.on("load", initMapLayer);
+    }
+
+    function populateComunas() {
+      const comunas = [...new Set(DATA.features.map(f => f.properties.comuna).filter(c => c != null))]
+        .sort((a, b) => a - b);
+      const sel = document.getElementById("comuna");
+      comunas.forEach(c => {
+        const o = document.createElement("option");
+        o.value = c; o.textContent = `Comuna ${c}`;
+        sel.appendChild(o);
+      });
+      // con un único scope de comuna (mode: comuna) no tiene sentido el filtro
+      if (comunas.length <= 1) sel.closest("label, #panel") && (sel.parentNode.style.display = "none");
+    }
+
+    // color del mapa según el selector "Colorear por": "__index__" usa el
+    // ranking elegido (global o por comuna); el resto, el eje normalizado.
+    function mapColorField() {
+      const cb = document.getElementById("color-by").value;
+      return cb === "__index__" ? STATE.indexField : cb;
+    }
+    function mapFilterExpr() {
+      const v = parseFloat(document.getElementById("threshold").value);
+      const parts = ["all", [">=", ["coalesce", ["get", STATE.indexField], 0], v]];
+      if (STATE.comuna != null) parts.push(["==", ["get", "comuna"], STATE.comuna]);
+      return parts;
+    }
+    function fitToActive() {
+      const fs = STATE.comuna == null ? DATA.features
+        : DATA.features.filter(f => f.properties.comuna === STATE.comuna);
+      if (!fs.length) return;
+      let a = 180, b = 90, c = -180, d = -90;
+      for (const f of fs) { const [x, y] = f.geometry.coordinates; if (x<a)a=x; if (x>c)c=x; if (y<b)b=y; if (y>d)d=y; }
+      map.fitBounds([[a, b], [c, d]], { padding: 40, duration: 600 });
+    }
+    function refreshMap() {
+      if (!map.getLayer("esquinas-circles")) return;
+      map.setPaintProperty("esquinas-circles", "circle-color", buildColorExpression(mapColorField()));
+      map.setFilter("esquinas-circles", mapFilterExpr());
+      const total = activeProps().length;
+      const v = parseFloat(document.getElementById("threshold").value);
+      const shown = activeProps().filter(p => (p[STATE.indexField] ?? 0) >= v).length;
+      document.getElementById("count").textContent =
+        v > 0 ? `${shown} de ${total} esquinas mostradas` : `${total} esquinas en el scope`;
+    }
+    // refresca todo lo que depende de los filtros (mapa + tiles + gráficos)
+    function refreshAll() { refreshMap(); renderTiles(); drawAllCharts(); }
+
+    function initMapLayer() {
+      map.addSource("esquinas", { type: "geojson", data: DATA });
+      map.addLayer({
+        id: "esquinas-circles", type: "circle", source: "esquinas",
+        paint: {
+          "circle-radius": ["interpolate", ["linear"], ["zoom"], 11, 2, 17, 9],
+          "circle-color": buildColorExpression(STATE.indexField),
+          "circle-opacity": 0.85,
+        },
+      });
+      renderLegend();
+      refreshMap();
+      fitToActive();
+
+      document.getElementById("color-by").addEventListener("change", refreshMap);
+      document.getElementById("index-field").addEventListener("change", (e) => {
+        STATE.indexField = e.target.value;
+        refreshAll();
+      });
+      document.getElementById("comuna").addEventListener("change", (e) => {
+        STATE.comuna = e.target.value === "" ? null : Number(e.target.value);
+        refreshAll();
+        fitToActive();
+      });
+      const threshold = document.getElementById("threshold");
+      const tv = document.getElementById("threshold-value");
+      threshold.addEventListener("input", () => {
+        tv.textContent = parseFloat(threshold.value).toFixed(2);
+        refreshMap();
+      });
+
+      map.on("click", "esquinas-circles", (e) => {
+        const p = e.features[0].properties;
+        const rows = Object.entries(AXIS_LABELS).map(([axis, label]) => {
+          const raw = p[`${axis}_raw`], norm = p[`${axis}_norm`];
+          if (raw === null || raw === undefined)
+            return `<div class="popup-axis"><span>${label}</span><span class="missing">sin dato</span></div>`;
+          return `<div class="popup-axis"><span>${label}</span><span>${Number(raw).toFixed(2)} <span style="color:var(--muted)">(${Number(norm).toFixed(2)})</span></span></div>`;
+        }).join("");
+        const ig = p.indice != null ? Number(p.indice).toFixed(3) : "—";
+        const icom = p.indice_comuna != null ? Number(p.indice_comuna).toFixed(3) : "—";
+        const comunaTxt = p.comuna != null ? ` · Comuna ${p.comuna}` : "";
+        const badges = [];
+        if (p.on_sendero_escolar === 1) badges.push("🚸 Sendero escolar");
+        if (p.near_ciclovia === 1) badges.push("🚲 Ciclovía");
+        const badgesHtml = badges.length ? `<div class="popup-badges">${badges.join(" · ")}</div>` : "";
+        new maplibregl.Popup().setLngLat(e.lngLat).setHTML(
+          `<div class="popup-title">${p.calles || "(sin nombre de calle)"}${comunaTxt}</div>` +
+          `<div>Índice global: <b>${ig}</b> · en su comuna: <b>${icom}</b></div>${badgesHtml}<hr/>${rows}`
+        ).addTo(map);
+      });
+      map.on("mouseenter", "esquinas-circles", () => map.getCanvas().style.cursor = "pointer");
+      map.on("mouseleave", "esquinas-circles", () => map.getCanvas().style.cursor = "");
+    }
+
+    // ---------- Header / tiles / footer ----------
+    function renderHeader() {
+      const mode = META?.scope?.mode;
+      const c = META?.scope?.comuna;
+      const n = DATA.features.length.toLocaleString("es-AR");
+      if (mode === "all") {
+        document.getElementById("lede-scope").textContent =
+          `Esta corrida cubre toda la Ciudad de Buenos Aires: ${n} esquinas. Usá el filtro de comuna en el mapa para acercarte.`;
+      } else if (c != null) {
+        const name = COMUNA_NAMES[c] ? ` (${COMUNA_NAMES[c]})` : "";
+        document.getElementById("lede-scope").textContent =
+          `Esta corrida cubre la Comuna ${c}${name}: ${n} esquinas.`;
+      }
+      if (VALIDATION?.status === "ok") {
+        const rc = VALIDATION.spearman_indice_compuesto_vs_siniestros?.rho;
+        const rg = VALIDATION.spearman_indice_geometrico_vs_siniestros?.rho;
+        document.getElementById("validation-text").innerHTML =
+          `El índice es híbrido, así que se valida contra siniestros reales. En este scope la correlación ` +
+          `(Spearman) del <strong>índice geométrico puro</strong> —sin mirar siniestros— contra los siniestros ` +
+          `reales es <strong>ρ = ${rg.toFixed(2)}</strong>, y la del índice compuesto completo es ` +
+          `<strong>ρ = ${rc.toFixed(2)}</strong>. Que la geometría sola ya correlacione es la evidencia de que ` +
+          `<em>predice</em> la siniestralidad en vez de asumirla.`;
+      }
+      const src = META?.fuentes_disponibles || [];
+      const dt = META?.generado_en ? new Date(META.generado_en).toLocaleDateString("es-AR") : "—";
+      document.getElementById("footer").innerHTML =
+        `Fuentes: Buenos Aires Data (callejero, veredas, semáforos, escuelas, siniestros, transporte) · ` +
+        `${src.length} capas cargadas en esta corrida. Generado el ${dt}. ` +
+        `Normalización por eje y pesos versionados en <code>run_metadata.json</code>. ` +
+        `Escala de color de riesgo compartida entre mapa y gráficos.`;
+    }
+
+    // props según el filtro de comuna activo; idx() = índice elegido (global/comuna)
+    function activeProps() {
+      const all = DATA.features.map(f => f.properties);
+      return STATE.comuna == null ? all : all.filter(p => p.comuna === STATE.comuna);
+    }
+    function idx(p) { return p[STATE.indexField]; }
+    function scopeWord() { return STATE.comuna == null ? "en CABA" : `en la Comuna ${STATE.comuna}`; }
+
+    function renderTiles() {
+      const P = activeProps();
+      const total = P.length;
+      const high = P.filter(p => (idx(p) ?? 0) >= 0.75).length;
+      const school = P.filter(p => p.on_sendero_escolar === 1).length;
+      const withCrash = P.filter(p => p.crash_history_raw > 0).length;
+      const rankLbl = STATE.indexField === "indice" ? "global" : "en su comuna";
+      const tiles = [
+        { val: total.toLocaleString("es-AR"), lbl: `esquinas ${scopeWord()}` },
+        { val: high.toLocaleString("es-AR"), lbl: `de alto riesgo (índice ${rankLbl} ≥ 0,75)` },
+        { val: school.toLocaleString("es-AR"), lbl: "sobre un sendero escolar" },
+        { val: withCrash.toLocaleString("es-AR"), lbl: "con siniestros con víctimas" },
+      ];
+      document.getElementById("tiles").innerHTML = tiles.map(t =>
+        `<div class="tile"><div class="val">${t.val}</div><div class="lbl">${t.lbl}</div></div>`).join("");
+    }
+
+    // ---------- Charts ----------
+    function drawAllCharts() {
+      drawHistogram();
+      buildAxisPicker();
+      drawScatter();
+      renderTopTable();
+    }
+
+    // Ejes elegibles para el índice ad-hoc del scatter. crash_history queda
+    // afuera a propósito: es la variable del eje Y — meterla en el índice
+    // sería correlacionar siniestros contra sí mismos.
+    const PICKER_RISK = ["crossing_length", "roadway_width", "acute_angle", "n_branches",
+                         "near_school", "ped_flow_proxy", "heavy_traffic"];
+    const PICKER_MITIGATION = ["has_ped_signal", "traffic_calming"];
+    const DEFAULT_SELECTED = ["crossing_length", "roadway_width", "acute_angle", "n_branches"];
+    let SELECTED_AXES = null; // se inicializa con los ejes de geometría disponibles
+
+    function availableAxes(list) {
+      const P = DATA.features.map(f => f.properties);
+      return list.filter(axis => P.some(p => p[`${axis}_norm`] != null));
+    }
+
+    function buildAxisPicker() {
+      const holder = document.getElementById("axis-picker");
+      if (holder.dataset.built) return; // se construye una sola vez; la selección persiste
+      holder.dataset.built = "1";
+      const risk = availableAxes(PICKER_RISK);
+      const mit = availableAxes(PICKER_MITIGATION);
+      SELECTED_AXES = new Set(DEFAULT_SELECTED.filter(a => risk.includes(a)));
+      if (!SELECTED_AXES.size && risk.length) SELECTED_AXES = new Set([risk[0]]);
+
+      const mkChip = (axis, extra) => {
+        const label = document.createElement("label");
+        const cb = document.createElement("input");
+        cb.type = "checkbox"; cb.checked = SELECTED_AXES.has(axis);
+        cb.addEventListener("change", () => {
+          if (cb.checked) SELECTED_AXES.add(axis); else SELECTED_AXES.delete(axis);
+          drawScatter();
+        });
+        label.appendChild(cb);
+        label.appendChild(document.createTextNode(AXIS_LABELS[axis] + (extra || "")));
+        holder.appendChild(label);
+      };
+      risk.forEach(a => mkChip(a));
+      if (mit.length) {
+        const g = document.createElement("span");
+        g.className = "grp"; g.textContent = "mitigación (resta):";
+        holder.appendChild(g);
+        mit.forEach(a => mkChip(a));
+      }
+    }
+
+    // Índice ad-hoc: suma ponderada (pesos del config, vía run_metadata) de los
+    // ejes normalizados seleccionados; la mitigación resta, igual que en scoring.py.
+    function adHocScore(p) {
+      let s = 0;
+      for (const axis of SELECTED_AXES) {
+        const norm = p[`${axis}_norm`];
+        if (norm == null) continue;
+        const w = META?.pesos_configurados?.[axis] ?? 1.0;
+        s += (PICKER_MITIGATION.includes(axis) ? -norm : norm) * w;
+      }
+      return s;
+    }
+    function percentileRanks(values) {
+      const order = values.map((v, i) => [v, i]).sort((a, b) => a[0] - b[0]);
+      const out = new Array(values.length);
+      for (let i = 0; i < order.length;) {
+        let j = i; while (j < order.length && order[j][0] === order[i][0]) j++;
+        const pct = ((i + j - 1) / 2 + 1) / order.length;
+        for (let k = i; k < j; k++) out[order[k][1]] = pct;
+        i = j;
+      }
+      return out;
+    }
+
+    function drawHistogram() {
+      const svg = document.getElementById("chart-hist");
+      svg.innerHTML = "";
+      const W = 460, H = 300, m = { t: 14, r: 12, b: 40, l: 40 };
+      const iw = W - m.l - m.r, ih = H - m.t - m.b;
+      const vals = activeProps().map(p => p.crossing_length_raw).filter(v => v != null && !isNaN(v));
+      const binW = 2;                       // metros por barra
+      const maxM = 40;                      // eje hasta 40 m (el resto se agrupa en el último bin)
+      const nb = maxM / binW;
+      const bins = new Array(nb).fill(0);
+      vals.forEach(v => { let b = Math.floor(v / binW); if (b >= nb) b = nb - 1; bins[b]++; });
+      const maxC = Math.max(...bins);
+      // color por longitud (más largo = más rojo), coherente con la semántica de riesgo
+      const colorForBin = i => riskColor(Math.min(1, ((i + 0.5) * binW) / maxM));
+      const x = mtr => m.l + (mtr / maxM) * iw;
+      const y = c => m.t + ih - (c / maxC) * ih;
+
+      const yticks = 4;
+      for (let i = 0; i <= yticks; i++) {
+        const val = Math.round(maxC * i / yticks), yy = y(val);
+        el("line", { x1: m.l, y1: yy, x2: m.l + iw, y2: yy, class: "grid-line" }, svg);
+        el("text", { x: m.l - 6, y: yy + 3, "text-anchor": "end", class: "ax-label" }, svg).textContent = val;
+      }
+      for (let i = 0; i < nb; i++) {
+        if (bins[i] === 0) continue;
+        const bx = x(i * binW) + 1, bw = iw / nb - 2, by = y(bins[i]), bh = m.t + ih - by;
+        const r = el("rect", { x: bx, y: by, width: bw, height: bh, rx: 2, fill: colorForBin(i) }, svg);
+        r.style.cursor = "pointer";
+        const lo = i * binW, hi = (i + 1) * binW;
+        const lbl = i === nb - 1 ? `${lo} m o más` : `${lo}–${hi} m`;
+        r.addEventListener("mousemove", ev => showTip(`<div class="t">${lbl}</div>${bins[i]} esquinas`, ev));
+        r.addEventListener("mouseleave", hideTip);
+      }
+      // mediana
+      const sorted = [...vals].sort((a, b) => a - b);
+      const med = sorted[Math.floor(sorted.length / 2)];
+      const mx = x(Math.min(med, maxM));
+      el("line", { x1: mx, y1: m.t, x2: mx, y2: m.t + ih, stroke: "var(--ink)", "stroke-width": 1.5, "stroke-dasharray": "3 3" }, svg);
+      el("text", { x: mx + 4, y: m.t + 10, class: "ax-title", fill: "var(--ink)" }, svg).textContent = `mediana ${med.toFixed(0)} m`;
+
+      el("line", { x1: m.l, y1: m.t + ih, x2: m.l + iw, y2: m.t + ih, class: "axis-line" }, svg);
+      [0, 10, 20, 30, 40].forEach(mtr => {
+        el("text", { x: x(mtr), y: H - 22, "text-anchor": "middle", class: "ax-label" }, svg).textContent = mtr === 40 ? "40+" : mtr;
+      });
+      el("text", { x: m.l + iw / 2, y: H - 4, "text-anchor": "middle", class: "ax-title" }, svg).textContent = "Longitud del cruce más largo (m)";
+      el("text", { x: m.l - 30, y: m.t + ih / 2, "text-anchor": "middle", class: "ax-title", transform: `rotate(-90 ${m.l - 30} ${m.t + ih / 2})` }, svg).textContent = "N° de esquinas";
+    }
+
+    // Spearman ρ = Pearson sobre los rangos; para anotar el scatter del
+    // subconjunto/índice que se está viendo, no un número fijo global.
+    function spearman(xs, ys) {
+      const n = xs.length; if (n < 3) return null;
+      const rank = arr => {
+        const idxs = arr.map((v, i) => [v, i]).sort((a, b) => a[0] - b[0]);
+        const r = new Array(n);
+        for (let i = 0; i < n;) { let j = i; while (j < n && idxs[j][0] === idxs[i][0]) j++;
+          const avg = (i + j - 1) / 2 + 1; for (let k = i; k < j; k++) r[idxs[k][1]] = avg; i = j; }
+        return r;
+      };
+      const rx = rank(xs), ry = rank(ys);
+      const mx = rx.reduce((a, b) => a + b) / n, my = ry.reduce((a, b) => a + b) / n;
+      let num = 0, dx = 0, dy = 0;
+      for (let i = 0; i < n; i++) { const a = rx[i] - mx, b = ry[i] - my; num += a * b; dx += a * a; dy += b * b; }
+      return dx && dy ? num / Math.sqrt(dx * dy) : null;
+    }
+
+    function drawScatter() {
+      const svg = document.getElementById("chart-scatter");
+      svg.innerHTML = "";
+      const W = 900, H = 380, m = { t: 16, r: 18, b: 46, l: 50 };
+      const iw = W - m.l - m.r, ih = H - m.t - m.b;
+      const all = activeProps().filter(p => p.crash_history_raw != null);
+      if (!SELECTED_AXES || !SELECTED_AXES.size || !all.length) {
+        el("text", { x: W / 2, y: H / 2, "text-anchor": "middle", class: "ax-title" }, svg)
+          .textContent = "Elegí al menos un factor para armar el índice.";
+        return;
+      }
+      // índice ad-hoc con los factores tildados, percentilizado para el eje X
+      const scores = all.map(adHocScore);
+      const ranks = percentileRanks(scores);
+      const maxCrash = Math.max(...all.map(p => p.crash_history_raw), 1);
+      const x = v => m.l + v * iw;                          // percentil 0..1
+      const ys = v => Math.sqrt(v) / Math.sqrt(maxCrash);   // sqrt para domar outliers
+      const y = v => m.t + ih - ys(v) * ih;
+
+      [0, 5, 10, 25, 50, Math.round(maxCrash)].filter((v,i,a) => v <= maxCrash && a.indexOf(v) === i).forEach(v => {
+        const yy = y(v);
+        el("line", { x1: m.l, y1: yy, x2: m.l + iw, y2: yy, class: "grid-line" }, svg);
+        el("text", { x: m.l - 6, y: yy + 3, "text-anchor": "end", class: "ax-label" }, svg).textContent = v;
+      });
+
+      // muestreo para render: 15k <circle> serían lentos; la tendencia y ρ usan
+      // todos los puntos, solo el dibujo de la nube se submuestrea.
+      const CAP = 2500;
+      const idxs = all.map((_, i) => i);
+      let drawIdxs = idxs;
+      if (all.length > CAP) {
+        const step = all.length / CAP;
+        drawIdxs = []; for (let i = 0; i < all.length; i += step) drawIdxs.push(Math.floor(i));
+      }
+      drawIdxs.forEach(i => {
+        const p = all[i], r = ranks[i];
+        const c = el("circle", { cx: x(r), cy: y(p.crash_history_raw), r: 2.6,
+          fill: riskColor(r), "fill-opacity": 0.4 }, svg);
+        c.style.cursor = "pointer";
+        c.addEventListener("mousemove", ev => showTip(
+          `<div class="t">${p.calles || "esquina"}</div>Percentil ${(r * 100).toFixed(0)} del índice elegido · ${p.crash_history_raw} pts de siniestros`, ev));
+        c.addEventListener("mouseleave", hideTip);
+      });
+
+      // tendencia: mediana de siniestros por decil del índice elegido (sobre todos)
+      const deciles = new Array(10).fill(null).map(() => []);
+      ranks.forEach((r, i) => { let d = Math.min(9, Math.floor(r * 10)); deciles[d].push(all[i].crash_history_raw); });
+      const median = arr => { if (!arr.length) return null; const s = [...arr].sort((a,b)=>a-b); const h = Math.floor(s.length/2); return s.length%2 ? s[h] : (s[h-1]+s[h])/2; };
+      const trend = deciles.map((arr, i) => ({ x: (i + 0.5) / 10, m: median(arr) })).filter(d => d.m != null);
+      const path = trend.map((d, i) => `${i ? "L" : "M"}${x(d.x).toFixed(1)},${y(d.m).toFixed(1)}`).join(" ");
+      el("path", { d: path, fill: "none", stroke: "var(--surface)", "stroke-width": 5, "stroke-linejoin": "round" }, svg);
+      el("path", { d: path, fill: "none", stroke: "var(--ink)", "stroke-width": 2, "stroke-linejoin": "round" }, svg);
+      trend.forEach(d => el("circle", { cx: x(d.x), cy: y(d.m), r: 3.2, fill: "var(--ink)", stroke: "var(--surface)", "stroke-width": 1.5 }, svg));
+
+      el("line", { x1: m.l, y1: m.t + ih, x2: m.l + iw, y2: m.t + ih, class: "axis-line" }, svg);
+      [0, 0.25, 0.5, 0.75, 1].forEach(t => {
+        el("text", { x: x(t), y: H - 26, "text-anchor": "middle", class: "ax-label" }, svg).textContent = t.toFixed(2);
+      });
+      const names = [...SELECTED_AXES].map(a => AXIS_LABELS[a]).join(" + ");
+      const xTitle = `Índice con: ${names}` + (STATE.comuna != null ? ` — Comuna ${STATE.comuna}` : "");
+      el("text", { x: m.l + iw / 2, y: H - 8, "text-anchor": "middle", class: "ax-title" }, svg)
+        .textContent = xTitle.length > 110 ? xTitle.slice(0, 108) + "…" : xTitle;
+      el("text", { x: m.l - 36, y: m.t + ih / 2, "text-anchor": "middle", class: "ax-title", transform: `rotate(-90 ${m.l - 36} ${m.t + ih / 2})` }, svg).textContent = "Siniestros (score gravedad)";
+
+      // ρ del índice elegido vs siniestros, recalculada en vivo
+      const rho = spearman(scores, all.map(p => p.crash_history_raw));
+      if (rho != null) {
+        const t = el("text", { x: m.l + 8, y: m.t + 14, class: "ax-title", "font-size": "15" }, svg);
+        t.textContent = `Spearman ρ = ${rho.toFixed(2)}  (n=${all.length.toLocaleString("es-AR")})`;
+        t.setAttribute("fill", "var(--ink)");
+        t.setAttribute("font-weight", "700");
+      }
+    }
+
+    // El eje de riesgo que más castiga a la esquina (norm más alto), con su
+    // valor crudo. Los binarios (escuela/camiones) van como último recurso:
+    // en 1 su norm es exactamente 1.0 y siempre le ganarían a los continuos,
+    // dejando la columna degenerada en "Cerca de escuela (sí)" para todo el top.
+    const BINARY_AXES = ["near_school", "heavy_traffic", "no_refuge"];
+    function dominantFactor(p) {
+      let best = null, bestBinary = null;
+      for (const axis in AXIS_LABELS) {
+        const norm = p[`${axis}_norm`], raw = p[`${axis}_raw`];
+        if (norm == null || raw == null) continue;
+        const isMitig = axis === "has_ped_signal" || axis === "traffic_calming" || axis === "crossing_marked";
+        if (isMitig) continue; // la mitigación resta, no es un "factor de riesgo"
+        if (BINARY_AXES.includes(axis)) {
+          if (raw >= 1 && (!bestBinary || norm > bestBinary.norm)) bestBinary = { axis, norm, raw };
+        } else if (!best || norm > best.norm) {
+          best = { axis, norm, raw };
+        }
+      }
+      const pick = best || bestBinary;
+      if (!pick) return "—";
+      const fmt = (axis, raw) => {
+        if (axis === "crossing_length" || axis === "roadway_width") return `${raw.toFixed(0)} m`;
+        if (axis === "acute_angle") return `${raw.toFixed(0)}°`;
+        if (axis === "crash_history") return `${raw.toFixed(0)} pts`;
+        if (BINARY_AXES.includes(axis)) return "sí";
+        return raw.toFixed(0);
+      };
+      return `${AXIS_LABELS[pick.axis]} (${fmt(pick.axis, pick.raw)})`;
+    }
+
+    // vista satelital (híbrida: satélite + nombres de calle) centrada en la esquina
+    function googleMapsSatUrl(lat, lon) {
+      return `https://www.google.com/maps/@${lat},${lon},20z/data=!3m1!1e3`;
+    }
+
+    function renderTopTable() {
+      const N = 15;
+      const rows = activeProps().filter(p => idx(p) != null)
+        .sort((a, b) => idx(b) - idx(a)).slice(0, N);
+      const html = `
+        <table>
+          <thead><tr>
+            <th>#</th><th>Esquina</th><th>Barrio</th><th>Comuna</th><th>Factor dominante</th><th></th>
+          </tr></thead>
+          <tbody>
+            ${rows.map((p, i) => `
+              <tr>
+                <td class="rank">${i + 1}</td>
+                <td class="calles">${p.calles || "(sin nombre)"}</td>
+                <td>${p.barrio || "—"}</td>
+                <td>${p.comuna != null ? p.comuna : "—"}</td>
+                <td>${dominantFactor(p)}</td>
+                <td class="mapa"><a href="${googleMapsSatUrl(p._lat, p._lon)}" target="_blank" rel="noopener noreferrer" title="Ver en Google Maps (satelital)">🛰️</a></td>
+              </tr>`).join("")}
+          </tbody>
+        </table>`;
+      document.getElementById("top-table").innerHTML = html;
+    }
+
+    boot();
+  </script>
+</body>
+</html>

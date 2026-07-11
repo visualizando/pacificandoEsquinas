@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Reporte de intervenciones — Esquinas Peligrosas CABA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --page: #f9f9f7; --surface: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e;
+      --muted: #898781; --grid: #e1e0d9; --axis: #c3c2b7;
+      --border: rgba(11,11,11,0.10); --shadow: 0 1px 6px rgba(0,0,0,0.14);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --page:#0d0d0d; --surface:#1a1a19; --ink:#fff; --ink-2:#c3c2b7; --muted:#898781;
+        --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10); --shadow:0 1px 6px rgba(0,0,0,0.5); }
+    }
+    :root[data-theme="light"] { --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#52514e; --muted:#898781; --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,0.10); --shadow:0 1px 6px rgba(0,0,0,0.14); }
+    :root[data-theme="dark"] { --page:#0d0d0d; --surface:#1a1a19; --ink:#fff; --ink-2:#c3c2b7; --muted:#898781; --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10); --shadow:0 1px 6px rgba(0,0,0,0.5); }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--page); color: var(--ink); line-height: 1.5; }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 0 20px; }
+    a { color: var(--ink-2); }
+
+    .topbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 0 4px; }
+    .back { text-decoration: none; font-size: 14px; font-weight: 600; }
+    .back:hover { color: var(--ink); }
+    .theme-toggle { background: var(--surface); border: 1px solid var(--border); color: var(--ink); border-radius: 8px; padding: 6px 10px; cursor: pointer; font-size: 13px; }
+
+    header.main { padding: 8px 0 6px; }
+    h1 { font-size: 28px; margin: 0 0 6px; letter-spacing: -0.02em; }
+    .lede { font-size: 16px; color: var(--ink-2); margin: 0 0 12px; max-width: 74ch; }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 4px; }
+    .chip { background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 5px 12px; font-size: 13px; box-shadow: var(--shadow); }
+    .chip b { font-variant-numeric: tabular-nums; }
+
+    .controls { display: flex; gap: 12px; align-items: center; margin: 18px 0; flex-wrap: wrap; }
+    .controls label { font-size: 13px; color: var(--ink-2); font-weight: 600; }
+    select { padding: 6px 8px; border-radius: 8px; border: 1px solid var(--axis); background: var(--surface); color: var(--ink); font-size: 13px; }
+    .result-count { font-size: 13px; color: var(--muted); margin-left: auto; }
+
+    .ficha { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow); padding: 20px 22px; margin: 18px 0; }
+    .head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+    .rank { font-size: 15px; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .ficha h2 { font-size: 20px; margin: 0; letter-spacing: -0.01em; flex: 1 1 auto; }
+    .comuna-tag { font-size: 12px; color: var(--ink-2); background: var(--grid); padding: 2px 8px; border-radius: 6px; }
+    .idx { font-size: 15px; font-weight: 700; color: #fff; padding: 3px 10px; border-radius: 8px; font-variant-numeric: tabular-nums; }
+    .idx small { font-weight: 500; opacity: 0.9; }
+
+    /* imagen satelital grande a la izquierda + detalle a la derecha */
+    .ficha-body { display: grid; grid-template-columns: 380px 1fr; gap: 24px; align-items: start; }
+    @media (max-width: 780px) { .ficha-body { grid-template-columns: 1fr; } }
+
+    .sat { display: block; text-decoration: none; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); background: var(--grid); max-width: 100%; }
+    /* canvas de ancho fijo (los tiles se posicionan para 380px); en pantallas
+       angostas .sat lo clippea centrado, el pin queda en el medio igual */
+    .sat-canvas { position: relative; display: block; width: 380px; height: 300px; margin: 0 auto; overflow: hidden; background: var(--grid); }
+    .sat-canvas .tile { position: absolute; width: 256px; height: 256px; }
+    .sat-canvas .pin { position: absolute; left: 190px; top: 150px; width: 15px; height: 15px; margin: -7.5px 0 0 -7.5px; border: 2.5px solid #fff; border-radius: 50%; box-shadow: 0 0 0 2px rgba(0,0,0,.6); }
+    .sat-cap { display: block; font-size: 12.5px; font-weight: 600; color: var(--ink-2); padding: 7px 10px; text-align: center; }
+    .sat:hover .sat-cap { color: var(--ink); }
+    .sat.noimg .sat-canvas { height: 90px; }
+
+    .explica { font-size: 14px; color: var(--ink-2); margin: 0 0 14px; }
+    .col-h { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin: 0 0 10px; }
+
+    /* intervenciones: zona full-width abajo, en 2 columnas */
+    .iv-zone { margin-top: 18px; border-top: 1px solid var(--border); padding-top: 14px; }
+    .iv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 26px; }
+    @media (max-width: 780px) { .iv-grid { grid-template-columns: 1fr; } }
+
+    .bar-row { display: grid; grid-template-columns: 130px 1fr 62px; align-items: center; gap: 8px; margin: 5px 0; font-size: 12.5px; }
+    .bar-row .lbl { color: var(--ink-2); }
+    .bar-track { display: block; background: var(--grid); border-radius: 4px; height: 9px; overflow: hidden; }
+    .bar-fill { display: block; height: 9px; border-radius: 4px; min-width: 2px; }
+    .bar-val { text-align: right; color: var(--ink); font-variant-numeric: tabular-nums; }
+    .chips-mit { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .mit { font-size: 11.5px; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--border); }
+    .mit.on { color: #006300; } .mit.off { color: #b23; }
+    @media (prefers-color-scheme: dark) { .mit.on { color: #4ade80; } .mit.off { color: #f87171; } }
+
+    .iv { display: flex; gap: 10px; padding: 10px 0; }
+    .iv .ic { font-size: 20px; line-height: 1.2; flex: 0 0 auto; }
+    .iv .tipo { font-weight: 700; font-size: 14px; }
+    .iv .motivo { font-size: 12.5px; color: var(--muted); }
+    .iv .detalle { font-size: 13px; color: var(--ink-2); margin-top: 1px; }
+    .no-iv { font-size: 13px; color: var(--muted); font-style: italic; }
+
+    .ctx { margin-top: 12px; font-size: 12.5px; color: var(--ink-2); }
+    footer { color: var(--muted); font-size: 12.5px; padding: 24px 0 50px; border-top: 1px solid var(--border); margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <a class="back" href="index.html">← Volver al mapa</a>
+      <button class="theme-toggle" id="theme-toggle" title="Cambiar tema">◑</button>
+    </div>
+
+    <header class="main">
+      <h1>Reporte de intervenciones prioritarias</h1>
+      <p class="lede">
+        Las esquinas más peligrosas para peatones e infancias, con una propuesta de
+        <strong>intervención de bajo costo</strong> derivada de sus factores de riesgo:
+        acortar el cruce, enderezarlo, instalar semáforo peatonal o calmar el tránsito.
+      </p>
+      <div class="meta" id="meta"></div>
+    </header>
+
+    <div class="controls">
+      <label for="comuna-filter">Comuna:</label>
+      <select id="comuna-filter"><option value="">Todas</option></select>
+      <label for="iv-filter">Intervención:</label>
+      <select id="iv-filter"><option value="">Todas</option></select>
+      <span class="result-count" id="result-count"></span>
+    </div>
+
+    <div id="list"></div>
+
+    <footer id="footer"></footer>
+  </div>
+
+  <script>
+    const REPORTE_URL = "../data/processed/reporte.json";
+
+    // Miniatura satelital sin API key: mosaico de tiles de World Imagery de
+    // Esri/ArcGIS (servidos por CDN, ~50 ms) centrado en la esquina. Se usan
+    // los tiles cacheados y NO el endpoint `export` dinámico, que tarda 2-4 s
+    // por imagen y con 100 fichas se congestiona. Si algún día se quiere la
+    // imagen de Google, hay que usar Google Static Maps API (key + facturación).
+    function satTiles(lat, lon, w, h, z) {
+      const world = 256 * Math.pow(2, z);
+      const cx = (lon + 180) / 360 * world;
+      const s = Math.sin(lat * Math.PI / 180);
+      const cy = (0.5 - Math.log((1 + s) / (1 - s)) / (4 * Math.PI)) * world;
+      const left = cx - w / 2, top = cy - h / 2;
+      const tx0 = Math.floor(left / 256), tx1 = Math.floor((cx + w / 2) / 256);
+      const ty0 = Math.floor(top / 256), ty1 = Math.floor((cy + h / 2) / 256);
+      let out = "";
+      for (let tx = tx0; tx <= tx1; tx++)
+        for (let ty = ty0; ty <= ty1; ty++) {
+          const url = `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${ty}/${tx}`;
+          // data-src: los carga loadVisibleTiles() cuando la ficha está en
+          // pantalla (lazy propio con getBoundingClientRect — ni loading="lazy"
+          // ni IntersectionObserver disparan bien con imgs insertadas por innerHTML).
+          out += `<img class="tile" alt="" data-src="${url}" style="left:${(tx*256-left).toFixed(1)}px;top:${(ty*256-top).toFixed(1)}px"`
+               + ` onerror="this.closest('.sat').classList.add('noimg')">`;
+        }
+      return out;
+    }
+    // link a la vista satelital interactiva de Google Maps
+    function gmapsSat(lat, lon) { return `https://www.google.com/maps/@${lat},${lon},20z/data=!3m1!1e3`; }
+
+    const COLOR_STOPS = [[0,"#2ecc71"],[0.25,"#f1c40f"],[0.5,"#e67e22"],[0.75,"#e74c3c"],[1,"#7b0000"]];
+    function riskColor(t) {
+      if (t == null || isNaN(t)) return "#bbb";
+      t = Math.max(0, Math.min(1, t));
+      for (let i = 1; i < COLOR_STOPS.length; i++) {
+        const [t0,c0] = COLOR_STOPS[i-1], [t1,c1] = COLOR_STOPS[i];
+        if (t <= t1) { const u=(t-t0)/(t1-t0);
+          const pa=[parseInt(c0.slice(1,3),16),parseInt(c0.slice(3,5),16),parseInt(c0.slice(5,7),16)];
+          const pb=[parseInt(c1.slice(1,3),16),parseInt(c1.slice(3,5),16),parseInt(c1.slice(5,7),16)];
+          const p=pa.map((v,i)=>Math.round(v+(pb[i]-v)*u)); return `rgb(${p[0]},${p[1]},${p[2]})`;
+        }
+      }
+      return COLOR_STOPS[COLOR_STOPS.length-1][1];
+    }
+
+    const AXIS_LABELS = {
+      crossing_length:"Longitud de cruce", roadway_width:"Ancho de calzada", acute_angle:"Ángulo agudo",
+      n_branches:"N° de ramales", near_school:"Cerca de escuela", crash_history:"Siniestros",
+      ped_flow_proxy:"Flujo peatonal", heavy_traffic:"Tránsito pesado",
+      no_refuge:"Sin refugio", speed_limit:"Velocidad máx.",
+    };
+    const MITIGATION = { has_ped_signal:"Semáforo peatonal", traffic_calming:"Reductor de velocidad", crossing_marked:"Senda demarcada" };
+    const IV_ICON = { "Acortar el cruce":"↔️", "Enderezar el cruce":"📐", "Instalar semáforo peatonal":"🚦", "Calmar el tránsito":"🛑" };
+
+    function fmtRaw(axis, raw) {
+      if (raw == null) return "—";
+      if (axis === "crossing_length" || axis === "roadway_width") return `${raw.toFixed(0)} m`;
+      if (axis === "acute_angle") return `${raw.toFixed(0)}°`;
+      if (axis === "crash_history") return `${raw.toFixed(0)} pts`;
+      if (axis === "near_school" || axis === "heavy_traffic" || axis === "no_refuge") return raw >= 1 ? "sí" : "no";
+      return raw.toFixed(0);
+    }
+
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+      const cur = document.documentElement.getAttribute("data-theme");
+      const isDark = cur ? cur === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.setAttribute("data-theme", isDark ? "light" : "dark");
+    });
+
+    let REPORTE = null;
+
+    function renderMeta() {
+      const r = REPORTE;
+      const scope = r.scope?.mode === "all" ? "toda CABA" : `Comuna ${r.scope?.comuna}`;
+      const chips = [
+        `<span class="chip"><b>${r.top_n}</b> esquinas prioritarias</span>`,
+        `<span class="chip">de <b>${r.n_corners_total.toLocaleString("es-AR")}</b> analizadas (${scope})</span>`,
+      ];
+      if (r.validacion?.status === "ok") {
+        chips.push(`<span class="chip">validación: geometría vs. siniestros <b>ρ ${r.validacion.spearman_geometrico.toFixed(2)}</b></span>`);
+      }
+      document.getElementById("meta").innerHTML = chips.join("");
+      const dt = r.generado_en ? new Date(r.generado_en).toLocaleDateString("es-AR") : "—";
+      document.getElementById("footer").innerHTML =
+        `Generado el ${dt}. Las intervenciones se derivan automáticamente de los factores de riesgo de cada esquina ` +
+        `(umbral y pesos configurables). Ejes aún sin fuente de datos: ${(r.ejes_excluidos||[]).join(", ") || "ninguno"}. ` +
+        `Fuente: Buenos Aires Data.`;
+    }
+
+    function populateFilters() {
+      const comunas = [...new Set(REPORTE.esquinas.map(e => e.comuna).filter(c => c != null))].sort((a,b)=>a-b);
+      const cf = document.getElementById("comuna-filter");
+      comunas.forEach(c => { const o=document.createElement("option"); o.value=c; o.textContent=`Comuna ${c}`; cf.appendChild(o); });
+      const tipos = [...new Set(REPORTE.esquinas.flatMap(e => e.intervenciones.map(i => i.tipo)))];
+      const ivf = document.getElementById("iv-filter");
+      tipos.forEach(t => { const o=document.createElement("option"); o.value=t; o.textContent=t; ivf.appendChild(o); });
+    }
+
+    function barsFor(e) {
+      const axes = Object.keys(AXIS_LABELS)
+        .map(axis => ({ axis, ...e.desglose_por_eje[axis] }))
+        .filter(a => a && a.disponible && a.normalizado != null)
+        .sort((a,b) => b.normalizado - a.normalizado);
+      if (!axes.length) return '<div class="no-iv">Sin ejes de riesgo con datos.</div>';
+      return axes.map(a => `
+        <div class="bar-row">
+          <span class="lbl">${AXIS_LABELS[a.axis]}</span>
+          <span class="bar-track"><span class="bar-fill" style="width:${(a.normalizado*100).toFixed(0)}%;background:${riskColor(a.normalizado)}"></span></span>
+          <span class="bar-val">${fmtRaw(a.axis, a.raw)}</span>
+        </div>`).join("");
+    }
+
+    function mitChips(e) {
+      const out = [];
+      for (const axis in MITIGATION) {
+        const d = e.desglose_por_eje[axis];
+        if (!d || !d.disponible || d.raw == null) continue;
+        const on = d.raw >= 1;
+        out.push(`<span class="mit ${on?'on':'off'}">${on?'✓':'✗'} ${MITIGATION[axis]}</span>`);
+      }
+      return out.length ? `<div class="chips-mit">${out.join("")}</div>` : "";
+    }
+
+    function ivList(e) {
+      if (!e.intervenciones.length) return '<div class="no-iv">No se detectó una intervención de bajo costo con los ejes disponibles.</div>';
+      return e.intervenciones.map(iv => `
+        <div class="iv">
+          <div class="ic">${IV_ICON[iv.tipo] || "•"}</div>
+          <div>
+            <div class="tipo">${iv.tipo}</div>
+            <div class="motivo">${iv.motivo}</div>
+            <div class="detalle">${iv.detalle}</div>
+          </div>
+        </div>`).join("");
+    }
+
+    function ctxLine(e) {
+      const b = [];
+      if (e.contexto?.on_sendero_escolar) b.push("🚸 sobre un sendero escolar");
+      if (e.contexto?.near_ciclovia) b.push("🚲 con ciclovía");
+      return b.length ? `<div class="ctx">${b.join(" · ")}</div>` : "";
+    }
+
+    function render() {
+      const comuna = document.getElementById("comuna-filter").value;
+      const tipo = document.getElementById("iv-filter").value;
+      let items = REPORTE.esquinas.map((e, i) => ({ e, rank: i + 1 }));
+      if (comuna) items = items.filter(x => String(x.e.comuna) === comuna);
+      if (tipo) items = items.filter(x => x.e.intervenciones.some(i => i.tipo === tipo));
+
+      document.getElementById("result-count").textContent = `${items.length} esquina${items.length===1?"":"s"}`;
+      document.getElementById("list").innerHTML = items.map(({ e, rank }) => {
+        const idxc = riskColor(e.indice_compuesto);
+        const comunaTag = e.comuna != null ? `<span class="comuna-tag">Comuna ${e.comuna}</span>` : "";
+        const lat = e.ubicacion?.lat, lon = e.ubicacion?.lon;
+        const sat = (lat != null && lon != null) ? `
+          <a class="sat" href="${gmapsSat(lat, lon)}" target="_blank" rel="noopener noreferrer" title="Abrir en Google Maps (satelital)">
+            <span class="sat-canvas">${satTiles(lat, lon, 380, 300, 19)}<span class="pin"></span></span>
+            <span class="sat-cap">🛰️ Abrir en Google Maps (satelital) →</span>
+          </a>` : "";
+        return `
+        <article class="ficha">
+          <div class="head">
+            <span class="rank">#${rank}</span>
+            <h2>${e.calles || "(sin nombre)"}</h2>
+            ${comunaTag}
+            <span class="idx" style="background:${idxc}">${e.indice_compuesto.toFixed(3)} <small>índice</small></span>
+          </div>
+          <div class="ficha-body">
+            ${sat}
+            <div class="ficha-side">
+              <p class="explica">${e.texto_explicativo}</p>
+              <p class="col-h">Factores de riesgo</p>
+              ${barsFor(e)}
+              ${mitChips(e)}
+            </div>
+          </div>
+          <div class="iv-zone">
+            <p class="col-h">Intervenciones sugeridas</p>
+            <div class="iv-grid">${ivList(e)}</div>
+          </div>
+          ${ctxLine(e)}
+        </article>`;
+      }).join("");
+      loadVisibleTiles();
+    }
+
+    // Lazy propio con getBoundingClientRect: carga los tiles de las fichas que
+    // están (o están por entrar) en pantalla, no las 100 de una. Fiable en
+    // cualquier browser, a diferencia de loading="lazy" / IntersectionObserver
+    // sobre imgs de innerHTML.
+    function loadVisibleTiles() {
+      const margin = 800;
+      const vh = window.innerHeight;
+      document.querySelectorAll(".sat-canvas").forEach(c => {
+        const pending = c.querySelectorAll("img.tile[data-src]");
+        if (!pending.length) return;
+        const r = c.getBoundingClientRect();
+        if (r.bottom > -margin && r.top < vh + margin) {
+          pending.forEach(img => { img.src = img.dataset.src; img.removeAttribute("data-src"); });
+        }
+      });
+    }
+    let tileTick = false;
+    function onScrollTiles() {
+      if (tileTick) return;
+      tileTick = true;
+      requestAnimationFrame(() => { tileTick = false; loadVisibleTiles(); });
+    }
+    window.addEventListener("scroll", onScrollTiles, { passive: true });
+    window.addEventListener("resize", onScrollTiles, { passive: true });
+
+    async function boot() {
+      try {
+        REPORTE = await fetch(REPORTE_URL).then(r => r.json());
+      } catch (err) {
+        document.getElementById("list").innerHTML =
+          '<p style="color:var(--muted)">No se pudo cargar el reporte. Corré el pipeline (<code>python run.py</code>) para generar <code>data/processed/reporte.json</code>.</p>';
+        return;
+      }
+      renderMeta();
+      populateFilters();
+      render();
+      document.getElementById("comuna-filter").addEventListener("change", render);
+      document.getElementById("iv-filter").addEventListener("change", render);
+    }
+    boot();
+  </script>
+</body>
+</html>
