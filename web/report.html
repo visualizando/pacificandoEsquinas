@@ -27,6 +27,10 @@
     .back { text-decoration: none; font-size: 14px; font-weight: 600; }
     .back:hover { color: var(--ink); }
     .theme-toggle { background: var(--surface); border: 1px solid var(--border); color: var(--ink); border-radius: 8px; padding: 6px 10px; cursor: pointer; font-size: 13px; }
+    :is(a, button, select):focus-visible { outline: 3px solid #1565c0; outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+    }
 
     header.main { padding: 8px 0 6px; }
     h1 { font-size: 28px; margin: 0 0 6px; letter-spacing: -0.02em; }
@@ -95,7 +99,7 @@
   <div class="wrap">
     <div class="topbar">
       <a class="back" href="index.html">← Volver al mapa</a>
-      <button class="theme-toggle" id="theme-toggle" title="Cambiar tema">◑</button>
+      <button class="theme-toggle" id="theme-toggle" title="Cambiar tema" aria-label="Cambiar tema claro u oscuro">◑</button>
     </div>
 
     <header class="main">
@@ -113,7 +117,7 @@
       <select id="comuna-filter"><option value="">Todas</option></select>
       <label for="iv-filter">Intervención:</label>
       <select id="iv-filter"><option value="">Todas</option></select>
-      <span class="result-count" id="result-count"></span>
+      <span class="result-count" id="result-count" role="status" aria-live="polite"></span>
     </div>
 
     <div id="list"></div>

@@ -1,4 +1,12 @@
-from ingest import load_all_raw
+import pytest
+
+from ingest import RAW_DIR, load_all_raw
+
+
+pytestmark = pytest.mark.skipif(
+    not (RAW_DIR / "callejero.geojson").exists(),
+    reason="pruebas de integración: data/raw no está disponible en un clon limpio",
+)
 
 
 def test_present_sources_load_and_missing_sources_are_reported():

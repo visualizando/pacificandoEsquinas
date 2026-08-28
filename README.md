@@ -1,6 +1,26 @@
 # Índice de Esquinas Peligrosas — CABA
 
+[![tests](https://github.com/visualizando/pacificandoEsquinas/actions/workflows/tests.yml/badge.svg)](https://github.com/visualizando/pacificandoEsquinas/actions/workflows/tests.yml)
+
 Pipeline de datos que evalúa la peligrosidad de las intersecciones viales de la Ciudad de Buenos Aires para **peatones e infancias**, combinando geometría vial, mitigación existente (semáforos, reductores) y exposición (escuelas, siniestros). Produce artefactos estáticos: GeoPackage, GeoJSON y fichas JSON por esquina, más un mapa interactivo.
+
+## Estado y reproducibilidad
+
+El repositorio versiona los artefactos livianos necesarios para explorar el
+resultado actual —15.203 esquinas—, por lo que el mapa y el reporte funcionan
+en un clon limpio. Las fuentes originales de `data/raw/` no se publican porque
+incluyen archivos grandes y datasets con condiciones de distribución propias.
+
+Esto implica que, sin reconstruir primero `data/raw/`:
+
+- se puede navegar el sitio y analizar los resultados procesados;
+- se pueden ejecutar todas las pruebas unitarias;
+- no se puede recalcular el índice ni regenerar los artefactos GIS;
+- las pruebas de integración de fuentes se omiten con un motivo explícito.
+
+El inventario de nombres de archivo, formatos y procedencia conocida está en
+[data/raw/MANIFEST.md](data/raw/MANIFEST.md). Varias URL y licencias todavía
+deben completarse antes de considerar el pipeline plenamente reproducible.
 
 ## Setup (una sola vez)
 
@@ -72,3 +92,41 @@ Si una fuente falta, los ejes que dependen de ella quedan `null` (no `0`) y el r
 ```
 .venv\Scripts\python.exe -m pytest tests/
 ```
+
+En un clon sin `data/raw/`, las pruebas unitarias corren normalmente y las
+pruebas de integración de fuentes se omiten con un motivo explícito.
+
+La misma suite se ejecuta automáticamente mediante GitHub Actions.
+
+## Suplemento Power BI
+
+El repositorio incluye una herramienta para agregar localmente por esquina el
+dataset de siniestros fatales extraído del Power BI. Aplica una lista blanca y
+solo produce conteos: no exporta DNI, dominios, domicilios, causas,
+observaciones ni texto libre.
+
+```powershell
+.venv\Scripts\python.exe src\powerbi_supplement.py `
+  --hechos C:\ruta\Base_Hechos.csv `
+  --victimas C:\ruta\Base_Victimas.csv `
+  --corners data\processed\esquinas.geojson `
+  --output data\processed\powerbi_corner_aggregates.json
+```
+
+El suplemento se usa para análisis y validación, no para recalcular el índice.
+El JSON resultante queda ignorado por Git mientras no exista una revisión de
+procedencia, privacidad y licencia.
+
+La validación externa compara el score exclusivamente geométrico con las
+fatalidades recientes, evitando incorporar la variable objetivo al predictor:
+
+```powershell
+.venv\Scripts\python.exe src\validate_powerbi.py `
+  --corners data\processed\esquinas.geojson `
+  --supplement data\processed\powerbi_corner_aggregates.json `
+  --metadata data\processed\run_metadata.json `
+  --output data\processed\powerbi_validation_report.json
+```
+
+Más detalles y cautelas metodológicas en
+[docs/POWERBI_INTEGRATION.md](docs/POWERBI_INTEGRATION.md).

@@ -3,6 +3,7 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+.pytest_tmp/
 
 # --- Secretos y config local ---
 .env
@@ -24,6 +25,10 @@ data/processed/esquinas.gpkg
 # 200 fichas sueltas; el sitio usa reporte.json:
 data/processed/fichas/
 data/processed/imgs/
+# Derivado local del Power BI: agregado y sin PII, pero pendiente de revisión
+# de procedencia/licencia antes de publicarlo.
+data/processed/powerbi_corner_aggregates.json
+data/processed/powerbi_validation_report.json
 
 # NOTA: sí se versionan los livianos que el sitio web necesita para funcionar
 # en un clon sin correr el pipeline: data/processed/esquinas.geojson,

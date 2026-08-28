@@ -179,10 +179,17 @@
       background: var(--surface); border: 1px solid var(--border); color: var(--ink);
       border-radius: 8px; padding: 6px 10px; cursor: pointer; font-size: 13px; box-shadow: var(--shadow);
     }
+    :is(a, button, select, input, summary):focus-visible {
+      outline: 3px solid #1565c0;
+      outline-offset: 3px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+    }
   </style>
 </head>
 <body>
-  <button class="theme-toggle" id="theme-toggle" title="Cambiar tema">◑</button>
+  <button class="theme-toggle" id="theme-toggle" title="Cambiar tema" aria-label="Cambiar tema claro u oscuro">◑</button>
   <div class="wrap">
     <header>
       <h1>Índice de Esquinas Peligrosas — CABA</h1>
@@ -250,8 +257,10 @@
         <div id="panel">
           <p class="ttl">Controles</p>
 
-          <label for="comuna">Comuna</label>
-          <select id="comuna"><option value="">Toda la ciudad</option></select>
+          <div id="comuna-control">
+            <label for="comuna">Comuna</label>
+            <select id="comuna"><option value="">Toda la ciudad</option></select>
+          </div>
 
           <label for="index-field">Ranking del índice</label>
           <select id="index-field">
@@ -279,7 +288,7 @@
           <label for="threshold">Umbral mínimo de índice: <span id="threshold-value">0.00</span></label>
           <input type="range" id="threshold" min="0" max="1" step="0.01" value="0" />
 
-          <div id="count"></div>
+          <div id="count" role="status" aria-live="polite"></div>
         </div>
       </div>
     </section>
@@ -482,8 +491,9 @@
         o.value = c; o.textContent = `Comuna ${c}`;
         sel.appendChild(o);
       });
-      // con un único scope de comuna (mode: comuna) no tiene sentido el filtro
-      if (comunas.length <= 1) sel.closest("label, #panel") && (sel.parentNode.style.display = "none");
+      // Con un único scope de comuna se oculta solo este selector. Antes se
+      // ocultaba por error el panel completo, incluyendo ranking y umbral.
+      document.getElementById("comuna-control").hidden = comunas.length <= 1;
     }
 
     // color del mapa según el selector "Colorear por": "__index__" usa el
