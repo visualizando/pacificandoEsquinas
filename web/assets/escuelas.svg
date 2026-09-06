@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300">
+<rect width="600" height="300" fill="#f2e7cd"/>
+<path d="M0 238H600" stroke="#dad0b8" stroke-width="82"/><path d="M0 238H600" stroke="#fcf5e4" stroke-width="3" stroke-dasharray="14 12"/>
+<rect x="148" y="76" width="300" height="111" rx="5" fill="#c78a47"/><path d="M132 77L298 26L464 77Z" fill="#876344"/>
+<rect x="273" y="127" width="49" height="60" rx="3" fill="#604e40"/>
+<g fill="#fff4d8"><path d="M173 102h28v35h-28zm53 0h28v35h-28zm117 0h28v35h-28zm53 0h28v35h-28z"/></g>
+<rect x="247" y="68" width="104" height="28" rx="4" fill="#fff4d8"/><text x="299" y="87" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#604e40">ESCUELA</text>
+<rect x="147" y="193" width="303" height="90" rx="24" fill="#b4c6a4"/>
+<g fill="#687f56"><circle cx="85" cy="137" r="31"/><circle cx="514" cy="131" r="31"/></g><path d="M85 151v40m429-47v46" stroke="#876344" stroke-width="8"/>
+<g fill="#83594a"><circle cx="234" cy="219" r="8"/><rect x="228" y="230" width="12" height="25" rx="5"/><circle cx="260" cy="233" r="6"/><rect x="256" y="242" width="8" height="17" rx="4"/><circle cx="356" cy="230" r="7"/><rect x="351" y="240" width="10" height="22" rx="5"/></g>
+<path d="M132 213v49m332-49v49" stroke="#fff7e5" stroke-width="12" stroke-dasharray="7 5"/>
+</svg>

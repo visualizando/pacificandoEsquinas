@@ -57,10 +57,43 @@ El sitio necesita un servidor HTTP (no funciona abriendo el archivo directo, por
 .venv\Scripts\python.exe -m http.server 8765
 ```
 
-- **Mapa interactivo**: <http://localhost:8765/web/index.html> — todas las esquinas coloreadas por índice, con filtro por comuna, selector de ranking (global / por comuna), gráficos de distribución y validación.
+- **Portada**: <http://localhost:8765/web/index.html> — propósito del proyecto, accesos a los análisis y futuras líneas de calles escolares y ciclovías.
+- **Mapa interactivo**: <http://localhost:8765/web/analisis.html> — todas las esquinas coloreadas por índice, con filtro por comuna, selector de ranking (global / por comuna), gráficos de distribución y validación.
 - **Reporte de intervenciones**: <http://localhost:8765/web/report.html> (o el botón *"Ver reporte detallado"* del mapa) — las top-N esquinas con su desglose por eje y una **propuesta de intervención de bajo costo** derivada de sus factores (acortar el cruce, enderezarlo, semáforo peatonal, calmar el tránsito). Consume `data/processed/reporte.json`.
 
 ## Configuración (`config.yaml`)
+
+### Comparación de todos los pasos bajo nivel
+
+La página `web/tuneles.html#comparacion` usa `data/processed/tunnels-all.json`.
+Recalcular todos sin red: `python src/tunnels_batch.py`.
+Los extremos quedan en `data/tunnels/cases_all.json`; la corrida normal conserva
+las correcciones manuales. Ver [método completo](docs/ANALISIS_TODOS_TUNELES.md)
+para descargar insumos, regenerar extremos y ejecutar las pruebas.
+
+### Piloto original de pasos bajo nivel
+
+La página independiente `web/tuneles.html` incluye un inventario OSM y el piloto para Beiró–Urquiza,
+Constituyentes–Mitre y Lacroze–Mitre. Compara automóvil, peatón más corto y
+recorrido sin escaleras registradas en ambos sentidos. Destaca el sobrecosto
+de evitar escaleras, relevante para movilidad reducida, cochecitos y bicicletas
+llevadas a pie. La accesibilidad física está pendiente de auditoría.
+
+Este módulo es independiente del índice de esquinas y se reproduce sin las
+fuentes grandes ni dependencias GIS:
+
+```powershell
+python src/tunnels.py
+python -m unittest discover -s tests -p test_tunnels.py
+```
+
+Los insumos OSM están incluidos en `data/tunnels/`; el resultado es
+`data/processed/tunnels.json`. Para actualizar, usar
+`python src/tunnels.py --download --case beiro` y luego reconstruir.
+El [procedimiento completo](docs/TUNELES_PROCEDIMIENTO.md) explica cómo agregar
+casos, verificar las rutas y entender las limitaciones del modelo.
+
+### Configuración del índice de esquinas
 
 Todo lo relevante es configurable sin tocar código:
 

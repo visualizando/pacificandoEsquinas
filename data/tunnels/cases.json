@@ -1,0 +1,7 @@
+{
+  "cases": [
+    {"id":"beiro", "name":"Beiró · Urquiza", "corridor":"Avenida Francisco Beiró", "bbox":[-34.599,-58.499,-34.586,-58.482], "origin":[-58.4931372,-34.5943409], "destination":[-58.4885926,-34.5915054], "endpoints":"Terrada → Zamudio", "tunnel_way_ids":[708180117,708180118]},
+    {"id":"constituyentes", "name":"Constituyentes · Mitre", "corridor":"Avenida de los Constituyentes", "bbox":[-34.587,-58.512,-34.566,-58.482], "origin":[-58.4972206,-34.5779834], "destination":[-58.4934526,-34.5808763], "endpoints":"Norte → sur del paso junto a Monroe", "tunnel_way_ids":[471284559]},
+    {"id":"lacroze", "name":"Lacroze · Mitre", "corridor":"Avenida Federico Lacroze", "bbox":[-34.581,-58.456,-34.568,-58.437], "origin":[-58.4463371,-34.5724301], "destination":[-58.4478236,-34.5747812], "endpoints":"Amenábar → Conesa", "tunnel_way_ids":[246308296]}
+  ]
+}

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cruzar las vías — Pacificando la ciudad</title>
+<link rel="stylesheet" href="landing.css?v=2"><link rel="stylesheet" href="tunnels.css">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="tunnels.js?v=select3" defer></script><script src="tunnel-inventory.js?v=all2" defer></script><script src="tunnel-comparison.js?v=select3" defer></script>
+<style>
+:root {--ink-2:var(--secondary);--border:var(--line);--axis:var(--line)}
+.page-intro {padding-block:40px 24px}.page-intro h1{font-size:clamp(2.3rem,5vw,3.5rem)}
+#inventory-map {height:440px;border:1px solid var(--line);border-radius:8px;background:#f5f5f0}
+.case-links {display:flex;gap:12px;flex-wrap:wrap;margin:24px 0 36px}
+.case-links a {padding:14px 20px;background:var(--ink);color:var(--page);border-radius:6px;font-weight:600;text-decoration:none}
+.inventory-note {color:var(--secondary);font-size:14px}
+.inventory-dot{width:18px;height:18px;border-radius:50%;background:#72716b;border:2px solid white;cursor:pointer}
+.inventory-dot.analyzed{background:#7b0000;width:24px;height:24px}
+#inventory-list {columns:3; padding-left:20px;font-size:14px}
+#inventory-list li{break-inside:avoid;padding:5px 0}
+#tuneles{margin-bottom:48px}details{padding:16px;border:1px solid var(--line);border-radius:8px}summary{cursor:pointer;font-weight:600;min-height:32px}
+.maplibregl-popup-content{color:#111} @media(max-width:620px){#inventory-list{columns:1}#inventory-map{height:340px}}
+.view-crossing{display:block;margin-top:10px;min-height:44px;padding:10px 12px;border:1px solid var(--ink);border-radius:6px;background:var(--ink);color:var(--page);font:inherit;font-weight:600;cursor:pointer;text-align:left}
+#comparison-table .selected-crossing>th{box-shadow:inset 4px 0 var(--accent)}
+.view-crossing[aria-pressed="true"]{background:var(--accent);color:var(--page)}
+</style></head><body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<header class="wrap topbar"><a class="brand" href="index.html">← Pacificando la ciudad<span>Buenos Aires</span></a><nav aria-label="Secciones"><a href="analisis.html">Esquinas</a><a href="tuneles.html" aria-current="page">Túneles</a></nav></header>
+<main id="contenido" class="wrap">
+<div class="page-intro"><p class="eyebrow">Barreras urbanas</p><h1>Cruzar las vías</h1><p class="intro">El auto pasa derecho. ¿Qué recorrido queda para quienes caminan o necesitan evitar escaleras? Ubicamos los pasos bajo nivel y comparamos distancias, giros y obstáculos.</p><a class="primary" href="#comparacion">Ver cuadro comparativo →</a></div>
+<section aria-labelledby="inventory-heading"><h2 id="inventory-heading">Los pasos bajo nivel de la ciudad</h2><p id="inventory-status" role="status">Cargando el inventario de OpenStreetMap…</p><div id="inventory-map" aria-label="Ubicación de pasos bajo nivel registrados en OpenStreetMap"></div><p class="inventory-note">Rojo: al menos un sentido con tres rutas y cruce vehicular comprobado. Gris: comparación vehicular por revisar. Todos tienen una ficha de cálculo; ninguno certifica accesibilidad. Detección cartográfica, no censo exhaustivo: pueden faltar pasos o existir diferencias de etiquetado.</p><details><summary>Consultar ubicaciones y fuente</summary><p id="inventory-source"></p><ul id="inventory-list"></ul></details></section>
+<section id="comparacion" aria-labelledby="comparison-heading" style="margin-top:40px">
+<h2 id="comparison-heading">Comparar todos los pasos</h2>
+<p>Una fila por ubicación. Seleccioná su nombre para ver las rutas abajo. Los nuevos extremos se proponen automáticamente; el piloto conserva sus puntos originales. No es un ranking de peligrosidad.</p>
+<div class="tunnel-controls"><label for="comparison-search">Buscar un paso<input id="comparison-search" type="search" placeholder="Nombre de calle" style="min-height:44px;font:inherit;padding:8px"></label><label for="comparison-direction">Sentido de comparación<select id="comparison-direction"><option value="outbound">A → B</option><option value="return">B → A</option></select></label></div>
+<p id="comparison-status" role="status">Cargando la comparación…</p>
+<div role="region" aria-label="Cuadro comparativo, desplazable horizontalmente" tabindex="0" style="overflow:auto;max-height:650px;border:1px solid var(--line)"><table id="comparison-table"><caption>Distancias horizontales y tiempos teóricos. Cruces / giros: conteos OSM y estimaciones, no relevamiento de campo.</caption><thead><tr><th scope="col">Paso bajo nivel</th><th scope="col">Auto</th><th scope="col">A pie</th><th scope="col">Sin escaleras</th><th scope="col">Desvío sin escaleras</th><th scope="col">Cruces / giros a pie</th><th scope="col">Cruces / giros sin escaleras</th><th scope="col">Estado</th></tr></thead><tbody id="comparison-body"></tbody></table></div>
+<p class="inventory-note">“Sin escaleras” no certifica accesibilidad. Un cálculo faltante no prueba que no exista un camino. Los tiempos no incluyen esperas ni tránsito. <a href="../docs/ANALISIS_TODOS_TUNELES.md">Método y comandos para recalcular</a> · <a href="../data/processed/tunnels-all.json" download>Descargar resultados</a></p>
+</section>
+<style>#comparison-table{border-collapse:collapse;font-size:13px;min-width:1050px;width:100%}#comparison-table th,#comparison-table td{padding:12px;text-align:left;border-bottom:1px solid var(--line)}#comparison-table thead th{position:sticky;top:0;background:var(--surface);z-index:1}#comparison-table tbody th{min-width:180px}#comparison-table td{font-variant-numeric:tabular-nums}#comparison-table caption{text-align:left;padding:12px;color:var(--secondary)}</style>
+    <section class="block" id="tuneles" aria-labelledby="tunnels-heading">
+      <p class="tunnel-kicker">BARRERAS URBANAS · DETALLE POR PASO</p>
+      <a href="#comparacion" style="display:inline-block;padding:12px 0">↑ Volver al cuadro comparativo</a>
+      <h2 id="tunnels-heading" tabindex="-1">Mapa y análisis del cruce seleccionado</h2>
+      <p class="note">Seleccioná cualquiera de los pasos calculados. Para cada caso se comparan el mismo origen y destino en tres redes.</p>
+      <p id="tunnel-status" role="status">Cargando los recorridos…</p>
+      <div id="tunnel-content" hidden>
+        <div class="tunnel-controls">
+          <label for="tunnel-case">Paso bajo nivel <select id="tunnel-case"></select></label>
+          <label for="tunnel-direction">Sentido <select id="tunnel-direction"><option value="outbound">A → B</option><option value="return">B → A</option></select></label>
+        </div>
+        <p id="tunnel-endpoints"></p>
+        <div class="tunnel-metrics" id="tunnel-metrics"></div>
+        <fieldset class="tunnel-layers"><legend>Recorridos en el mapa</legend>
+          <label><input type="checkbox" data-tunnel-mode="car" checked /> <span class="route-key car"></span> Auto</label>
+          <label><input type="checkbox" data-tunnel-mode="walk" checked /> <span class="route-key walk"></span> A pie · más corto</label>
+          <label><input type="checkbox" data-tunnel-mode="step_free" checked /> <span class="route-key step_free"></span> A pie · sin escaleras registradas</label>
+        </fieldset>
+        <div id="tunnel-map" aria-label="Mapa de las rutas del paso bajo nivel seleccionado"></div>
+        <p class="tunnel-caption">A y B: puntos de referencia. Gris discontinuo: ferrocarril. Las líneas superpuestas pueden ocultarse usando los controles.</p>
+        <div id="tunnel-finding" class="tunnel-finding" aria-live="polite"></div>
+        <details class="more"><summary>Qué estamos midiendo y qué falta verificar</summary><div class="body">
+          <p>Son caminos de menor distancia sobre una instantánea de OSM, calculados en ambos sentidos. El auto respeta manos y restricciones de giro simples; su ruta debe atravesar el túnel elegido. Los extremos se ajustan a nodos cercanos de cada red.</p>
+          <p>“Sin escaleras registradas” evita escaleras, tramos marcados como no aptos para silla de ruedas y ciertas barreras. <strong>No certifica accesibilidad:</strong> faltan comprobar pendientes, anchos, superficies y obstáculos actuales.</p>
+          <p>Los giros se estiman sobre la geometría y los cruces son únicamente los que están señalados en OSM. No equivalen a un relevamiento completo. Donde OSM representa la vereda sobre el eje de la calle, el detalle puede omitir cruces laterales.</p>
+          <p>Los tiempos son teóricos: 4,5 km/h a pie, 2,5 km/h en escaleras y hasta 30 km/h en auto. Excluyen espera semafórica y tráfico. Las distancias son horizontales; no incluyen desnivel ni los pequeños ajustes de los extremos.</p>
+          <p>Este piloto describe barreras urbanas; todavía no asigna un puntaje de antipeatonalidad.</p>
+          <p><a href="../docs/ANALISIS_TODOS_TUNELES.md">Procedimiento para recalcular todos los pasos</a> · <a href="../data/tunnels/cases_all.json" download>Descargar configuración completa</a> · <a href="../data/processed/tunnels-all.json" download>Descargar resultados y geometrías</a></p>
+          <p id="tunnel-provenance"></p>
+        </div></details>
+      </div>
+    </section>
+</main><footer class="wrap"><a href="index.html">Volver a la portada</a><a href="analisis.html">Explorar las esquinas</a></footer></body></html>

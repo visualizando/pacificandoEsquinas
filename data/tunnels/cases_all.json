@@ -1,0 +1,945 @@
+{
+  "cases": [
+    {
+      "id": "beiro",
+      "name": "Beiró · Urquiza",
+      "corridor": "Avenida Francisco Beiró",
+      "bbox": [
+        -34.599,
+        -58.499,
+        -34.586,
+        -58.482
+      ],
+      "origin": [
+        -58.4931372,
+        -34.5943409
+      ],
+      "destination": [
+        -58.4885926,
+        -34.5915054
+      ],
+      "endpoints": "Terrada → Zamudio",
+      "tunnel_way_ids": [
+        708180117,
+        708180118
+      ],
+      "endpoint_method": "pilot_manual",
+      "audit_status": "Auditoría de campo pendiente"
+    },
+    {
+      "id": "constituyentes",
+      "name": "Constituyentes · Mitre",
+      "corridor": "Avenida de los Constituyentes",
+      "bbox": [
+        -34.587,
+        -58.512,
+        -34.566,
+        -58.482
+      ],
+      "origin": [
+        -58.4972206,
+        -34.5779834
+      ],
+      "destination": [
+        -58.4934526,
+        -34.5808763
+      ],
+      "endpoints": "Norte → sur del paso junto a Monroe",
+      "tunnel_way_ids": [
+        471284559
+      ],
+      "endpoint_method": "pilot_manual",
+      "audit_status": "Auditoría de campo pendiente"
+    },
+    {
+      "id": "lacroze",
+      "name": "Lacroze · Mitre",
+      "corridor": "Avenida Federico Lacroze",
+      "bbox": [
+        -34.581,
+        -58.456,
+        -34.568,
+        -58.437
+      ],
+      "origin": [
+        -58.4463371,
+        -34.5724301
+      ],
+      "destination": [
+        -58.4478236,
+        -34.5747812
+      ],
+      "endpoints": "Amenábar → Conesa",
+      "tunnel_way_ids": [
+        246308296
+      ],
+      "endpoint_method": "pilot_manual",
+      "audit_status": "Auditoría de campo pendiente"
+    },
+    {
+      "id": "osm_440436964",
+      "name": "Altolaguirre",
+      "corridor": null,
+      "origin": [
+        -58.4922567,
+        -34.5752811
+      ],
+      "destination": [
+        -58.4902151,
+        -34.5776889
+      ],
+      "center": [
+        -58.4910586,
+        -34.57675775
+      ],
+      "bbox": [
+        -34.59075775,
+        -58.50813177073171,
+        -34.562757749999996,
+        -58.473985429268296
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +159.0 m / B +105.7 m",
+      "tunnel_way_ids": [
+        440436964
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        159.0,
+        105.7
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_40409447",
+      "name": "Avenida Chorroarín",
+      "corridor": null,
+      "origin": [
+        -58.4761306,
+        -34.592242
+      ],
+      "destination": [
+        -58.4766547,
+        -34.5938361
+      ],
+      "center": [
+        -58.476176625,
+        -34.592465425
+      ],
+      "bbox": [
+        -34.606465425,
+        -58.49324979573171,
+        -34.578465425,
+        -58.459103454268295
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +0 m / B +135.0 m",
+      "tunnel_way_ids": [
+        40409447,
+        205054248
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        0,
+        135.0
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_69606686",
+      "name": "Avenida Congreso",
+      "corridor": null,
+      "origin": [
+        -58.4796158,
+        -34.5642958
+      ],
+      "destination": [
+        -58.4777978,
+        -34.5633834
+      ],
+      "center": [
+        -58.4788457,
+        -34.56384765
+      ],
+      "bbox": [
+        -34.57784765,
+        -58.49591887073171,
+        -34.54984765,
+        -58.461772529268295
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +109.1 m / B +111.4 m",
+      "tunnel_way_ids": [
+        69606686
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        109.1,
+        111.4
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_18961386",
+      "name": "Avenida Del Libertador",
+      "corridor": null,
+      "origin": [
+        -58.4413038,
+        -34.5623426
+      ],
+      "destination": [
+        -58.4447094,
+        -34.5600551
+      ],
+      "center": [
+        -58.44317115,
+        -34.56166225
+      ],
+      "bbox": [
+        -34.57566225,
+        -58.460244320731704,
+        -34.547662249999995,
+        -58.42609797926829
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +100.4 m / B +138.6 m",
+      "tunnel_way_ids": [
+        18961386,
+        301608083
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        100.4,
+        138.6
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_336763802",
+      "name": "Avenida Dorrego",
+      "corridor": null,
+      "origin": [
+        -58.4495706,
+        -34.593448
+      ],
+      "destination": [
+        -58.4520247,
+        -34.5954343
+      ],
+      "center": [
+        -58.45076233333333,
+        -34.59450113333333
+      ],
+      "bbox": [
+        -34.608501133333334,
+        -58.467835504065036,
+        -34.58050113333333,
+        -58.433689162601624
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +136.2 m / B +121.5 m",
+      "tunnel_way_ids": [
+        336763802
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        136.2,
+        121.5
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_10054711",
+      "name": "Avenida General Mosconi",
+      "corridor": null,
+      "origin": [
+        -58.5209513,
+        -34.5978013
+      ],
+      "destination": [
+        -58.5182409,
+        -34.5961335
+      ],
+      "center": [
+        -58.51953825,
+        -34.5969342
+      ],
+      "bbox": [
+        -34.6109342,
+        -58.5366114207317,
+        -34.5829342,
+        -58.50246507926829
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +125.9 m / B +112.6 m",
+      "tunnel_way_ids": [
+        10054711
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        125.9,
+        112.6
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_815058354",
+      "name": "Avenida Nazca",
+      "corridor": null,
+      "origin": [
+        -58.4912104,
+        -34.599562
+      ],
+      "destination": [
+        -58.4881764,
+        -34.603484
+      ],
+      "center": [
+        -58.489902225,
+        -34.601446575
+      ],
+      "bbox": [
+        -34.615446575,
+        -58.50697539573171,
+        -34.587446574999994,
+        -58.472829054268296
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +160.3 m / B +184.2 m",
+      "tunnel_way_ids": [
+        815058354
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        160.3,
+        184.2
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_405411395",
+      "name": "Avenida San Martín",
+      "corridor": null,
+      "origin": [
+        -58.5049225,
+        -34.5939645
+      ],
+      "destination": [
+        -58.5018071,
+        -34.5951284
+      ],
+      "center": [
+        -58.503366549999996,
+        -34.5945437
+      ],
+      "bbox": [
+        -34.608543700000006,
+        -58.5204397207317,
+        -34.5805437,
+        -58.48629337926829
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +120.5 m / B +121.1 m",
+      "tunnel_way_ids": [
+        405411395,
+        1136343617
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        120.5,
+        121.1
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_472716994",
+      "name": "Besares",
+      "corridor": null,
+      "origin": [
+        -58.4641717,
+        -34.5418457
+      ],
+      "destination": [
+        -58.4669942,
+        -34.5432562
+      ],
+      "center": [
+        -58.4656315,
+        -34.54257385
+      ],
+      "bbox": [
+        -34.55657385,
+        -58.48270467073171,
+        -34.528573849999994,
+        -58.448558329268295
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +151.2 m / B +141.0 m",
+      "tunnel_way_ids": [
+        472716994
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        151.2,
+        141.0
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_426037786",
+      "name": "Ceretti",
+      "corridor": null,
+      "origin": [
+        -58.4923404,
+        -34.5790479
+      ],
+      "destination": [
+        -58.4944401,
+        -34.5764689
+      ],
+      "center": [
+        -58.493381,
+        -34.57779595
+      ],
+      "bbox": [
+        -34.591795950000005,
+        -58.510454170731705,
+        -34.56379595,
+        -58.47630782926829
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +145.3 m / B +153.2 m",
+      "tunnel_way_ids": [
+        426037786
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        145.3,
+        153.2
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_286005467",
+      "name": "Congreso",
+      "corridor": null,
+      "origin": [
+        -58.4594859,
+        -34.553875
+      ],
+      "destination": [
+        -58.4571348,
+        -34.5526985
+      ],
+      "center": [
+        -58.4580759,
+        -34.553139200000004
+      ],
+      "bbox": [
+        -34.56713920000001,
+        -58.4751490707317,
+        -34.5391392,
+        -58.44100272926829
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +133.0 m / B +108.6 m",
+      "tunnel_way_ids": [
+        286005467
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        133.0,
+        108.6
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_371542835",
+      "name": "Crisólogo Larralde",
+      "corridor": null,
+      "origin": [
+        -58.4637278,
+        -34.5466397
+      ],
+      "destination": [
+        -58.4651969,
+        -34.5474373
+      ],
+      "center": [
+        -58.4638603,
+        -34.5467687
+      ],
+      "bbox": [
+        -34.560768700000004,
+        -58.480933470731706,
+        -34.5327687,
+        -58.446787129268294
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +112.8 m / B +128.2 m",
+      "tunnel_way_ids": [
+        371542835
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        112.8,
+        128.2
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_380891318",
+      "name": "Donado",
+      "corridor": null,
+      "origin": [
+        -58.4798377,
+        -34.5675757
+      ],
+      "destination": [
+        -58.4781296,
+        -34.5694859
+      ],
+      "center": [
+        -58.47906625,
+        -34.5684453
+      ],
+      "bbox": [
+        -34.5824453,
+        -58.49613942073171,
+        -34.5544453,
+        -58.4619930792683
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +98.9 m / B +123.2 m",
+      "tunnel_way_ids": [
+        380891318
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        98.9,
+        123.2
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_1534636305",
+      "name": "Federico García Lorca",
+      "corridor": null,
+      "origin": [
+        -58.4449493,
+        -34.6200349
+      ],
+      "destination": [
+        -58.4453794,
+        -34.6183618
+      ],
+      "center": [
+        -58.44505455,
+        -34.619791525000004
+      ],
+      "bbox": [
+        -34.63379152500001,
+        -58.46212772073171,
+        -34.605791525,
+        -58.427981379268296
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +121.0 m / B +133.8 m",
+      "tunnel_way_ids": [
+        1534636305
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        121.0,
+        133.8
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_380891321",
+      "name": "Holmberg",
+      "corridor": null,
+      "origin": [
+        -58.4772221,
+        -34.5689425
+      ],
+      "destination": [
+        -58.4784981,
+        -34.5674687
+      ],
+      "center": [
+        -58.4780528,
+        -34.56803815
+      ],
+      "bbox": [
+        -34.58203815,
+        -58.495125970731706,
+        -34.55403815,
+        -58.460979629268294
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +106.6 m / B +119.4 m",
+      "tunnel_way_ids": [
+        380891321
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        106.6,
+        119.4
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_53875154",
+      "name": "Jean Jaures",
+      "corridor": null,
+      "origin": [
+        -58.4100122,
+        -34.6067731
+      ],
+      "destination": [
+        -58.4103578,
+        -34.6104454
+      ],
+      "center": [
+        -58.41040555,
+        -34.6085116
+      ],
+      "bbox": [
+        -34.6225116,
+        -58.427478720731706,
+        -34.5945116,
+        -58.393332379268294
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +160.2 m / B +175.1 m",
+      "tunnel_way_ids": [
+        53875154
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        160.2,
+        175.1
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_305215467",
+      "name": "Manuela Pedraza",
+      "corridor": null,
+      "origin": [
+        -58.46284,
+        -34.5494325
+      ],
+      "destination": [
+        -58.4608909,
+        -34.5485107
+      ],
+      "center": [
+        -58.46221715,
+        -34.549174550000004
+      ],
+      "bbox": [
+        -34.56317455000001,
+        -58.47929032073171,
+        -34.53517455,
+        -58.445143979268295
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +127.6 m / B +116.2 m",
+      "tunnel_way_ids": [
+        305215467
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        127.6,
+        116.2
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_166704151",
+      "name": "Monroe",
+      "corridor": null,
+      "origin": [
+        -58.4728412,
+        -34.5663571
+      ],
+      "destination": [
+        -58.474513,
+        -34.567364
+      ],
+      "center": [
+        -58.47324686666667,
+        -34.56659966666667
+      ],
+      "bbox": [
+        -34.58059966666667,
+        -58.49032003739838,
+        -34.552599666666666,
+        -58.456173695934964
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +7.2 m / B +122.2 m",
+      "tunnel_way_ids": [
+        166704151,
+        367372238
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        7.2,
+        122.2
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_86784045",
+      "name": "Pacheco",
+      "corridor": null,
+      "origin": [
+        -58.4835879,
+        -34.5739089
+      ],
+      "destination": [
+        -58.484817,
+        -34.5722766
+      ],
+      "center": [
+        -58.484729,
+        -34.572468650000005
+      ],
+      "bbox": [
+        -34.58646865000001,
+        -58.50180217073171,
+        -34.55846865,
+        -58.467655829268296
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +165.5 m / B +126.0 m",
+      "tunnel_way_ids": [
+        86784045
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        165.5,
+        126.0
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_640456534",
+      "name": "Paseo del Bajo - Presidente Dr. Raúl R. Alfonsín",
+      "corridor": null,
+      "origin": [
+        -58.3710252,
+        -34.5898501
+      ],
+      "destination": [
+        -58.3707127,
+        -34.5908967
+      ],
+      "center": [
+        -58.370839939999996,
+        -34.590445
+      ],
+      "bbox": [
+        -34.604445000000005,
+        -58.3879131107317,
+        -34.576445,
+        -58.35376676926829
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +0 m / B +0 m",
+      "tunnel_way_ids": [
+        640456534,
+        662233912
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        0,
+        0
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_614089690",
+      "name": "Paso Bajo Nivel Balbin Gatica - Goyeneche",
+      "corridor": null,
+      "origin": [
+        -58.4842539,
+        -34.5548048
+      ],
+      "destination": [
+        -58.4882046,
+        -34.5549376
+      ],
+      "center": [
+        -58.486406349999996,
+        -34.554862
+      ],
+      "bbox": [
+        -34.568862,
+        -58.5034795207317,
+        -34.540862,
+        -58.46933317926829
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +160.6 m / B +128.7 m",
+      "tunnel_way_ids": [
+        614089690,
+        614107219
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        160.6,
+        128.7
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_37872735",
+      "name": "Punta Arenas",
+      "corridor": null,
+      "origin": [
+        -58.4695034,
+        -34.590846
+      ],
+      "destination": [
+        -58.4700927,
+        -34.5936588
+      ],
+      "center": [
+        -58.4697393,
+        -34.59215415
+      ],
+      "bbox": [
+        -34.60615415,
+        -58.48681247073171,
+        -34.578154149999996,
+        -58.452666129268295
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +124.4 m / B +131.0 m",
+      "tunnel_way_ids": [
+        37872735
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        124.4,
+        131.0
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_53875156",
+      "name": "Tomás Manuel de Anchorena",
+      "corridor": null,
+      "origin": [
+        -58.4117783,
+        -34.6093635
+      ],
+      "destination": [
+        -58.4118458,
+        -34.6077646
+      ],
+      "center": [
+        -58.4118222,
+        -34.6085932
+      ],
+      "bbox": [
+        -34.622593200000004,
+        -58.42889537073171,
+        -34.5945932,
+        -58.3947490292683
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +56.8 m / B +63.3 m",
+      "tunnel_way_ids": [
+        53875156
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        56.8,
+        63.3
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_362337755",
+      "name": "Viaducto Carranza",
+      "corridor": null,
+      "origin": [
+        -58.4360371,
+        -34.5747351
+      ],
+      "destination": [
+        -58.4329598,
+        -34.5761261
+      ],
+      "center": [
+        -58.43450805,
+        -34.5754449
+      ],
+      "bbox": [
+        -34.589444900000004,
+        -58.451581220731704,
+        -34.5614449,
+        -58.41743487926829
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +117.0 m / B +117.0 m",
+      "tunnel_way_ids": [
+        362337755,
+        362337763
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        117.0,
+        117.0
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_26732862",
+      "name": "Yatay",
+      "corridor": null,
+      "origin": [
+        -58.4276143,
+        -34.6143669
+      ],
+      "destination": [
+        -58.4287845,
+        -34.6116014
+      ],
+      "center": [
+        -58.42854135,
+        -34.6127919
+      ],
+      "bbox": [
+        -34.6267919,
+        -58.44561452073171,
+        -34.598791899999995,
+        -58.4114681792683
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +184.0 m / B +123.9 m",
+      "tunnel_way_ids": [
+        26732862
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        184.0,
+        123.9
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    },
+    {
+      "id": "osm_305269382",
+      "name": "Zamudio",
+      "corridor": null,
+      "origin": [
+        -58.4991918,
+        -34.5799012
+      ],
+      "destination": [
+        -58.4980898,
+        -34.5810481
+      ],
+      "center": [
+        -58.498989050000006,
+        -34.58005285
+      ],
+      "bbox": [
+        -34.594052850000004,
+        -58.51606222073171,
+        -34.56605285,
+        -58.4819158792683
+      ],
+      "endpoints": "Extremos automáticos fuera de portales: A +128.1 m / B +112.1 m",
+      "tunnel_way_ids": [
+        305269382
+      ],
+      "endpoint_method": "same_street_120m_from_portals",
+      "portal_extensions_m": [
+        128.1,
+        112.1
+      ],
+      "audit_status": "Extremos automáticos · revisión visual pendiente"
+    }
+  ]
+}

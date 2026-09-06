@@ -33,3 +33,7 @@ data/processed/powerbi_validation_report.json
 # NOTA: sí se versionan los livianos que el sitio web necesita para funcionar
 # en un clon sin correr el pipeline: data/processed/esquinas.geojson,
 # reporte.json, run_metadata.json y validation_report.json.
+
+# OSM tunnel batch intermediates (city-network.osm.json is the retained snapshot)
+/data/tunnels/city-network-part-*
+/data/tunnels/*.rejected.json

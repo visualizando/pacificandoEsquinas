@@ -1,0 +1,1 @@
+[out:json][timeout:90];(way[highway](-34.581,-58.456,-34.568,-58.437);way[railway=rail](-34.581,-58.456,-34.568,-58.437);relation[type=restriction](-34.581,-58.456,-34.568,-58.437););(._;>;);out body;
