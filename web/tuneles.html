@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="landing.css?v=2"><link rel="stylesheet" href="tunnels.css">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-<script src="tunnels.js?v=select3" defer></script><script src="tunnel-inventory.js?v=all2" defer></script><script src="tunnel-comparison.js?v=select3" defer></script>
+<script src="tunnels.js?v=cards4" defer></script><script src="tunnel-inventory.js?v=all2" defer></script><script src="tunnel-comparison.js?v=cards4" defer></script>
 <style>
 :root {--ink-2:var(--secondary);--border:var(--line);--axis:var(--line)}
 .page-intro {padding-block:40px 24px}.page-intro h1{font-size:clamp(2.3rem,5vw,3.5rem)}
@@ -22,24 +22,24 @@
 .view-crossing{display:block;margin-top:10px;min-height:44px;padding:10px 12px;border:1px solid var(--ink);border-radius:6px;background:var(--ink);color:var(--page);font:inherit;font-weight:600;cursor:pointer;text-align:left}
 #comparison-table .selected-crossing>th{box-shadow:inset 4px 0 var(--accent)}
 .view-crossing[aria-pressed="true"]{background:var(--accent);color:var(--page)}
-</style></head><body>
+</style><link rel="stylesheet" href="crossing-cards.css"></head><body>
 <a class="skip" href="#contenido">Saltar al contenido</a>
 <header class="wrap topbar"><a class="brand" href="index.html">← Pacificando la ciudad<span>Buenos Aires</span></a><nav aria-label="Secciones"><a href="analisis.html">Esquinas</a><a href="tuneles.html" aria-current="page">Túneles</a></nav></header>
 <main id="contenido" class="wrap">
-<div class="page-intro"><p class="eyebrow">Barreras urbanas</p><h1>Cruzar las vías</h1><p class="intro">El auto pasa derecho. ¿Qué recorrido queda para quienes caminan o necesitan evitar escaleras? Ubicamos los pasos bajo nivel y comparamos distancias, giros y obstáculos.</p><a class="primary" href="#comparacion">Ver cuadro comparativo →</a></div>
+<div class="page-intro"><p class="eyebrow">Barreras urbanas</p><h1>Cruzar las vías</h1><p class="intro">El auto pasa derecho. ¿Qué recorrido queda para quienes caminan o necesitan evitar escaleras? Ubicamos los pasos bajo nivel y comparamos distancias, giros y obstáculos.</p><a class="primary" href="#comparacion">Explorar los cruces →</a></div>
 <section aria-labelledby="inventory-heading"><h2 id="inventory-heading">Los pasos bajo nivel de la ciudad</h2><p id="inventory-status" role="status">Cargando el inventario de OpenStreetMap…</p><div id="inventory-map" aria-label="Ubicación de pasos bajo nivel registrados en OpenStreetMap"></div><p class="inventory-note">Rojo: al menos un sentido con tres rutas y cruce vehicular comprobado. Gris: comparación vehicular por revisar. Todos tienen una ficha de cálculo; ninguno certifica accesibilidad. Detección cartográfica, no censo exhaustivo: pueden faltar pasos o existir diferencias de etiquetado.</p><details><summary>Consultar ubicaciones y fuente</summary><p id="inventory-source"></p><ul id="inventory-list"></ul></details></section>
 <section id="comparacion" aria-labelledby="comparison-heading" style="margin-top:40px">
 <h2 id="comparison-heading">Comparar todos los pasos</h2>
-<p>Una fila por ubicación. Seleccioná su nombre para ver las rutas abajo. Los nuevos extremos se proponen automáticamente; el piloto conserva sus puntos originales. No es un ranking de peligrosidad.</p>
+<p>Elegí un cruce para ver su mapa y análisis. Las miniaturas muestran los recorridos peatonales; el detalle también permite comparar el auto.</p>
 <div class="tunnel-controls"><label for="comparison-search">Buscar un paso<input id="comparison-search" type="search" placeholder="Nombre de calle" style="min-height:44px;font:inherit;padding:8px"></label><label for="comparison-direction">Sentido de comparación<select id="comparison-direction"><option value="outbound">A → B</option><option value="return">B → A</option></select></label></div>
 <p id="comparison-status" role="status">Cargando la comparación…</p>
-<div role="region" aria-label="Cuadro comparativo, desplazable horizontalmente" tabindex="0" style="overflow:auto;max-height:650px;border:1px solid var(--line)"><table id="comparison-table"><caption>Distancias horizontales y tiempos teóricos. Cruces / giros: conteos OSM y estimaciones, no relevamiento de campo.</caption><thead><tr><th scope="col">Paso bajo nivel</th><th scope="col">Auto</th><th scope="col">A pie</th><th scope="col">Sin escaleras</th><th scope="col">Desvío sin escaleras</th><th scope="col">Cruces / giros a pie</th><th scope="col">Cruces / giros sin escaleras</th><th scope="col">Estado</th></tr></thead><tbody id="comparison-body"></tbody></table></div>
+<div id="comparison-body" class="crossing-cards"></div>
 <p class="inventory-note">“Sin escaleras” no certifica accesibilidad. Un cálculo faltante no prueba que no exista un camino. Los tiempos no incluyen esperas ni tránsito. <a href="../docs/ANALISIS_TODOS_TUNELES.md">Método y comandos para recalcular</a> · <a href="../data/processed/tunnels-all.json" download>Descargar resultados</a></p>
 </section>
-<style>#comparison-table{border-collapse:collapse;font-size:13px;min-width:1050px;width:100%}#comparison-table th,#comparison-table td{padding:12px;text-align:left;border-bottom:1px solid var(--line)}#comparison-table thead th{position:sticky;top:0;background:var(--surface);z-index:1}#comparison-table tbody th{min-width:180px}#comparison-table td{font-variant-numeric:tabular-nums}#comparison-table caption{text-align:left;padding:12px;color:var(--secondary)}</style>
+
     <section class="block" id="tuneles" aria-labelledby="tunnels-heading">
       <p class="tunnel-kicker">BARRERAS URBANAS · DETALLE POR PASO</p>
-      <a href="#comparacion" style="display:inline-block;padding:12px 0">↑ Volver al cuadro comparativo</a>
+      <a href="#comparacion" style="display:inline-block;padding:12px 0">↑ Volver a los cruces</a>
       <h2 id="tunnels-heading" tabindex="-1">Mapa y análisis del cruce seleccionado</h2>
       <p class="note">Seleccioná cualquiera de los pasos calculados. Para cada caso se comparan el mismo origen y destino en tres redes.</p>
       <p id="tunnel-status" role="status">Cargando los recorridos…</p>

@@ -53,10 +53,17 @@
         $('tunnel-metrics').append(card);
       }
       const finding=$('tunnel-finding'); finding.replaceChildren();
+      if(c.id==='osm_440436964') finding.append(text('p','Altolaguirre: el rodeo de 1,3 km del sentido A → B es la ruta del auto (azul). La caminata calculada cruza directamente, pero usa la vereda representada sobre el eje vial. OSM también registra pasos peatonales y escaleras separados; falta auditar sus conexiones y el recorrido real por rampas. Un desvío calculado de 0 m no verifica que ambos accesos sean equivalentes.'));
+      const external=text('p');
+      for(const [mode,label] of [['walking','Contrastar a pie en Google Maps'],['driving','Contrastar en auto en Google Maps']]){
+        const a=direction==='outbound'?c.origin:c.destination,b=direction==='outbound'?c.destination:c.origin;
+        const link=text('a',label);link.href='https://www.google.com/maps/dir/?'+new URLSearchParams({api:'1',origin:a[1]+','+a[0],destination:b[1]+','+b[0],travelmode:mode});link.target='_blank';link.rel='noopener';external.append(link,document.createTextNode(' · '));
+      }
+      finding.append(external);
       const free=d.routes.step_free, walk=d.routes.walk;
       if (d.pedestrian_endpoints_comparable===false) finding.append(text('p','Las redes peatonales no pudieron usar extremos equivalentes. No se calcula el desvío sin escaleras; requiere revisar las conexiones.'));
       if (!d.valid_tunnel_crossing) finding.append(text('p','Comparación pendiente: la ruta vehicular no atraviesa el túnel seleccionado.'));
-      else if (free.status==='ok' && walk.status==='ok' && d.step_free_penalty) {
+      else if (free.status==='ok' && walk.status==='ok' && d.step_free_penalty && c.id!=='osm_440436964') {
         const penalty=d.step_free_penalty;
         finding.append(text('p','El costo de evitar las escaleras','tunnel-penalty-title'));
         finding.append(text('p',`+${fmt(penalty.extra_m)} m · +${fmt(penalty.extra_percent)}% de recorrido`,'tunnel-penalty-value'));
