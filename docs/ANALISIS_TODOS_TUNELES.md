@@ -1,5 +1,7 @@
 # Recalcular todos los pasos del inventario
 
+Para corregir puntos desde el mapa y exportar revisiones en lote, ver [Revisión de extremos](REVISION_EXTREMOS.md). Los ajustes se conservan separados de la preparación automática y se aplican en cada corrida.
+
 ## Corrida reproducible
 
 ```powershell
@@ -14,12 +16,14 @@ La corrida lee `data/tunnels/cases_all.json` y las instantáneas locales, y escr
 
 ## Preparación y descarga
 
+Alternativa cuando Overpass no responde: `python src/refresh_osm_api.py` descarga las zonas configuradas desde la API de lectura de OSM, secuencialmente, y recalcula con el mismo motor. Conserva las descargas y las instantáneas anteriores en `data/tunnels/refresh-runs/`. No cambia los puntos revisados. Si falla la descarga no publica resultados parciales. La fecha indicada corresponde a la consulta de cada zona, no a una instantánea atómica de toda la ciudad.
+
 ```powershell
 python src/tunnels_batch.py --download
 python src/tunnels_batch.py --prepare
 ```
 
-`--download` descarga seis franjas del área que rodea el inventario y reutiliza bloques ya completos después de un fallo. Rechaza bloques cuya fecha sea anterior al día del inventario; los bloques desactualizados se conservan como `.rejected.json` antes de reemplazarlos. No equivale a actualizar todos los bloques existentes. Conservar/versionar los bloques antes de reemplazarlos para una nueva fecha. Las consultas se guardan junto a cada bloque. El archivo combinado conserva las fechas de cada bloque; no representa una transacción simultánea. Si OSM cambió entre bloques, prevalece el último bloque leído para un objeto duplicado. Las instantáneas locales existentes se conservan hasta regenerar la preparación; actualizar la descarga no altera por sí solo las geometrías de una configuración existente.
+`--download` descarga de nuevo las instantáneas de todos los cruces de `cases_all.json`, incluidos los tres pilotos, y recalcula los recorridos. No reutiliza los bloques de la descarga urbana ni regenera los extremos: conserva la configuración y aplica las revisiones exportadas. Reintenta hasta tres veces alternando servidores Overpass. Si falla una descarga, detiene la corrida sin publicar resultados nuevos; las instantáneas ya descargadas pueden haberse actualizado. Las consultas y fechas quedan guardadas por cruce. Para preparar nuevos casos con `--prepare` sigue siendo necesario disponer de la instantánea urbana completa.
 
 `--prepare` regenera explícitamente los extremos automáticos y las instantáneas locales; sobrescribe `cases_all.json`. No usar después de corregir extremos manualmente sin conservar la configuración. La corrida normal no lo hace. El inventario se reconstruye separadamente con `src/tunnel_inventory.py`.
 

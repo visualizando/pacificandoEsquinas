@@ -1,0 +1,899 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "beiro",
+      "name": "Beiró · Urquiza",
+      "directions": {
+        "outbound": {
+          "reasons": [
+            "Algún extremo se ajusta más de 20 m a la red."
+          ],
+          "car_circuity": 0.93,
+          "endpoint_separation_m": [
+            0.0,
+            16.8
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        },
+        "return": {
+          "reasons": [
+            "Algún extremo se ajusta más de 20 m a la red."
+          ],
+          "car_circuity": 0.92,
+          "endpoint_separation_m": [
+            16.8,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        }
+      }
+    },
+    {
+      "id": "constituyentes",
+      "name": "Constituyentes · Mitre",
+      "directions": {
+        "outbound": {
+          "reasons": [],
+          "car_circuity": 0.97,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 76.1,
+          "extra_percent": 15.6
+        },
+        "return": {
+          "reasons": [],
+          "car_circuity": 0.97,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 76.1,
+          "extra_percent": 15.6
+        }
+      }
+    },
+    {
+      "id": "lacroze",
+      "name": "Lacroze · Mitre",
+      "directions": {
+        "outbound": {
+          "reasons": [],
+          "car_circuity": 0.91,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 63.5,
+          "extra_percent": 21.4
+        },
+        "return": {
+          "reasons": [],
+          "car_circuity": 0.91,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 63.5,
+          "extra_percent": 21.4
+        }
+      }
+    },
+    {
+      "id": "osm_440436964",
+      "name": "Altolaguirre",
+      "directions": {
+        "outbound": {
+          "reasons": [
+            "Rodeo vehicular a revisar: supera 1,6 veces la distancia recta.",
+            "Altolaguirre: falta verificar las conexiones de veredas, escaleras y rampas."
+          ],
+          "car_circuity": 2.52,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        },
+        "return": {
+          "reasons": [
+            "El auto no atraviesa el túnel elegido.",
+            "Rodeo vehicular a revisar: supera 1,6 veces la distancia recta.",
+            "Altolaguirre: falta verificar las conexiones de veredas, escaleras y rampas."
+          ],
+          "car_circuity": 3.07,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        }
+      }
+    },
+    {
+      "id": "osm_40409447",
+      "name": "Avenida Chorroarín",
+      "directions": {
+        "outbound": {
+          "reasons": [],
+          "car_circuity": 1.18,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 91.2,
+          "extra_percent": 25.6
+        },
+        "return": {
+          "reasons": [],
+          "car_circuity": 1.22,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 78.8,
+          "extra_percent": 21.4
+        }
+      }
+    },
+    {
+      "id": "osm_69606686",
+      "name": "Avenida Congreso",
+      "directions": {
+        "outbound": {
+          "reasons": [
+            "Algún extremo se ajusta más de 20 m a la red."
+          ],
+          "car_circuity": 0.82,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        },
+        "return": {
+          "reasons": [
+            "Algún extremo se ajusta más de 20 m a la red."
+          ],
+          "car_circuity": 0.82,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        }
+      }
+    },
+    {
+      "id": "osm_18961386",
+      "name": "Avenida Del Libertador",
+      "directions": {
+        "outbound": {
+          "reasons": [],
+          "car_circuity": 1.03,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 24.4,
+          "extra_percent": 3.2
+        },
+        "return": {
+          "reasons": [],
+          "car_circuity": 1.04,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 17.5,
+          "extra_percent": 2.3
+        }
+      }
+    },
+    {
+      "id": "osm_336763802",
+      "name": "Avenida Dorrego",
+      "directions": {
+        "outbound": {
+          "reasons": [],
+          "car_circuity": 0.95,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 188.3,
+          "extra_percent": 54.8
+        },
+        "return": {
+          "reasons": [],
+          "car_circuity": 0.95,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 188.3,
+          "extra_percent": 54.8
+        }
+      }
+    },
+    {
+      "id": "osm_10054711",
+      "name": "Avenida General Mosconi",
+      "directions": {
+        "outbound": {
+          "reasons": [
+            "Rodeo vehicular a revisar: supera 1,6 veces la distancia recta."
+          ],
+          "car_circuity": 2.5,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        },
+        "return": {
+          "reasons": [],
+          "car_circuity": 1.35,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": -120.9,
+          "extra_percent": -28.3
+        }
+      }
+    },
+    {
+      "id": "osm_815058354",
+      "name": "Avenida Nazca",
+      "directions": {
+        "outbound": {
+          "reasons": [],
+          "car_circuity": 1.0,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 142.2,
+          "extra_percent": 27.5
+        },
+        "return": {
+          "reasons": [],
+          "car_circuity": 1.0,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 142.2,
+          "extra_percent": 27.5
+        }
+      }
+    },
+    {
+      "id": "osm_405411395",
+      "name": "Avenida San Martín",
+      "directions": {
+        "outbound": {
+          "reasons": [],
+          "car_circuity": 0.91,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 71.6,
+          "extra_percent": 18.9
+        },
+        "return": {
+          "reasons": [
+            "Rodeo vehicular a revisar: supera 1,6 veces la distancia recta."
+          ],
+          "car_circuity": 3.63,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        }
+      }
+    },
+    {
+      "id": "osm_472716994",
+      "name": "Besares",
+      "directions": {
+        "outbound": {
+          "reasons": [
+            "Algún extremo se ajusta más de 20 m a la red."
+          ],
+          "car_circuity": 0.86,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        },
+        "return": {
+          "reasons": [
+            "El auto no atraviesa el túnel elegido.",
+            "Rodeo vehicular a revisar: supera 1,6 veces la distancia recta.",
+            "Algún extremo se ajusta más de 20 m a la red."
+          ],
+          "car_circuity": 3.11,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        }
+      }
+    },
+    {
+      "id": "osm_426037786",
+      "name": "Ceretti",
+      "directions": {
+        "outbound": {
+          "reasons": [
+            "Algún extremo se ajusta más de 20 m a la red."
+          ],
+          "car_circuity": 0.8,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        },
+        "return": {
+          "reasons": [
+            "El auto no atraviesa el túnel elegido.",
+            "Rodeo vehicular a revisar: supera 1,6 veces la distancia recta.",
+            "Algún extremo se ajusta más de 20 m a la red."
+          ],
+          "car_circuity": 6.32,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        }
+      }
+    },
+    {
+      "id": "osm_286005467",
+      "name": "Congreso",
+      "directions": {
+        "outbound": {
+          "reasons": [],
+          "car_circuity": 0.89,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 101.5,
+          "extra_percent": 38.1
+        },
+        "return": {
+          "reasons": [
+            "El auto no atraviesa el túnel elegido.",
+            "Rodeo vehicular a revisar: supera 1,6 veces la distancia recta."
+          ],
+          "car_circuity": 3.67,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        }
+      }
+    },
+    {
+      "id": "osm_371542835",
+      "name": "Crisólogo Larralde",
+      "directions": {
+        "outbound": {
+          "reasons": [],
+          "car_circuity": 1.0,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 110.7,
+          "extra_percent": 36.7
+        },
+        "return": {
+          "reasons": [
+            "El auto no atraviesa el túnel elegido.",
+            "Rodeo vehicular a revisar: supera 1,6 veces la distancia recta."
+          ],
+          "car_circuity": 3.69,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        }
+      }
+    },
+    {
+      "id": "osm_380891318",
+      "name": "Donado",
+      "directions": {
+        "outbound": {
+          "reasons": [],
+          "car_circuity": 0.88,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 0.9,
+          "extra_percent": 0.3
+        },
+        "return": {
+          "reasons": [
+            "El auto no atraviesa el túnel elegido."
+          ],
+          "car_circuity": 1.59,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        }
+      }
+    },
+    {
+      "id": "osm_1534636305",
+      "name": "Federico García Lorca",
+      "directions": {
+        "outbound": {
+          "reasons": [
+            "Algún extremo se ajusta más de 20 m a la red."
+          ],
+          "car_circuity": 0.91,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        },
+        "return": {
+          "reasons": [
+            "El auto no atraviesa el túnel elegido.",
+            "Rodeo vehicular a revisar: supera 1,6 veces la distancia recta.",
+            "Algún extremo se ajusta más de 20 m a la red."
+          ],
+          "car_circuity": 3.43,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        }
+      }
+    },
+    {
+      "id": "osm_380891321",
+      "name": "Holmberg",
+      "directions": {
+        "outbound": {
+          "reasons": [],
+          "car_circuity": 1.0,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 120.7,
+          "extra_percent": 45.6
+        },
+        "return": {
+          "reasons": [
+            "El auto no atraviesa el túnel elegido.",
+            "Rodeo vehicular a revisar: supera 1,6 veces la distancia recta."
+          ],
+          "car_circuity": 5.3,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        }
+      }
+    },
+    {
+      "id": "osm_53875154",
+      "name": "Jean Jaures",
+      "directions": {
+        "outbound": {
+          "reasons": [],
+          "car_circuity": 1.01,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 0.0,
+          "extra_percent": 0.0
+        },
+        "return": {
+          "reasons": [
+            "El auto no atraviesa el túnel elegido.",
+            "Rodeo vehicular a revisar: supera 1,6 veces la distancia recta."
+          ],
+          "car_circuity": 2.58,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        }
+      }
+    },
+    {
+      "id": "osm_305215467",
+      "name": "Manuela Pedraza",
+      "directions": {
+        "outbound": {
+          "reasons": [],
+          "car_circuity": 1.0,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 106.0,
+          "extra_percent": 38.5
+        },
+        "return": {
+          "reasons": [
+            "El auto no atraviesa el túnel elegido.",
+            "Rodeo vehicular a revisar: supera 1,6 veces la distancia recta."
+          ],
+          "car_circuity": 4.06,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        }
+      }
+    },
+    {
+      "id": "osm_166704151",
+      "name": "Monroe",
+      "directions": {
+        "outbound": {
+          "reasons": [],
+          "car_circuity": 0.96,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 7.8,
+          "extra_percent": 2.1
+        },
+        "return": {
+          "reasons": [
+            "El auto no atraviesa el túnel elegido.",
+            "Rodeo vehicular a revisar: supera 1,6 veces la distancia recta."
+          ],
+          "car_circuity": 4.16,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        }
+      }
+    },
+    {
+      "id": "osm_86784045",
+      "name": "Pacheco",
+      "directions": {
+        "outbound": {
+          "reasons": [],
+          "car_circuity": 0.99,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 112.6,
+          "extra_percent": 55.0
+        },
+        "return": {
+          "reasons": [
+            "El auto no atraviesa el túnel elegido.",
+            "Rodeo vehicular a revisar: supera 1,6 veces la distancia recta."
+          ],
+          "car_circuity": 5.45,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        }
+      }
+    },
+    {
+      "id": "osm_640456534",
+      "name": "Paseo del Bajo - Presidente Dr. Raúl R. Alfonsín",
+      "directions": {
+        "outbound": {
+          "reasons": [
+            "El auto no atraviesa el túnel elegido.",
+            "Rodeo vehicular a revisar: supera 1,6 veces la distancia recta.",
+            "Algún extremo se ajusta más de 20 m a la red."
+          ],
+          "car_circuity": 3.63,
+          "endpoint_separation_m": [
+            11.2,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        },
+        "return": {
+          "reasons": [
+            "El auto no atraviesa el túnel elegido.",
+            "Algún extremo se ajusta más de 20 m a la red."
+          ],
+          "car_circuity": 1.03,
+          "endpoint_separation_m": [
+            0.0,
+            11.2
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        }
+      }
+    },
+    {
+      "id": "osm_614089690",
+      "name": "Paso Bajo Nivel Balbin Gatica - Goyeneche",
+      "directions": {
+        "outbound": {
+          "reasons": [],
+          "car_circuity": 0.98,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 149.2,
+          "extra_percent": 36.2
+        },
+        "return": {
+          "reasons": [],
+          "car_circuity": 0.98,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 150.2,
+          "extra_percent": 36.5
+        }
+      }
+    },
+    {
+      "id": "osm_37872735",
+      "name": "Punta Arenas",
+      "directions": {
+        "outbound": {
+          "reasons": [],
+          "car_circuity": 0.92,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 78.4,
+          "extra_percent": 22.7
+        },
+        "return": {
+          "reasons": [],
+          "car_circuity": 0.92,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 78.4,
+          "extra_percent": 22.7
+        }
+      }
+    },
+    {
+      "id": "osm_53875156",
+      "name": "Tomás Manuel de Anchorena",
+      "directions": {
+        "outbound": {
+          "reasons": [],
+          "car_circuity": 0.98,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 0.0,
+          "extra_percent": 0.0
+        },
+        "return": {
+          "reasons": [
+            "El auto no atraviesa el túnel elegido.",
+            "Rodeo vehicular a revisar: supera 1,6 veces la distancia recta."
+          ],
+          "car_circuity": 7.1,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        }
+      }
+    },
+    {
+      "id": "osm_362337755",
+      "name": "Viaducto Carranza",
+      "directions": {
+        "outbound": {
+          "reasons": [],
+          "car_circuity": 0.98,
+          "endpoint_separation_m": [
+            18.1,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 131.0,
+          "extra_percent": 31.5
+        },
+        "return": {
+          "reasons": [
+            "El auto no atraviesa el túnel elegido.",
+            "Rodeo vehicular a revisar: supera 1,6 veces la distancia recta."
+          ],
+          "car_circuity": 3.91,
+          "endpoint_separation_m": [
+            0.0,
+            18.1
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        }
+      }
+    },
+    {
+      "id": "osm_26732862",
+      "name": "Yatay",
+      "directions": {
+        "outbound": {
+          "reasons": [
+            "Algún extremo se ajusta más de 20 m a la red."
+          ],
+          "car_circuity": 0.82,
+          "endpoint_separation_m": [
+            13.3,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        },
+        "return": {
+          "reasons": [
+            "El auto no atraviesa el túnel elegido.",
+            "Rodeo vehicular a revisar: supera 1,6 veces la distancia recta.",
+            "Algún extremo se ajusta más de 20 m a la red."
+          ],
+          "car_circuity": 5.44,
+          "endpoint_separation_m": [
+            0.0,
+            13.3
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        }
+      }
+    },
+    {
+      "id": "osm_305269382",
+      "name": "Zamudio",
+      "directions": {
+        "outbound": {
+          "reasons": [],
+          "car_circuity": 0.93,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": true,
+          "extra_m": 117.5,
+          "extra_percent": 65.2
+        },
+        "return": {
+          "reasons": [
+            "El auto no atraviesa el túnel elegido.",
+            "Rodeo vehicular a revisar: supera 1,6 veces la distancia recta."
+          ],
+          "car_circuity": 3.75,
+          "endpoint_separation_m": [
+            0.0,
+            0.0
+          ],
+          "comparison_usable": false,
+          "extra_m": null,
+          "extra_percent": null
+        }
+      }
+    }
+  ]
+}

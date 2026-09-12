@@ -18,7 +18,9 @@ class PageTests(unittest.TestCase):
     def test_tunnel_page_integrity(self):
         page=Page();page.feed((ROOT/'web/tuneles.html').read_text(encoding='utf-8'))
         self.assertEqual(len(page.ids),len(set(page.ids)))
-        self.assertTrue({'comparison-body','comparison-direction','comparison-search','tunnel-case','inventory-map'}<=set(page.ids))
+        self.assertTrue({'comparison-body','comparison-search','tunnel-case','inventory-map','tunnel-metrics'}<=set(page.ids))
+        self.assertNotIn('comparison-direction',page.ids)
+        self.assertNotIn('tunnel-direction',page.ids)
         for link in page.links:
             parsed=urlsplit(link)
             if not parsed.scheme and parsed.path:self.assertTrue((ROOT/'web'/unquote(parsed.path)).exists(),link)

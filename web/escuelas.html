@@ -1,13 +1,30 @@
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Calles escolares — Pacificando la ciudad</title>
-<link rel="stylesheet" href="landing.css?v=2"><link rel="stylesheet" href="schools.css?v=share8">
+<link rel="stylesheet" href="landing.css?v=2"><link rel="stylesheet" href="schools.css?v=noise1"><link rel="stylesheet" href="school-intro.css?v=1">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script src="school-address-search.js?v=1" defer></script><script src="school-filters.js?v=multilevel9" defer></script><script src="school-link.js?v=multilevel9" defer></script><script src="schools.js?v=multilevel9" defer></script><script src="school-share.js?v=multilevel9" defer></script></head>
 <body><a class="skip" href="#contenido">Saltar al contenido</a>
 <header class="wrap topbar"><a class="brand" href="index.html">← Pacificando la ciudad<span>Buenos Aires</span></a><nav aria-label="Análisis"><a href="analisis.html">Esquinas</a><a href="tuneles.html">Túneles</a><a href="escuelas.html" aria-current="page">Escuelas</a></nav></header>
-<main id="contenido" class="school-main"><div class="heading"><h1>Calles escolares</h1><p>Restringir el tránsito pasante frente a las escuelas durante el horario escolar puede reducir el ruido y la contaminación, mejorar la seguridad y abrir espacio para jugar, manteniendo el acceso de los frentistas.</p></div>
+<main id="contenido" class="school-main"><div class="heading"><h1>Calles escolares</h1><p>El entorno de una escuela también importa para aprender, llegar seguros y jugar.</p></div>
+<section class="school-intro" aria-label="Los problemas">
+<ul>
+<li><strong>Ruido.</strong> El tránsito puede interferir con las actividades escolares y la concentración. <a href="https://www.who.int/europe/health-topics/noise">OMS: ruido y salud</a>.</li>
+<li><strong>Contaminación.</strong> El NO₂ de la combustión de motores irrita las vías respiratorias. Los chicos son especialmente vulnerables a la contaminación porque sus pulmones todavía se desarrollan. <a href="https://www.who.int/teams/environment-climate-change-and-health/air-quality-and-health/health-impacts/types-of-pollutants">OMS: contaminantes</a> · <a href="https://www.who.int/publications-detail-redirect/air-pollution-and-child-health">Salud infantil</a>.</li>
+<li><strong>Inseguridad vial.</strong> La velocidad y los cruces inseguros exponen a quienes llegan caminando o en bicicleta. <a href="https://www.who.int/news-room/questions-and-answers/item/road-traffic-injuries-children">OMS: seguridad vial infantil</a>.</li>
+<li><strong>Poco espacio para jugar.</strong> El tránsito limita el uso de la calle para el juego y el encuentro. <a href="https://www.unicef.org/reports/shaping-urbanization-children">UNICEF: ciudades para la infancia</a>.</li>
+</ul>
+</section>
+<section class="noise-evidence" aria-labelledby="noise-title">
+<h2 id="noise-title">¿Cuánto ruido hay en las cuadras escolares?</h2>
+<p id="noise-summary" role="status">Cargando el cruce con ruido diurno de 2018…</p>
+<svg id="noise-chart" viewBox="0 0 760 300" role="img" aria-label="Dispersión: proporción de cuadra en zonas de 65 dBA o más y cantidad de escuelas"></svg>
+<p id="noise-point" class="noise-note">Cada punto representa una cuadra. Los puntos pueden superponerse.</p>
+<details><summary>Cómo se calculó</summary><p id="noise-coverage"></p><p>Se muestrea el eje de cada cuadra cada 5 m como máximo. El eje horizontal muestra qué porcentaje de los puntos con datos cae en rangos de 65 dBA o más. El corte de 65 dBA es exploratorio: no es un límite sanitario ni una medición dentro del aula. El gráfico incluye todas las cuadras escolares, sin aplicar los filtros de la propuesta.</p><p>Fuente: <a href="https://data.buenosaires.gob.ar/dataset/mapa-ruido/resource/ce377913-43ac-4686-b244-0ac4c55012da">Mapa de ruido diurno 2018, BA Data</a> · CC-BY-2.5-AR. Es una estimación histórica; no describe necesariamente el ruido actual. <a href="../data/processed/school-noise.json">Descargar cruce</a>.</p></details>
+</section>
+<section class="school-proposal" aria-labelledby="proposal-title"><h2 id="proposal-title">La propuesta: abrir la calle al juego</h2><p>Restringir el tránsito pasante frente a las escuelas durante el horario escolar puede reducir el ruido y la contaminación, mejorar la seguridad y abrir espacio para jugar, manteniendo el acceso de los frentistas.</p></section>
+<script src="school-noise.js?v=1" defer></script>
 <div class="workspace"><aside><form id="filters">
 <div class="filter-row"><span class="filter-label">Nivel</span><div id="level-chips" class="chips" role="group" aria-label="Nivel educativo">
 <button type="button" data-level="" aria-pressed="true">Todos</button><button type="button" data-level="inicial" aria-pressed="false">Jardines</button><button type="button" data-level="primaria" aria-pressed="false">Primarias</button><button type="button" data-level="secundaria" aria-pressed="false">Secundarias</button><button type="button" data-level="superior" aria-pressed="false">Superior</button><button type="button" data-level="otros" aria-pressed="false">Otros</button></div><input id="level" type="hidden" value=""></div>

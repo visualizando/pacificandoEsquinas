@@ -1,0 +1,6 @@
+.school-intro,.noise-evidence,.school-proposal{max-width:900px;font-size:15px;line-height:1.55}
+.school-intro ul{padding-left:20px;margin:0 0 24px}.school-intro li{margin:10px 0}.school-intro a{color:var(--secondary);font-size:13px}
+.noise-evidence{border-top:1px solid var(--line);padding-top:20px;margin-bottom:28px}.noise-evidence h2,.school-proposal h2{font-size:21px;line-height:1.3;margin:0 0 10px;letter-spacing:normal}
+.noise-evidence p,.school-proposal p{margin:8px 0}.noise-evidence svg{display:block;width:100%;height:auto;max-width:760px;overflow:visible;font:12px system-ui;font-variant-numeric:tabular-nums}.noise-evidence svg text{fill:var(--secondary)}
+.noise-note,.noise-evidence details{font-size:13px;color:var(--secondary)}.noise-note{min-height:40px}.noise-evidence details{padding:0;border:0}.noise-evidence summary{cursor:pointer}.school-proposal{margin-bottom:20px}
+@media(max-width:600px){.noise-evidence svg{font-size:15px}.school-intro,.noise-evidence,.school-proposal{font-size:14px}.school-intro li{margin:12px 0}}

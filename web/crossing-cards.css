@@ -1,14 +1,25 @@
-.crossing-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin:24px 0}
-.crossing-card{display:flex;flex-direction:column;min-width:0;padding:20px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
-.crossing-card h3{font-size:20px;line-height:1.25;margin:0 0 16px}
-.crossing-card figure{margin:0 0 18px}
-.crossing-card svg{display:block;width:100%;height:auto;background:#f5f5f0;border-radius:6px;overflow:hidden}
-.crossing-card figcaption{font-size:11px;color:var(--secondary);margin-top:6px}
-.crossing-card .crossing-label{font-size:12px;margin:0;color:var(--secondary)}
-.crossing-card .crossing-penalty{font-size:27px;font-weight:750;margin:2px 0 10px;line-height:1.2}
-.crossing-distances{font-size:13px;margin:0 0 12px}
-.crossing-warning{font-size:12px;color:var(--secondary);margin:0 0 16px}
-.crossing-card .view-crossing{margin-top:auto;width:100%;min-height:48px}
+.crossing-cards{display:grid;gap:12px;margin:24px 0;container-type:inline-size}
+.crossing-card{display:grid;grid-template-columns:150px minmax(0,1fr) 190px;gap:8px 20px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);min-width:0}
+.crossing-card h3{grid-column:2;grid-row:1;margin:0;font-size:18px;line-height:1.25;overflow-wrap:anywhere}
+.crossing-card figure{grid-column:1;grid-row:1 / 4;margin:0;min-width:0;position:relative;align-self:stretch;background:#f5f5f0;border-radius:6px;overflow:hidden}
+.crossing-card figure svg{position:absolute;inset:0;display:block;width:100%;height:100%;background:#f5f5f0;border-radius:6px;overflow:hidden}
+.crossing-card figcaption{font-size:10px;color:var(--secondary);margin-top:4px}
+.crossing-osm{display:inline-flex;align-items:center;min-height:24px;margin-top:4px;font-size:12px;line-height:1.4;color:var(--ink);text-underline-offset:3px;overflow-wrap:anywhere}
+.crossing-summary{grid-column:3;grid-row:1 / 3;min-width:0}
+.crossing-penalty{font-size:32px;font-weight:750;line-height:1.1;margin:0;font-variant-numeric:tabular-nums}
+.crossing-label{font-size:12px;line-height:1.4;margin:5px 0 0;color:var(--secondary)}
+.crossing-bars{grid-column:2;grid-row:2 / 4;display:grid;gap:10px;min-width:0}
+.distance-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px 8px;font-size:12px;border:0}
+.distance-label{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.mode-icon{width:20px;height:20px;flex:none}
+.distance-value{font-variant-numeric:tabular-nums;align-self:center;white-space:nowrap}
+.distance-track{grid-column:1 / -1;display:block;background:var(--line);height:7px}
+.distance-bar{display:block;height:100%;background:#73736c}
+.step_free .distance-bar{background:#8036ad}
+.car .distance-bar{background:#8db6ce}
+.walk .distance-bar{background:#ab4b08}
+.crossing-status-dot{display:inline-block;width:12px;height:12px;border-radius:50%;border:1px solid #68685f;margin-right:8px;vertical-align:baseline}
+.crossing-card .view-crossing{grid-column:3;grid-row:3;margin:0;min-height:44px;width:100%;font-size:13px}
 .crossing-card.selected-crossing{outline:2px solid var(--accent);outline-offset:2px}
-@media(max-width:950px){.crossing-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:620px){.crossing-cards{grid-template-columns:1fr}}
+@container(max-width:680px){.crossing-card{grid-template-columns:110px minmax(0,1fr);gap:10px 14px}.crossing-card figure{grid-row:1 / 5}.crossing-summary{grid-column:2;grid-row:2}.crossing-bars{grid-column:2;grid-row:3}.crossing-card .view-crossing{grid-column:2;grid-row:4;width:auto;justify-self:start}.crossing-penalty{font-size:28px}}
+@container(max-width:380px){.crossing-card{grid-template-columns:72px minmax(0,1fr);padding:10px;gap:8px 12px}.crossing-card h3{font-size:16px}.crossing-penalty{font-size:26px}.distance-row{font-size:11px}.mode-icon{width:18px;height:18px}}

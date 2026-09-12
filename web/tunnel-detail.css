@@ -1,0 +1,15 @@
+.crossing-detail{max-width:850px;margin:24px 0 32px}
+.tunnel-street-label{font-size:12px;font-weight:300;line-height:1.3;padding:0;background:none;color:#909089;max-width:none;white-space:nowrap;text-align:center;border-radius:0}
+.rail-label{font-style:italic}
+.detail-verdict{font-size:20px;font-weight:650;line-height:1.4;margin:0 0 10px}
+.detail-percent{font-size:clamp(48px,7vw,76px);font-weight:750;line-height:1.05;margin:0;font-variant-numeric:tabular-nums;color:#8036ad}
+.detail-extra{font-size:22px;line-height:1.4;margin:8px 0 28px;font-variant-numeric:tabular-nums}
+.crossing-detail .crossing-bars{display:grid;gap:20px;margin:24px 0}
+.crossing-detail .distance-row{font-size:16px;gap:8px 12px;color:var(--ink)}
+.crossing-detail .mode-icon{width:24px;height:24px}
+.crossing-detail .distance-track{height:14px}
+.crossing-detail .distance-value{font-weight:650}
+.detail-context{font-size:16px;font-weight:600;margin:20px 0 8px}
+.detail-note,.detail-source{font-size:13px;color:var(--secondary);max-width:75ch;line-height:1.6;margin:8px 0}
+.detail-source{font-size:12px}
+@media(max-width:440px){.crossing-detail .distance-row{font-size:13px}.crossing-detail .mode-icon{width:20px;height:20px}.detail-extra{font-size:19px}.detail-verdict{font-size:18px}}

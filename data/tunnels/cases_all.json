@@ -85,8 +85,8 @@
         -34.5752811
       ],
       "destination": [
-        -58.4902151,
-        -34.5776889
+        -58.490183,
+        -34.5777933
       ],
       "center": [
         -58.4910586,
@@ -98,16 +98,30 @@
         -34.562757749999996,
         -58.473985429268296
       ],
-      "endpoints": "Extremos automáticos fuera de portales: A +159.0 m / B +105.7 m",
+      "endpoints": "A antes de la entrada (+159 m) → B después de la salida (+102 m)",
       "tunnel_way_ids": [
         440436964
       ],
-      "endpoint_method": "same_street_120m_from_portals",
+      "endpoint_method": "directed_street_120m",
       "portal_extensions_m": [
         159.0,
-        105.7
+        101.8
       ],
-      "audit_status": "Extremos automáticos · revisión visual pendiente"
+      "audit_status": "Extremos orientados con la mano del túnel · accesos peatonales pendientes",
+      "single_direction_tunnel": true,
+      "previous_endpoints": {
+        "origin": [
+          -58.4922567,
+          -34.5752811
+        ],
+        "destination": [
+          -58.4902151,
+          -34.5776889
+        ],
+        "endpoint_method": "same_street_120m_from_portals",
+        "endpoints": "Extremos automáticos fuera de portales: A +159.0 m / B +105.7 m"
+      },
+      "endpoint_alignment_status": "Ruta vehicular directa comprobada en la instantánea"
     },
     {
       "id": "osm_40409447",
@@ -365,16 +379,30 @@
         -34.528573849999994,
         -58.448558329268295
       ],
-      "endpoints": "Extremos automáticos fuera de portales: A +151.2 m / B +141.0 m",
+      "endpoints": "A antes de la entrada (+151 m) → B después de la salida (+141 m)",
       "tunnel_way_ids": [
         472716994
       ],
-      "endpoint_method": "same_street_120m_from_portals",
+      "endpoint_method": "directed_street_120m",
       "portal_extensions_m": [
         151.2,
         141.0
       ],
-      "audit_status": "Extremos automáticos · revisión visual pendiente"
+      "audit_status": "Extremos orientados con la mano del túnel · accesos peatonales pendientes",
+      "single_direction_tunnel": true,
+      "previous_endpoints": {
+        "origin": [
+          -58.4641717,
+          -34.5418457
+        ],
+        "destination": [
+          -58.4669942,
+          -34.5432562
+        ],
+        "endpoint_method": "same_street_120m_from_portals",
+        "endpoints": "Extremos automáticos fuera de portales: A +151.2 m / B +141.0 m"
+      },
+      "endpoint_alignment_status": "Ruta vehicular directa comprobada en la instantánea"
     },
     {
       "id": "osm_426037786",
@@ -398,16 +426,30 @@
         -34.56379595,
         -58.47630782926829
       ],
-      "endpoints": "Extremos automáticos fuera de portales: A +145.3 m / B +153.2 m",
+      "endpoints": "A antes de la entrada (+145 m) → B después de la salida (+153 m)",
       "tunnel_way_ids": [
         426037786
       ],
-      "endpoint_method": "same_street_120m_from_portals",
+      "endpoint_method": "directed_street_120m",
       "portal_extensions_m": [
         145.3,
         153.2
       ],
-      "audit_status": "Extremos automáticos · revisión visual pendiente"
+      "audit_status": "Extremos orientados con la mano del túnel · accesos peatonales pendientes",
+      "single_direction_tunnel": true,
+      "previous_endpoints": {
+        "origin": [
+          -58.4923404,
+          -34.5790479
+        ],
+        "destination": [
+          -58.4944401,
+          -34.5764689
+        ],
+        "endpoint_method": "same_street_120m_from_portals",
+        "endpoints": "Extremos automáticos fuera de portales: A +145.3 m / B +153.2 m"
+      },
+      "endpoint_alignment_status": "Ruta vehicular directa comprobada en la instantánea"
     },
     {
       "id": "osm_286005467",
@@ -418,8 +460,8 @@
         -34.553875
       ],
       "destination": [
-        -58.4571348,
-        -34.5526985
+        -58.4570259,
+        -34.5525977
       ],
       "center": [
         -58.4580759,
@@ -431,24 +473,38 @@
         -34.5391392,
         -58.44100272926829
       ],
-      "endpoints": "Extremos automáticos fuera de portales: A +133.0 m / B +108.6 m",
+      "endpoints": "A antes de la entrada (+133 m) → B después de la salida (+94 m)",
       "tunnel_way_ids": [
         286005467
       ],
-      "endpoint_method": "same_street_120m_from_portals",
+      "endpoint_method": "directed_street_120m",
       "portal_extensions_m": [
         133.0,
-        108.6
+        93.6
       ],
-      "audit_status": "Extremos automáticos · revisión visual pendiente"
+      "audit_status": "Extremos orientados con la mano del túnel · accesos peatonales pendientes",
+      "single_direction_tunnel": true,
+      "previous_endpoints": {
+        "origin": [
+          -58.4594859,
+          -34.553875
+        ],
+        "destination": [
+          -58.4571348,
+          -34.5526985
+        ],
+        "endpoint_method": "same_street_120m_from_portals",
+        "endpoints": "Extremos automáticos fuera de portales: A +133.0 m / B +108.6 m"
+      },
+      "endpoint_alignment_status": "Ruta vehicular directa comprobada en la instantánea"
     },
     {
       "id": "osm_371542835",
       "name": "Crisólogo Larralde",
       "corridor": null,
       "origin": [
-        -58.4637278,
-        -34.5466397
+        -58.4623795,
+        -34.5460282
       ],
       "destination": [
         -58.4651969,
@@ -464,16 +520,30 @@
         -34.5327687,
         -58.446787129268294
       ],
-      "endpoints": "Extremos automáticos fuera de portales: A +112.8 m / B +128.2 m",
+      "endpoints": "A antes de la entrada (+144 m) → B después de la salida (+128 m)",
       "tunnel_way_ids": [
         371542835
       ],
-      "endpoint_method": "same_street_120m_from_portals",
+      "endpoint_method": "directed_street_120m",
       "portal_extensions_m": [
-        112.8,
+        143.7,
         128.2
       ],
-      "audit_status": "Extremos automáticos · revisión visual pendiente"
+      "audit_status": "Extremos orientados con la mano del túnel · accesos peatonales pendientes",
+      "single_direction_tunnel": true,
+      "previous_endpoints": {
+        "origin": [
+          -58.4637278,
+          -34.5466397
+        ],
+        "destination": [
+          -58.4651969,
+          -34.5474373
+        ],
+        "endpoint_method": "same_street_120m_from_portals",
+        "endpoints": "Extremos automáticos fuera de portales: A +112.8 m / B +128.2 m"
+      },
+      "endpoint_alignment_status": "Ruta vehicular directa comprobada en la instantánea"
     },
     {
       "id": "osm_380891318",
@@ -497,24 +567,38 @@
         -34.5544453,
         -58.4619930792683
       ],
-      "endpoints": "Extremos automáticos fuera de portales: A +98.9 m / B +123.2 m",
+      "endpoints": "A antes de la entrada (+99 m) → B después de la salida (+123 m)",
       "tunnel_way_ids": [
         380891318
       ],
-      "endpoint_method": "same_street_120m_from_portals",
+      "endpoint_method": "directed_street_120m",
       "portal_extensions_m": [
         98.9,
         123.2
       ],
-      "audit_status": "Extremos automáticos · revisión visual pendiente"
+      "audit_status": "Extremos orientados con la mano del túnel · accesos peatonales pendientes",
+      "single_direction_tunnel": true,
+      "previous_endpoints": {
+        "origin": [
+          -58.4798377,
+          -34.5675757
+        ],
+        "destination": [
+          -58.4781296,
+          -34.5694859
+        ],
+        "endpoint_method": "same_street_120m_from_portals",
+        "endpoints": "Extremos automáticos fuera de portales: A +98.9 m / B +123.2 m"
+      },
+      "endpoint_alignment_status": "Ruta vehicular directa comprobada en la instantánea"
     },
     {
       "id": "osm_1534636305",
       "name": "Federico García Lorca",
       "corridor": null,
       "origin": [
-        -58.4449493,
-        -34.6200349
+        -58.4447357,
+        -34.6209932
       ],
       "destination": [
         -58.4453794,
@@ -530,16 +614,30 @@
         -34.605791525,
         -58.427981379268296
       ],
-      "endpoints": "Extremos automáticos fuera de portales: A +121.0 m / B +133.8 m",
+      "endpoints": "A antes de la entrada (+118 m) → B después de la salida (+134 m)",
       "tunnel_way_ids": [
         1534636305
       ],
-      "endpoint_method": "same_street_120m_from_portals",
+      "endpoint_method": "directed_street_120m",
       "portal_extensions_m": [
-        121.0,
+        118.4,
         133.8
       ],
-      "audit_status": "Extremos automáticos · revisión visual pendiente"
+      "audit_status": "Extremos orientados con la mano del túnel · accesos peatonales pendientes",
+      "single_direction_tunnel": true,
+      "previous_endpoints": {
+        "origin": [
+          -58.4449493,
+          -34.6200349
+        ],
+        "destination": [
+          -58.4453794,
+          -34.6183618
+        ],
+        "endpoint_method": "same_street_120m_from_portals",
+        "endpoints": "Extremos automáticos fuera de portales: A +121.0 m / B +133.8 m"
+      },
+      "endpoint_alignment_status": "Ruta vehicular directa comprobada en la instantánea"
     },
     {
       "id": "osm_380891321",
@@ -550,8 +648,8 @@
         -34.5689425
       ],
       "destination": [
-        -58.4784981,
-        -34.5674687
+        -58.478931,
+        -34.5670228
       ],
       "center": [
         -58.4780528,
@@ -563,16 +661,30 @@
         -34.55403815,
         -58.460979629268294
       ],
-      "endpoints": "Extremos automáticos fuera de portales: A +106.6 m / B +119.4 m",
+      "endpoints": "A antes de la entrada (+107 m) → B después de la salida (+119 m)",
       "tunnel_way_ids": [
         380891321
       ],
-      "endpoint_method": "same_street_120m_from_portals",
+      "endpoint_method": "directed_street_120m",
       "portal_extensions_m": [
         106.6,
-        119.4
+        119.1
       ],
-      "audit_status": "Extremos automáticos · revisión visual pendiente"
+      "audit_status": "Extremos orientados con la mano del túnel · accesos peatonales pendientes",
+      "single_direction_tunnel": true,
+      "previous_endpoints": {
+        "origin": [
+          -58.4772221,
+          -34.5689425
+        ],
+        "destination": [
+          -58.4784981,
+          -34.5674687
+        ],
+        "endpoint_method": "same_street_120m_from_portals",
+        "endpoints": "Extremos automáticos fuera de portales: A +106.6 m / B +119.4 m"
+      },
+      "endpoint_alignment_status": "Ruta vehicular directa comprobada en la instantánea"
     },
     {
       "id": "osm_53875154",
@@ -596,24 +708,38 @@
         -34.5945116,
         -58.393332379268294
       ],
-      "endpoints": "Extremos automáticos fuera de portales: A +160.2 m / B +175.1 m",
+      "endpoints": "A antes de la entrada (+160 m) → B después de la salida (+175 m)",
       "tunnel_way_ids": [
         53875154
       ],
-      "endpoint_method": "same_street_120m_from_portals",
+      "endpoint_method": "directed_street_120m",
       "portal_extensions_m": [
         160.2,
         175.1
       ],
-      "audit_status": "Extremos automáticos · revisión visual pendiente"
+      "audit_status": "Extremos orientados con la mano del túnel · accesos peatonales pendientes",
+      "single_direction_tunnel": true,
+      "previous_endpoints": {
+        "origin": [
+          -58.4100122,
+          -34.6067731
+        ],
+        "destination": [
+          -58.4103578,
+          -34.6104454
+        ],
+        "endpoint_method": "same_street_120m_from_portals",
+        "endpoints": "Extremos automáticos fuera de portales: A +160.2 m / B +175.1 m"
+      },
+      "endpoint_alignment_status": "Ruta vehicular directa comprobada en la instantánea"
     },
     {
       "id": "osm_305215467",
       "name": "Manuela Pedraza",
       "corridor": null,
       "origin": [
-        -58.46284,
-        -34.5494325
+        -58.4634619,
+        -34.5497976
       ],
       "destination": [
         -58.4608909,
@@ -629,16 +755,30 @@
         -34.53517455,
         -58.445143979268295
       ],
-      "endpoints": "Extremos automáticos fuera de portales: A +127.6 m / B +116.2 m",
+      "endpoints": "A antes de la entrada (+107 m) → B después de la salida (+116 m)",
       "tunnel_way_ids": [
         305215467
       ],
-      "endpoint_method": "same_street_120m_from_portals",
+      "endpoint_method": "directed_street_120m",
       "portal_extensions_m": [
-        127.6,
+        107.5,
         116.2
       ],
-      "audit_status": "Extremos automáticos · revisión visual pendiente"
+      "audit_status": "Extremos orientados con la mano del túnel · accesos peatonales pendientes",
+      "single_direction_tunnel": true,
+      "previous_endpoints": {
+        "origin": [
+          -58.46284,
+          -34.5494325
+        ],
+        "destination": [
+          -58.4608909,
+          -34.5485107
+        ],
+        "endpoint_method": "same_street_120m_from_portals",
+        "endpoints": "Extremos automáticos fuera de portales: A +127.6 m / B +116.2 m"
+      },
+      "endpoint_alignment_status": "Ruta vehicular directa comprobada en la instantánea"
     },
     {
       "id": "osm_166704151",
@@ -683,8 +823,8 @@
         -34.5739089
       ],
       "destination": [
-        -58.484817,
-        -34.5722766
+        -58.4854705,
+        -34.5715491
       ],
       "center": [
         -58.484729,
@@ -696,16 +836,30 @@
         -34.55846865,
         -58.467655829268296
       ],
-      "endpoints": "Extremos automáticos fuera de portales: A +165.5 m / B +126.0 m",
+      "endpoints": "A antes de la entrada (+165 m) → B después de la salida (+97 m)",
       "tunnel_way_ids": [
         86784045
       ],
-      "endpoint_method": "same_street_120m_from_portals",
+      "endpoint_method": "directed_street_120m",
       "portal_extensions_m": [
         165.5,
-        126.0
+        96.9
       ],
-      "audit_status": "Extremos automáticos · revisión visual pendiente"
+      "audit_status": "Extremos orientados con la mano del túnel · accesos peatonales pendientes",
+      "single_direction_tunnel": true,
+      "previous_endpoints": {
+        "origin": [
+          -58.4835879,
+          -34.5739089
+        ],
+        "destination": [
+          -58.484817,
+          -34.5722766
+        ],
+        "endpoint_method": "same_street_120m_from_portals",
+        "endpoints": "Extremos automáticos fuera de portales: A +165.5 m / B +126.0 m"
+      },
+      "endpoint_alignment_status": "Ruta vehicular directa comprobada en la instantánea"
     },
     {
       "id": "osm_640456534",
@@ -813,8 +967,8 @@
       "name": "Tomás Manuel de Anchorena",
       "corridor": null,
       "origin": [
-        -58.4117783,
-        -34.6093635
+        -58.4117411,
+        -34.6105352
       ],
       "destination": [
         -58.4118458,
@@ -830,16 +984,30 @@
         -34.5945932,
         -58.3947490292683
       ],
-      "endpoints": "Extremos automáticos fuera de portales: A +56.8 m / B +63.3 m",
+      "endpoints": "A antes de la entrada (+187 m) → B después de la salida (+63 m)",
       "tunnel_way_ids": [
         53875156
       ],
-      "endpoint_method": "same_street_120m_from_portals",
+      "endpoint_method": "directed_street_120m",
       "portal_extensions_m": [
-        56.8,
+        187.1,
         63.3
       ],
-      "audit_status": "Extremos automáticos · revisión visual pendiente"
+      "audit_status": "Extremos orientados con la mano del túnel · accesos peatonales pendientes",
+      "single_direction_tunnel": true,
+      "previous_endpoints": {
+        "origin": [
+          -58.4117783,
+          -34.6093635
+        ],
+        "destination": [
+          -58.4118458,
+          -34.6077646
+        ],
+        "endpoint_method": "same_street_120m_from_portals",
+        "endpoints": "Extremos automáticos fuera de portales: A +56.8 m / B +63.3 m"
+      },
+      "endpoint_alignment_status": "Ruta vehicular directa comprobada en la instantánea"
     },
     {
       "id": "osm_362337755",
@@ -897,16 +1065,30 @@
         -34.598791899999995,
         -58.4114681792683
       ],
-      "endpoints": "Extremos automáticos fuera de portales: A +184.0 m / B +123.9 m",
+      "endpoints": "A antes de la entrada (+184 m) → B después de la salida (+124 m)",
       "tunnel_way_ids": [
         26732862
       ],
-      "endpoint_method": "same_street_120m_from_portals",
+      "endpoint_method": "directed_street_120m",
       "portal_extensions_m": [
         184.0,
         123.9
       ],
-      "audit_status": "Extremos automáticos · revisión visual pendiente"
+      "audit_status": "Extremos orientados con la mano del túnel · accesos peatonales pendientes",
+      "single_direction_tunnel": true,
+      "previous_endpoints": {
+        "origin": [
+          -58.4276143,
+          -34.6143669
+        ],
+        "destination": [
+          -58.4287845,
+          -34.6116014
+        ],
+        "endpoint_method": "same_street_120m_from_portals",
+        "endpoints": "Extremos automáticos fuera de portales: A +184.0 m / B +123.9 m"
+      },
+      "endpoint_alignment_status": "Ruta vehicular directa comprobada en la instantánea"
     },
     {
       "id": "osm_305269382",
@@ -939,7 +1121,9 @@
         128.1,
         112.1
       ],
-      "audit_status": "Extremos automáticos · revisión visual pendiente"
+      "audit_status": "Extremos automáticos · revisión visual pendiente",
+      "single_direction_tunnel": true,
+      "endpoint_alignment_status": "Extremos existentes en el sentido del túnel"
     }
   ]
 }

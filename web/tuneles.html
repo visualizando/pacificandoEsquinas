@@ -2,10 +2,10 @@
 <html lang="es"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cruzar las vías — Pacificando la ciudad</title>
-<link rel="stylesheet" href="landing.css?v=2"><link rel="stylesheet" href="tunnels.css">
+<link rel="stylesheet" href="landing.css?v=2"><link rel="stylesheet" href="tunnels.css?v=map3">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-<script src="tunnels.js?v=cards4" defer></script><script src="tunnel-inventory.js?v=all2" defer></script><script src="tunnel-comparison.js?v=cards4" defer></script>
+<script src="tunnel-chart.js?v=three1" defer></script><script src="endpoint-review.js?v=2" defer></script><script src="tunnels.js?v=map6" defer></script><script src="tunnel-inventory.js?v=three1" defer></script><script src="tunnel-comparison.js?v=thumb2" defer></script>
 <style>
 :root {--ink-2:var(--secondary);--border:var(--line);--axis:var(--line)}
 .page-intro {padding-block:40px 24px}.page-intro h1{font-size:clamp(2.3rem,5vw,3.5rem)}
@@ -14,7 +14,9 @@
 .case-links a {padding:14px 20px;background:var(--ink);color:var(--page);border-radius:6px;font-weight:600;text-decoration:none}
 .inventory-note {color:var(--secondary);font-size:14px}
 .inventory-dot{width:18px;height:18px;border-radius:50%;background:#72716b;border:2px solid white;cursor:pointer}
-.inventory-dot.analyzed{background:#7b0000;width:24px;height:24px}
+.inventory-dot{width:24px;height:24px;box-shadow:0 0 0 1px #68685f}.inventory-dot:focus-visible{outline:3px solid #171717;outline-offset:3px}
+.inventory-scale{display:flex;flex:1 1 300px;max-width:540px}.inventory-scale span{flex:1;display:block;text-align:center;border-top:12px solid;padding-top:6px;font-variant-numeric:tabular-nums}.inventory-scale span:first-child{border-radius:5px 0 0 0}.inventory-scale span:last-child{border-radius:0 5px 0 0}
+.inventory-legend{display:flex;flex-wrap:wrap;gap:10px 18px;margin:14px 0;font-size:13px}.inventory-legend span{display:inline-flex;align-items:center;gap:6px}.inventory-legend i{width:14px;height:14px;border-radius:50%;border:1px solid #68685f;flex-shrink:0}
 #inventory-list {columns:3; padding-left:20px;font-size:14px}
 #inventory-list li{break-inside:avoid;padding:5px 0}
 #tuneles{margin-bottom:48px}details{padding:16px;border:1px solid var(--line);border-radius:8px}summary{cursor:pointer;font-weight:600;min-height:32px}
@@ -22,43 +24,57 @@
 .view-crossing{display:block;margin-top:10px;min-height:44px;padding:10px 12px;border:1px solid var(--ink);border-radius:6px;background:var(--ink);color:var(--page);font:inherit;font-weight:600;cursor:pointer;text-align:left}
 #comparison-table .selected-crossing>th{box-shadow:inset 4px 0 var(--accent)}
 .view-crossing[aria-pressed="true"]{background:var(--accent);color:var(--page)}
-</style><link rel="stylesheet" href="crossing-cards.css"></head><body>
+</style><link rel="stylesheet" href="crossing-cards.css?v=colors1"><link rel="stylesheet" href="endpoint-review.css"><link rel="stylesheet" href="tunnel-detail.css?v=colors1"></head><body>
 <a class="skip" href="#contenido">Saltar al contenido</a>
 <header class="wrap topbar"><a class="brand" href="index.html">← Pacificando la ciudad<span>Buenos Aires</span></a><nav aria-label="Secciones"><a href="analisis.html">Esquinas</a><a href="tuneles.html" aria-current="page">Túneles</a></nav></header>
 <main id="contenido" class="wrap">
 <div class="page-intro"><p class="eyebrow">Barreras urbanas</p><h1>Cruzar las vías</h1><p class="intro">El auto pasa derecho. ¿Qué recorrido queda para quienes caminan o necesitan evitar escaleras? Ubicamos los pasos bajo nivel y comparamos distancias, giros y obstáculos.</p><a class="primary" href="#comparacion">Explorar los cruces →</a></div>
-<section aria-labelledby="inventory-heading"><h2 id="inventory-heading">Los pasos bajo nivel de la ciudad</h2><p id="inventory-status" role="status">Cargando el inventario de OpenStreetMap…</p><div id="inventory-map" aria-label="Ubicación de pasos bajo nivel registrados en OpenStreetMap"></div><p class="inventory-note">Rojo: al menos un sentido con tres rutas y cruce vehicular comprobado. Gris: comparación vehicular por revisar. Todos tienen una ficha de cálculo; ninguno certifica accesibilidad. Detección cartográfica, no censo exhaustivo: pueden faltar pasos o existir diferencias de etiquetado.</p><details><summary>Consultar ubicaciones y fuente</summary><p id="inventory-source"></p><ul id="inventory-list"></ul></details></section>
+<section aria-labelledby="inventory-heading"><h2 id="inventory-heading">Los pasos bajo nivel de la ciudad</h2><p id="inventory-status" role="status">Cargando el inventario de OpenStreetMap…</p><div id="inventory-map" aria-label="Ubicación de pasos bajo nivel registrados en OpenStreetMap"></div><p class="inventory-note">Semáforo de metros extra a pie sin escaleras frente al auto, entre los mismos puntos A y B. Verde: menos de 5 m extra, incluidos los recorridos más cortos. Amarillo: de 5 a 50 m. Rojo: más de 50 m. Gris: comparación pendiente de revisión o sin datos. Los intervalos son una guía visual, no categorías oficiales. Ningún resultado certifica accesibilidad. Detección cartográfica, no censo exhaustivo: pueden faltar pasos o existir diferencias de etiquetado.</p><details><summary>Consultar ubicaciones y fuente</summary><p id="inventory-source"></p><ul id="inventory-list"></ul></details></section>
 <section id="comparacion" aria-labelledby="comparison-heading" style="margin-top:40px">
 <h2 id="comparison-heading">Comparar todos los pasos</h2>
-<p>Elegí un cruce para ver su mapa y análisis. Las miniaturas muestran los recorridos peatonales; el detalle también permite comparar el auto.</p>
-<div class="tunnel-controls"><label for="comparison-search">Buscar un paso<input id="comparison-search" type="search" placeholder="Nombre de calle" style="min-height:44px;font:inherit;padding:8px"></label><label for="comparison-direction">Sentido de comparación<select id="comparison-direction"><option value="outbound">A → B</option><option value="return">B → A</option></select></label></div>
+<p>La cifra destaca los metros de diferencia entre caminar sin escaleras e ir en auto. En túneles de mano única, A → B sigue el sentido permitido. Barras en metros, a la misma escala desde cero.</p>
+<div class="tunnel-controls"><label for="comparison-search">Buscar un paso<input id="comparison-search" type="search" placeholder="Nombre de calle" style="min-height:44px;font:inherit;padding:8px"></label></div>
 <p id="comparison-status" role="status">Cargando la comparación…</p>
 <div id="comparison-body" class="crossing-cards"></div>
-<p class="inventory-note">“Sin escaleras” no certifica accesibilidad. Un cálculo faltante no prueba que no exista un camino. Los tiempos no incluyen esperas ni tránsito. <a href="../docs/ANALISIS_TODOS_TUNELES.md">Método y comandos para recalcular</a> · <a href="../data/processed/tunnels-all.json" download>Descargar resultados</a></p>
+<p class="inventory-note">Minimapas: © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>. Auto en azul; caminata sin escaleras en violeta. “A revisar” señala extremos o trazados dudosos. “Sin escaleras” no certifica rampas ni accesibilidad. Un cálculo faltante no prueba que no exista un camino. <a href="../docs/ANALISIS_TODOS_TUNELES.md">Método y comandos para recalcular</a> · <a href="../data/processed/tunnels-all.json" download>Descargar resultados</a></p>
 </section>
 
     <section class="block" id="tuneles" aria-labelledby="tunnels-heading">
       <p class="tunnel-kicker">BARRERAS URBANAS · DETALLE POR PASO</p>
       <a href="#comparacion" style="display:inline-block;padding:12px 0">↑ Volver a los cruces</a>
       <h2 id="tunnels-heading" tabindex="-1">Mapa y análisis del cruce seleccionado</h2>
-      <p class="note">Seleccioná cualquiera de los pasos calculados. Para cada caso se comparan el mismo origen y destino en tres redes.</p>
       <p id="tunnel-status" role="status">Cargando los recorridos…</p>
       <div id="tunnel-content" hidden>
         <div class="tunnel-controls">
           <label for="tunnel-case">Paso bajo nivel <select id="tunnel-case"></select></label>
-          <label for="tunnel-direction">Sentido <select id="tunnel-direction"><option value="outbound">A → B</option><option value="return">B → A</option></select></label>
         </div>
-        <p id="tunnel-endpoints"></p>
-        <div class="tunnel-metrics" id="tunnel-metrics"></div>
+        <div id="tunnel-metrics" aria-live="polite"></div>
         <fieldset class="tunnel-layers"><legend>Recorridos en el mapa</legend>
           <label><input type="checkbox" data-tunnel-mode="car" checked /> <span class="route-key car"></span> Auto</label>
           <label><input type="checkbox" data-tunnel-mode="walk" checked /> <span class="route-key walk"></span> A pie · más corto</label>
-          <label><input type="checkbox" data-tunnel-mode="step_free" checked /> <span class="route-key step_free"></span> A pie · sin escaleras registradas</label>
+          <label><input type="checkbox" data-tunnel-mode="step_free" checked /> <span class="route-key step_free"></span> En bici o con cochecito</label>
         </fieldset>
         <div id="tunnel-map" aria-label="Mapa de las rutas del paso bajo nivel seleccionado"></div>
+        <p><a id="tunnel-osm-link" target="_blank" rel="noopener">Ver en OpenStreetMap ↗</a></p>
+        <details id="endpoint-review"><summary>Revisar los puntos A y B</summary>
+          <p>Mové los pines sobre el mapa o editá las coordenadas. Elegí referencias comparables a ambos lados de las vías, fuera de los portales, y comprobá las manos y los accesos. Guardar los extremos no certifica las rampas.</p>
+          <p id="review-stale" hidden>Estás viendo puntos propuestos. Las rutas se ocultan y las cifras de esta página siguen siendo las de la última corrida: hace falta recalcular.</p>
+          <form id="endpoint-form">
+            <div class="endpoint-fields">
+              <label>A · longitud<input id="review-a-lon" type="number" step="any" required></label>
+              <label>A · latitud<input id="review-a-lat" type="number" step="any" required></label>
+              <label>B · longitud<input id="review-b-lon" type="number" step="any" required></label>
+              <label>B · latitud<input id="review-b-lat" type="number" step="any" required></label>
+            </div>
+            <label for="review-notes">Notas sobre los accesos y puntos elegidos</label><textarea id="review-notes" rows="2" maxlength="2000"></textarea>
+            <div class="review-actions"><button type="submit">Guardar revisión y seguir</button><button type="button" id="review-reset">Restaurar puntos calculados</button><button type="button" id="review-export">Exportar revisiones</button></div>
+          </form><p id="review-status" role="status"></p>
+          <p>Los borradores quedan en este navegador. Para actualizar el análisis: exportar, importar y recalcular. <a href="../docs/REVISION_EXTREMOS.md">Ver instrucciones</a>.</p>
+        </details>
         <p class="tunnel-caption">A y B: puntos de referencia. Gris discontinuo: ferrocarril. Las líneas superpuestas pueden ocultarse usando los controles.</p>
-        <div id="tunnel-finding" class="tunnel-finding" aria-live="polite"></div>
         <details class="more"><summary>Qué estamos midiendo y qué falta verificar</summary><div class="body">
+          <p id="tunnel-endpoints"></p>
+          <div id="tunnel-finding" class="tunnel-finding"></div>
           <p>Son caminos de menor distancia sobre una instantánea de OSM, calculados en ambos sentidos. El auto respeta manos y restricciones de giro simples; su ruta debe atravesar el túnel elegido. Los extremos se ajustan a nodos cercanos de cada red.</p>
           <p>“Sin escaleras registradas” evita escaleras, tramos marcados como no aptos para silla de ruedas y ciertas barreras. <strong>No certifica accesibilidad:</strong> faltan comprobar pendientes, anchos, superficies y obstáculos actuales.</p>
           <p>Los giros se estiman sobre la geometría y los cruces son únicamente los que están señalados en OSM. No equivalen a un relevamiento completo. Donde OSM representa la vereda sobre el eje de la calle, el detalle puede omitir cruces laterales.</p>

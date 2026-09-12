@@ -124,9 +124,27 @@ def prepare(sites):
     return cases
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--download',action='store_true');p.add_argument('--prepare',action='store_true',help='Explicitly regenerate automatic endpoints; existing configuration is otherwise preserved');args=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--download',action='store_true');p.add_argument('--prepare',action='store_true',help='Explicitly regenerate automatic endpoints; existing configuration is otherwise preserved');p.add_argument('--align-oneway',action='store_true',help='Orient automatic anchors upstream/downstream of one-way tunnels');args=p.parse_args()
     sites=json.loads((ROOT/'data/processed/tunnel-inventory.json').read_text(encoding='utf-8'))['sites']
-    if args.download:download(sites)
+    if args.download:
+        # Refresh every case snapshot, including pilots, without regenerating anchors.
+        from tunnels import download as download_cases
+        configured=json.loads((DATA/'cases_all.json').read_text(encoding='utf-8'))['cases']
+        for case in configured:
+            for attempt in range(3):
+                try:
+                    download_cases([case], ['https://overpass.kumi.systems/api/interpreter','https://overpass-api.de/api/interpreter'][attempt%2])
+                    break
+                except Exception:
+                    if attempt==2:raise
+                    time.sleep(5)
     config=DATA/'cases_all.json'
-    cases=prepare(sites) if args.prepare or not config.exists() else json.loads(config.read_text(encoding='utf-8'))['cases']
-    build(cases,ROOT/'data/processed/tunnels-all.json')
+    regenerate=args.prepare or not config.exists()
+    cases=prepare(sites) if regenerate else json.loads(config.read_text(encoding='utf-8'))['cases']
+    from tunnel_review import load_overrides
+    if args.align_oneway or regenerate:
+        from tunnel_endpoints import align_oneway
+        # Keep exported manual edits separate and never overwrite them here.
+        cases=align_oneway(cases)
+        config.write_text(json.dumps({'cases':cases},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    build(load_overrides(cases),ROOT/'data/processed/tunnels-all.json')

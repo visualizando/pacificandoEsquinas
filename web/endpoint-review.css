@@ -1,0 +1,12 @@
+#endpoint-review{margin-block:16px;scroll-margin-top:16px}
+.tunnel-controls label{min-width:0;max-width:100%}
+.tunnel-controls select{min-width:0;max-width:100%;box-sizing:border-box}
+.endpoint-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.endpoint-fields label{display:grid;gap:4px}
+#endpoint-form input,#endpoint-form textarea{box-sizing:border-box;width:100%;min-height:44px;font:inherit;padding:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+#endpoint-form>label{display:block;margin-top:12px}
+.review-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
+.review-actions button{min-height:44px;padding:8px 12px;font:inherit;cursor:pointer;border:1px solid var(--ink);border-radius:6px;background:var(--surface);color:var(--ink)}
+.review-actions button[type=submit]{background:var(--ink);color:var(--page)}
+#review-stale{padding:12px;border-inline-start:3px solid var(--accent)}
+@media(max-width:420px){.endpoint-fields{grid-template-columns:1fr}}

@@ -42,7 +42,9 @@ class BatchTests(unittest.TestCase):
         original=json.loads((ROOT/'data/tunnels/cases.json').read_text(encoding='utf-8'))['cases']
         for old in original:
             new=next(c for c in self.data['cases'] if c['id']==old['id'])
-            for key in ('origin','destination','tunnel_way_ids'):self.assertEqual(old[key],new[key])
+            self.assertEqual(old['tunnel_way_ids'],new['tunnel_way_ids'])
+            if new.get('endpoint_method')!='manual_map_review':
+                for key in ('origin','destination'):self.assertEqual(old[key],new[key])
 
     def test_download_dates_not_older_than_inventory(self):
         network=json.loads((ROOT/'data/tunnels/city-network.osm.json').read_text(encoding='utf-8'))

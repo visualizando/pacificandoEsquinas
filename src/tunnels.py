@@ -213,6 +213,8 @@ def build(cases, target=None):
                          'extra_percent':round(100*(free['distance_m']/walk['distance_m']-1),1),
                          'extra_minutes_distance_only':round((free['distance_m']-walk['distance_m'])/75,1)}
             directions[direction]={'valid_tunnel_crossing':valid,'pedestrian_endpoints_comparable':comparable,'routes':routes,'step_free_penalty':penalty}
+            from tunnel_review import audit
+            directions[direction]['endpoint_audit'] = audit(case, directions[direction])
         context=[]
         for e in elements:
             if e['type']!='way': continue
@@ -223,7 +225,7 @@ def build(cases, target=None):
                         'sha256':hashlib.sha256(raw).hexdigest(),'directions':directions,
                         'context':{'type':'FeatureCollection','features':context}})
         print(case['id'],json.dumps({d:{m:(r['status'],r.get('distance_m'),r.get('snap_m')) for m,r in v['routes'].items()} for d,v in directions.items()}),flush=True)
-    output={'schema_version':1,'method_version':'1.1','source':'OpenStreetMap contributors','license':'ODbL 1.0',
+    output={'schema_version':1,'method_version':'1.2','source':'OpenStreetMap contributors','license':'ODbL 1.0',
             'license_url':'https://www.openstreetmap.org/copyright','cases':results}
     target=target or ROOT/'data'/'processed'/'tunnels.json'
     target.write_text(json.dumps(output,ensure_ascii=False,separators=(',',':')),encoding='utf-8')
