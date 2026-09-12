@@ -50,7 +50,7 @@
     .wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 
     header { padding: 40px 0 8px; }
-    h1 { font-size: 30px; margin: 0 0 6px; letter-spacing: -0.02em; }
+    h1 { font-size: 30px; margin: 0 0 6px; letter-spacing:normal; }
     .lede { font-size: 17px; color: var(--ink-2); margin: 0 0 12px; max-width: 70ch; }
     details.more {
       border: 1px solid var(--border); border-radius: 10px;
@@ -84,12 +84,12 @@
       background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
       padding: 14px 16px; box-shadow: var(--shadow);
     }
-    .tile .val { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; }
+    .tile .val { font-size: 26px; font-weight: 700; letter-spacing:normal; }
     .tile .lbl { font-size: 12.5px; color: var(--ink-2); margin-top: 2px; }
     @media (max-width: 720px) { .tiles { grid-template-columns: repeat(2, 1fr); } }
 
     section.block { margin: 34px 0; }
-    .block > h2 { font-size: 20px; margin: 0 0 4px; letter-spacing: -0.01em; }
+    .block > h2 { font-size: 20px; margin: 0 0 4px; letter-spacing:normal; }
     .block > p.note { font-size: 14px; color: var(--ink-2); margin: 0 0 14px; max-width: 78ch; }
 
     /* Map */
@@ -141,7 +141,7 @@
     .top-table table { width: 100%; border-collapse: collapse; font-size: 11px; }
     .top-table thead th {
       position: sticky; top: 0; background: var(--surface);
-      text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em;
+      text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing:normal;
       color: var(--muted); font-weight: 700; padding: 5px 7px; border-bottom: 1px solid var(--axis);
     }
     .top-table td { padding: 4px 7px; border-bottom: 1px solid var(--grid); color: var(--ink-2); vertical-align: top; }
@@ -344,7 +344,7 @@
           <div class="evo-wrap">
             <svg id="chart-evo" viewBox="0 0 520 380" role="img" aria-label="Siniestros antes contra después por esquina"></svg>
             <div>
-              <p class="col-h" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 0 8px">Mayores caídas</p>
+              <p class="col-h" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:normal;color:var(--muted);margin:0 0 8px">Mayores caídas</p>
               <div id="evo-table" class="top-table"></div>
             </div>
           </div>

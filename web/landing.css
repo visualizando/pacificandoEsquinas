@@ -12,19 +12,19 @@ a { color:inherit; text-underline-offset:4px; }
 nav { display:flex; flex-wrap:wrap; gap:24px; }
 nav a { display:inline-flex; align-items:center; min-height:44px; font-size:14px; }
 .hero { padding-block:64px 72px; max-width:860px; }
-.eyebrow { color:var(--accent); font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin:0 0 20px; }
-h1 { font-size:clamp(2.5rem,6.4vw,4.5rem); letter-spacing:-.055em; line-height:1.06; font-weight:750; margin:0 0 28px; }
+.eyebrow { color:var(--accent); font-size:12px; font-weight:700; letter-spacing:normal; text-transform:uppercase; margin:0 0 20px; }
+h1 { font-size:clamp(2.5rem,6.4vw,4.5rem); letter-spacing:normal; line-height:1.06; font-weight:750; margin:0 0 28px; }
 .intro { font-size:clamp(1rem,2vw,1.2rem); max-width:65ch; color:var(--secondary); margin:0 0 28px; }
 .primary { display:inline-flex; align-items:center; gap:32px; min-height:48px; padding:12px 20px; background:var(--ink); color:var(--page); font-weight:600; text-decoration:none; border-radius:6px; }
 .section-head { margin-bottom:28px; }
-h2 { font-size:clamp(1.4rem,3vw,1.8rem); letter-spacing:-.03em; line-height:1.25; margin:0 0 8px; }
+h2 { font-size:clamp(1.4rem,3vw,1.8rem); letter-spacing:normal; line-height:1.25; margin:0 0 8px; }
 .section-head p { margin:0; color:var(--secondary); }
 .projects { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; }
 .project { padding:28px; background:var(--surface); border:1px solid var(--line); border-radius:8px; display:flex; flex-direction:column; align-items:flex-start; }
 .project-meta { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px 16px; width:100%; font-size:11px; color:var(--secondary); }
 .status { font-size:12px; font-weight:600; }
 .project:not(.upcoming) .status { color:var(--accent); }
-h3 { font-size:24px; line-height:1.2; letter-spacing:-.03em; margin:28px 0 12px; }
+h3 { font-size:24px; line-height:1.2; letter-spacing:normal; margin:28px 0 12px; }
 .project p { color:var(--secondary); margin:0 0 20px; }
 .project a { font-weight:650; display:inline-flex; gap:24px; min-height:44px; align-items:center; margin-top:auto; }
 .project .pending { font-size:13px; margin:auto 0 0; padding-block:12px; }

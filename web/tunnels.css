@@ -1,6 +1,6 @@
 .tunnel-jump { display:inline-block; margin:10px 0 0 16px; color:var(--ink); font-weight:600; }
 #tuneles { padding-top:20px; border-top:2px solid var(--ink); scroll-margin-top:24px; }
-.tunnel-kicker { font-size:11px; letter-spacing:.1em; font-weight:700; color:var(--ink-2); margin:0 0 10px; }
+.tunnel-kicker { font-size:11px; letter-spacing:normal; font-weight:700; color:var(--ink-2); margin:0 0 10px; }
 .tunnel-controls { display:flex; flex-wrap:wrap; gap:16px; margin:22px 0 12px; }
 .tunnel-controls label { display:grid; gap:6px; font-weight:600; font-size:13px; }
 .tunnel-controls select { min-height:44px; padding:8px 32px 8px 12px; font:inherit; color:var(--ink); background:var(--surface); border:1px solid var(--axis); border-radius:6px; }
@@ -15,7 +15,7 @@
 .tunnel-layers legend { font-size:12px; font-weight:600; margin-bottom:4px; }
 .tunnel-layers label { display:flex; align-items:center; gap:8px; min-height:44px; cursor:pointer; font-size:13px; }
 .route-key { display:inline-block; width:24px; border-top:4px solid; }
-.car { color:#1466a3; } .walk { color:#ab4b08; } .step_free { color:#8036ad; border-top-style:dashed; }
+.car { color:#8db6ce; } .walk { color:#ab4b08; } .step_free { color:#8036ad; border-top-style:solid; }
 #tunnel-map { height:440px; border:1px solid var(--border); border-radius:8px; background:#f1f1ed; }
 .tunnel-marker { background:#fff; color:#111; border:2px solid #111; border-radius:50%; width:28px; height:28px; display:grid; place-items:center; font-size:13px; font-weight:800; }
 .tunnel-street-label { color:#55554f; background:rgba(245,245,240,.9); font-size:11px; padding:1px 3px; pointer-events:none; max-width:150px; }

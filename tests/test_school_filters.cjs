@@ -1,0 +1,25 @@
+const assert=require('node:assert/strict');
+const {select,summarize}=require('../web/school-filters.js');
+const schools={a:{levels:['primaria','inicial'],site:'same',sector:'Estatal',commune:1},b:{levels:['primaria'],site:'same',sector:'Privada',commune:1},c:{levels:['secundaria'],site:'third',sector:'Estatal',commune:2}};
+const block=(id,avenue,direction,links)=>({properties:{id,avenue,direction,length_m:100,schools:links.map(([id,quality])=>({id,quality}))}});
+const data={schools,features:[block('1',false,'CRECIENTE',[['a','domicilio'],['b','revisar']]),block('2',true,'DOBLE',[['a','domicilio'],['c','domicilio']]),block('3',false,null,[['c','domicilio']])]};
+data.features[0].properties.area_m2=800; data.features[0].properties.measured_length_m=80;
+data.features[1].properties.area_m2=1200; data.features[1].properties.measured_length_m=80;
+const base={review:true,minimum:1};
+assert.equal(select(data,base).length,3);
+assert.equal(select(data,{...base,noAvenues:true}).length,2);
+assert.equal(select(data,{...base,oneWay:true}).length,1);
+assert.equal(select(data,{...base,minimum:2,level:'primaria'}).length,1);
+assert.equal(select(data,{...base,minimum:2,level:'primaria',review:false}).length,0);
+assert.equal(select(data,{...base,sector:'Privada'}).length,1);
+assert.equal(select(data,{...base,commune:'2'}).length,2);
+assert.equal(select(data,{...base,level:'superior'}).length,0);
+assert.deepEqual(summarize(select(data,base),schools),{blocks:3,establishments:3,sites:2,length:300,area:2000,measuredLength:160,measuredBlocks:2});
+assert.equal(summarize([],schools).area,0);
+assert.equal(data.features[0].properties.schools.length,2);
+console.log('Filtros combinados, sentidos desconocidos, deduplicación y área: OK');
+// Multiple selected levels use union, preserving distinct establishments and blocks.
+assert.equal(select(data,{...base,level:'inicial,primaria'}).length,2);
+assert.equal(select(data,{...base,level:'inicial,primaria',minimum:2}).length,1);
+assert.equal(summarize(select(data,{...base,level:'inicial,primaria'}),schools).establishments,2);
+assert.equal(select(data,{...base,level:'inicial,secundaria'}).length,3);
