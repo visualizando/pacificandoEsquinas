@@ -9,14 +9,14 @@ function visibility() {
   }
   if (popup) popup.remove();
   const active = ['existing','proposed'].filter(k => $(k).checked);
-  $('status').textContent = active.length === 2 ? 'Red existente y ciclovías para completar la red.' : active.length ? (active[0] === 'existing' ? 'Mostrando solo la infraestructura registrada en OpenStreetMap.' : 'Mostrando solo las ciclovías para completar la red.') : 'Las dos capas están ocultas. Activá una para explorar la red.';
+  $('status').textContent = active.length === 2 ? 'Red actual y propuesta.' : active.length ? (active[0] === 'existing' ? 'Red actual.' : 'Ciclovías propuestas.') : 'Las dos capas están ocultas. Activá una para explorar la red.';
 }
 function select(feature, lngLat) {
   const p = feature.properties;
   const content = document.createElement('div');
   const title = document.createElement('h3'); title.textContent = p.street;
-  const kind = document.createElement('p'); kind.textContent = p.kind === 'existing' ? 'Red existente · registrada en OSM' : 'Ciclovías para completar la red';
-  const length = document.createElement('p'); length.textContent = `${fmt(p.length_m)} m de tramo cartográfico`;
+  const kind = document.createElement('p'); kind.textContent = p.kind === 'existing' ? 'Red actual' : 'Ciclovías para completar la red';
+  const length = document.createElement('p'); length.textContent = `${fmt(p.length_m)} m`;
   const link = document.createElement('a'); link.href = `https://www.openstreetmap.org/way/${p.osm_id}`; link.textContent = 'Ver calle en OpenStreetMap'; link.target = '_blank'; link.rel = 'noopener';
   content.append(title,kind,length,link);
   $('selection').replaceChildren(content);
@@ -29,11 +29,11 @@ async function start() {
     if(!response.ok) throw Error('No se pudieron cargar los datos de ciclovías.');
     data = await response.json();
     const m = data.metadata;
-    for (const [value,label,cls] of [[`${fmt(m.existing_km)} km`,'Infraestructura registrada','existing-value'],[`${fmt(m.proposed_km)} km`,'Para completar la red','proposed-value']]) {
+    for (const [value,label,cls] of [[`${fmt(m.existing_km)} km`,'Red actual','existing-value'],[`${fmt(m.proposed_km)} km`,'Para completar la red','proposed-value']]) {
       const row=document.createElement('div'), name=document.createElement('span'), number=document.createElement('strong');
       name.textContent=label; number.textContent=value; number.className=cls; row.append(name,number); $('metrics').append(row);
     }
-    $('source-date').textContent=`Base OSM: ${new Date(m.osm_date).toLocaleDateString('es-AR',{timeZone:'UTC'})}. Las longitudes corresponden a geometrías cartográficas, no a un inventario auditado de kilómetros de obra.`;
+    $('source-date').textContent=`Red actual · OpenStreetMap: ${new Date(m.osm_date).toLocaleDateString('es-AR',{timeZone:'UTC'})}. Longitudes aproximadas.`;
     if(typeof maplibregl === 'undefined') throw Error('No se pudo cargar la biblioteca del mapa.');
     map = new maplibregl.Map({container:'map',attributionControl:false,bounds,fitBoundsOptions:{padding:22},style:{version:8,sources:{blocks:{type:'geojson',data:'../data/processed/school-blocks-base.json',attribution:'Manzanas · Buenos Aires Data · CC-BY-2.5-AR'}},layers:[{id:'paper',type:'background',paint:{'background-color':'#fafbf8'}},{id:'blocks',type:'fill',source:'blocks',paint:{'fill-color':'#e3e6de'}},{id:'block-edges',type:'line',source:'blocks',paint:{'line-color':'#fafbf8','line-width':['interpolate',['linear'],['zoom'],10,.6,14,2,18,5]}}]}});
     map.addControl(new maplibregl.NavigationControl());

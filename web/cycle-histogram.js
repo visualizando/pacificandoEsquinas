@@ -17,7 +17,7 @@ function render(features,options={}){
   const chart=$('distance-histogram');chart.replaceChildren();
   for(const [key,label] of [['current','Situación actual'],['total','Con la propuesta']]){
     const row=document.createElement('div');row.className='population-stack-row';const head=document.createElement('div');head.className='population-stack-head';
-    const name=document.createElement('strong');name.textContent=label;const total=document.createElement('span');total.textContent='100% de la población seleccionada';head.append(name,total);row.append(head);
+    const name=document.createElement('strong');name.textContent=label;const total=document.createElement('span');total.textContent='100%';head.append(name,total);row.append(head);
     const bar=document.createElement('div');bar.className='population-stack';bar.setAttribute('role','group');bar.setAttribute('aria-label',label);
     a.bins.forEach((b,i)=>{const percentage=a.count?100*b[key]/a.count:0;if(!percentage)return;const segment=document.createElement('button');segment.type='button';segment.className='population-segment';segment.style.width=`${percentage}%`;segment.style.background=colors[i];segment.style.color=i>=3?'white':'#4b211b';
       const description=`${label} · ${range(b)}: ≈ ${fmt(b[key])} personas (${pct(b[key])}%).`;segment.setAttribute('aria-label',description);segment.title=description;if(percentage>=7)segment.textContent=`${pct(b[key])}%`;
@@ -25,7 +25,7 @@ function render(features,options={}){
     });row.append(bar);chart.append(row);
   }
   const legend=$('population-stack-legend');legend.replaceChildren();a.bins.forEach((b,i)=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.background=colors[i];swatch.setAttribute('aria-hidden','true');item.append(swatch,document.createTextNode(range(b)));legend.append(item);});
-  $('histogram-detail').textContent='De izquierda a derecha: más cerca → más lejos. Seleccioná un tramo para ver población y porcentaje.';
+  $('histogram-detail').textContent='Seleccioná un color para ver cuántas personas representa.';
   const body=$('histogram-table-body');body.replaceChildren();for(const b of a.bins){const tr=document.createElement('tr');for(const text of [range(b),`${fmt(b.current)} (${pct(b.current)}%)`,`${fmt(b.total)} (${pct(b.total)}%)`]){const td=document.createElement('td');td.textContent=text;tr.append(td);}body.append(tr);}
 }
 root.CycleHistogram={aggregate,render};

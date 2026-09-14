@@ -18,8 +18,8 @@ window.CycleCoverage={
         const field=measure.value||'population';
         CycleHistogram.render(populationData.features,{weightField:field});
         const source=document.getElementById('population-source');source.hidden=false;
-        source.textContent='Radios del archivo aportado · Año censal pendiente de confirmar. 0–14 años incluye a quienes tienen 14; cantidad estimada a partir del porcentaje informado.';
-        document.getElementById('histogram-method').textContent='Estimación: se asigna toda la población de cada radio a la distancia en línea recta de su centro. Ambas barras representan el 100% de la misma población. No describe domicilios individuales ni demuestra uso o beneficio efectivo. Compara la propuesta consolidada, no el borrador.';
+        source.textContent='Población por radio censal: año pendiente de confirmar.';
+        document.getElementById('histogram-method').textContent='Cada barra muestra el total de la población elegida. Los tonos claros indican mayor cercanía; el rojo oscuro, mayor distancia.';
         document.getElementById('distance-histogram').setAttribute('aria-label','Dos barras al 100% de población por distancia a ciclovías');
       }
       measure.addEventListener('change',histogram);
@@ -34,7 +34,7 @@ window.CycleCoverage={
           const field=CycleCoverage.mode==='current'?'current_m':'total_m';
           map.setPaintProperty('coverage','fill-color',['interpolate',['linear'],['get',field],0,'#fff5f0',500,'#fb6a4a',1000,'#b30000']);
         }
-        status.textContent=enabled?`${CycleCoverage.mode==='current'?'Red actual':'Red actual + ciclovías para completar la red'} · Más rojo = más lejos. Seleccioná una manzana para comparar distancias.`:'Distancia por manzana desactivada.';
+        status.textContent=enabled?`${CycleCoverage.mode==='current'?'Red actual':'Con la propuesta'} · Seleccioná una manzana para ver las distancias.`:'Activá una opción para ver qué zonas quedan más lejos.';
       }
       inputs.forEach(input=>{input.disabled=false;input.addEventListener('change',change);});change();
       this.select=e=>{
@@ -42,7 +42,7 @@ window.CycleCoverage={
         const feature=map.queryRenderedFeatures(e.point,{layers:['coverage']})[0];if(!feature)return;
         const p=feature.properties,content=document.createElement('div'),title=document.createElement('h3');title.textContent=`Manzana ${p.block_id}`;content.append(title);
         const fmt=n=>Math.round(n).toLocaleString('es-AR');
-        for(const text of [`Red actual: ${fmt(p.current_m)} m`,`Red completa: ${fmt(p.total_m)} m`,`Se acerca ${fmt(p.current_m-p.total_m)} m con la propuesta.`,`Distancia en línea recta desde el centro del área; no es un recorrido por calles ni una distancia domiciliaria.`]){const para=document.createElement('p');para.textContent=text;content.append(para);}
+        for(const text of [`Red actual: ${fmt(p.current_m)} m`,`Con la propuesta: ${fmt(p.total_m)} m`,`Se acerca ${fmt(p.current_m-p.total_m)} m con la propuesta.`,`Distancia aproximada en línea recta.`]){const para=document.createElement('p');para.textContent=text;content.append(para);}
         document.getElementById('selection').replaceChildren(content.cloneNode(true));
         if(popup)popup.remove();popup=new maplibregl.Popup().setLngLat(e.lngLat).setDOMContent(content).addTo(map);
       };
