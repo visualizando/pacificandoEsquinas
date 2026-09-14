@@ -9,13 +9,13 @@ function visibility() {
   }
   if (popup) popup.remove();
   const active = ['existing','proposed'].filter(k => $(k).checked);
-  $('status').textContent = active.length === 2 ? 'Red actual y propuesta.' : active.length ? (active[0] === 'existing' ? 'Red actual.' : 'Ciclovías propuestas.') : 'Las dos capas están ocultas. Activá una para explorar la red.';
+  $('status').textContent = active.length === 2 ? 'Ciclovías actuales y nuestra propuesta.' : active.length ? (active[0] === 'existing' ? 'Red actual.' : 'Nuestra propuesta de nuevas ciclovías.') : 'Las dos capas están ocultas. Activá una para explorar la red.';
 }
 function select(feature, lngLat) {
   const p = feature.properties;
   const content = document.createElement('div');
   const title = document.createElement('h3'); title.textContent = p.street;
-  const kind = document.createElement('p'); kind.textContent = p.kind === 'existing' ? 'Red actual' : 'Ciclovías para completar la red';
+  const kind = document.createElement('p'); kind.textContent = p.kind === 'existing' ? 'Red actual' : 'Nuestra propuesta · nuevas ciclovías';
   const length = document.createElement('p'); length.textContent = `${fmt(p.length_m)} m`;
   const link = document.createElement('a'); link.href = `https://www.openstreetmap.org/way/${p.osm_id}`; link.textContent = 'Ver calle en OpenStreetMap'; link.target = '_blank'; link.rel = 'noopener';
   content.append(title,kind,length,link);
@@ -29,7 +29,7 @@ async function start() {
     if(!response.ok) throw Error('No se pudieron cargar los datos de ciclovías.');
     data = await response.json();
     const m = data.metadata;
-    for (const [value,label,cls] of [[`${fmt(m.existing_km)} km`,'Red actual','existing-value'],[`${fmt(m.proposed_km)} km`,'Para completar la red','proposed-value']]) {
+    for (const [value,label,cls] of [[`${fmt(m.existing_km)} km`,'Red actual','existing-value'],[`${fmt(m.proposed_km)} km`,'Nuestra propuesta','proposed-value']]) {
       const row=document.createElement('div'), name=document.createElement('span'), number=document.createElement('strong');
       name.textContent=label; number.textContent=value; number.className=cls; row.append(name,number); $('metrics').append(row);
     }
