@@ -4,12 +4,12 @@ const fmt = n => n.toLocaleString('es-AR', {maximumFractionDigits:1});
 let map, data, popup;
 const bounds = [[-58.535,-34.705],[-58.335,-34.525]];
 function visibility() {
-  for (const kind of ['existing','proposed']) {
-    map.setLayoutProperty(kind, 'visibility', $(kind).checked ? 'visible' : 'none');
-  }
+  const proposed = $('proposed').checked;
+  map.setLayoutProperty('existing', 'visibility', 'visible');
+  map.setLayoutProperty('proposed', 'visibility', proposed ? 'visible' : 'none');
   if (popup) popup.remove();
-  const active = ['existing','proposed'].filter(k => $(k).checked);
-  $('status').textContent = active.length === 2 ? 'Ciclovías actuales y nuestra propuesta.' : active.length ? (active[0] === 'existing' ? 'Red actual.' : 'Nuestra propuesta de nuevas ciclovías.') : 'Las dos capas están ocultas. Activá una para explorar la red.';
+  $('status').textContent = proposed ? 'Red actual + nuevas ciclovías de nuestra propuesta.' : 'Situación actual: las ciclovías que ya existen.';
+  CycleCoverage.update?.();
 }
 function select(feature, lngLat) {
   const p = feature.properties;

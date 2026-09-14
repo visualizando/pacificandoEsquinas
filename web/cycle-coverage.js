@@ -3,7 +3,7 @@ window.CycleCoverage={
   mode:'off',
   async init(map, networkGeneratedAt){
     const status=document.getElementById('coverage-status'),legend=document.getElementById('coverage-legend');
-    const inputs=[...document.querySelectorAll('[name="coverage"]')];
+    const toggle=document.getElementById('coverage-toggle');
     let popup,populationData;
     const measure=document.getElementById('histogram-measure');
     const near=document.createElement('span'),ramp=document.createElement('div'),far=document.createElement('span');
@@ -26,7 +26,7 @@ window.CycleCoverage={
       map.addSource('coverage',{type:'geojson',data});
       map.addLayer({id:'coverage',type:'fill',source:'coverage',layout:{visibility:'none'},paint:{'fill-color':'#fff5f0'}},'block-edges');
       function change(){
-        CycleCoverage.mode=inputs.find(input=>input.checked).value;
+        CycleCoverage.mode=toggle.checked?(document.getElementById('proposed').checked?'total':'current'):'off';
         const enabled=CycleCoverage.mode!=='off';
         map.setLayoutProperty('coverage','visibility',enabled?'visible':'none');legend.hidden=!enabled;
         if(popup)popup.remove();
@@ -34,9 +34,9 @@ window.CycleCoverage={
           const field=CycleCoverage.mode==='current'?'current_m':'total_m';
           map.setPaintProperty('coverage','fill-color',['interpolate',['linear'],['get',field],0,'#fff5f0',500,'#fb6a4a',1000,'#b30000']);
         }
-        status.textContent=enabled?`${CycleCoverage.mode==='current'?'Red actual':'Con la propuesta'} · Seleccioná una manzana para ver las distancias.`:'Activá una opción para ver qué zonas quedan más lejos.';
+        status.textContent=enabled?`${CycleCoverage.mode==='current'?'Red actual':'Con la propuesta'} · Seleccioná una manzana para ver las distancias.`:'Sombreado apagado.';
       }
-      inputs.forEach(input=>{input.disabled=false;input.addEventListener('change',change);});change();
+      this.update=change;toggle.disabled=false;toggle.addEventListener('change',change);change();
       this.select=e=>{
         if(this.mode==='off')return;
         const feature=map.queryRenderedFeatures(e.point,{layers:['coverage']})[0];if(!feature)return;
