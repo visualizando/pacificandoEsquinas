@@ -57,7 +57,8 @@ El sitio necesita un servidor HTTP (no funciona abriendo el archivo directo, por
 .venv\Scripts\python.exe -m http.server 8765
 ```
 
-- **Portada**: <http://localhost:8765/web/index.html> — propósito del proyecto, accesos a los análisis y futura línea de ciclovías.
+- **Portada**: <http://localhost:8765/web/index.html> — propósito del proyecto y accesos a los cuatro análisis.
+- **Ciclovías**: <http://localhost:8765/web/ciclovias.html> — red existente OSM y propuesta de prolongación de sus extremos siguiendo calles. [Fuentes y método](docs/CICLOVIAS.md).
 - **Calles escolares**: <http://localhost:8765/web/escuelas.html> — cuadras candidatas con filtros por nivel, gestión, comuna, avenidas, sentido y concentración de establecimientos; conteos, porcentajes y superficie temporal calculada entre veredas, con cobertura de medición. [Fuentes y método](docs/CALLES_ESCOLARES.md).
 - **Mapa interactivo**: <http://localhost:8765/web/analisis.html> — todas las esquinas coloreadas por índice, con filtro por comuna, selector de ranking (global / por comuna), gráficos de distribución y validación.
 - **Reporte de intervenciones**: <http://localhost:8765/web/report.html> (o el botón *"Ver reporte detallado"* del mapa) — las top-N esquinas con su desglose por eje y una **propuesta de intervención de bajo costo** derivada de sus factores (acortar el cruce, enderezarlo, semáforo peatonal, calmar el tránsito). Consume `data/processed/reporte.json`.
