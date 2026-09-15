@@ -2,6 +2,7 @@
 window.CycleCoverage={
   mode:'off',
   async init(map, networkGeneratedAt){
+    const finishCoverage = SiteUI.begin('Cargando cobertura y población…');
     const status=document.getElementById('coverage-status'),legend=document.getElementById('coverage-legend');
     const toggle=document.getElementById('coverage-toggle');
     let popup,populationData;
@@ -10,7 +11,7 @@ window.CycleCoverage={
     near.textContent='Cerca · 0 m';far.textContent='Lejos · 1.000 m o más';ramp.className='coverage-ramp';ramp.setAttribute('aria-hidden','true');
     legend.replaceChildren(near,ramp,far);
     try{
-      const response=await fetch('../data/processed/cycle-coverage.json?v=1',{cache:'no-store'});
+      const response=await fetch('../data/processed/cycle-coverage.json?v=1');
       if(!response.ok)throw Error('No se pudo cargar la distancia por manzana. Recargá para reintentar.');
       const data=await response.json();
       if(data.metadata.network_generated_at!==networkGeneratedAt)throw Error('Las distancias requieren actualizarse para la nueva propuesta.');
@@ -47,12 +48,13 @@ window.CycleCoverage={
         if(popup)popup.remove();popup=new maplibregl.Popup().setLngLat(e.lngLat).setDOMContent(content).addTo(map);
       };
       try{
-        const response=await fetch('../data/processed/cycle-population.json?v=1',{cache:'no-store'});
+        const response=await fetch('../data/processed/cycle-population.json?v=1');
         if(!response.ok)throw Error('No se pudo cargar la población.');
         populationData=await response.json();
         if(populationData.metadata.network_generated_at!==networkGeneratedAt)throw Error('Es necesario recalcular las distancias de población.');
         measure.disabled=false;[...measure.options].forEach(option=>option.disabled=false);measure.value='population';histogram();
       }catch(e){const source=document.getElementById('population-source');source.hidden=false;source.textContent=e.message+' El análisis de manzanas sigue disponible.';document.getElementById('histogram-summary').textContent='Comparación de población no disponible.';}
     }catch(e){status.textContent=e.message;document.getElementById('histogram-summary').textContent=e.message;}
+    finally { finishCoverage(); }
   }
 };

@@ -1,4 +1,5 @@
 'use strict';
+const finishPageLoad = SiteUI.begin('Cargando datos y mapa…');
 const $ = id => document.getElementById(id);
 const fmt = n => n.toLocaleString('es-AR', {maximumFractionDigits:1});
 let map, data, popup;
@@ -25,7 +26,7 @@ function select(feature, lngLat) {
 }
 async function start() {
   try {
-    const response = await fetch('../data/processed/cycle-completion.json?v=union1', {cache:'no-store'});
+    const response = await fetch('../data/processed/cycle-completion.json?v=union1');
     if(!response.ok) throw Error('No se pudieron cargar los datos de ciclovías.');
     data = await response.json();
     const m = data.metadata;
@@ -40,6 +41,7 @@ async function start() {
     map.addControl(new maplibregl.AttributionControl({compact:true}));
     map.addControl(new maplibregl.ScaleControl({unit:'metric'}));
     map.on('error',()=>{$('status').textContent='No se pudo cargar parte del mapa. Recargá la página para reintentar.';});
+    SiteUI.watchMap(map, finishPageLoad);
     map.on('load',()=>{
       for(const kind of ['proposed','existing']) {
         map.addSource(kind,{type:'geojson',data:data[kind],attribution:'© OpenStreetMap contributors · ODbL'});
@@ -63,6 +65,6 @@ async function start() {
       new ResizeObserver(() => { map.resize(); map.fitBounds(bounds,{padding:22,duration:0}); }).observe($('map'));
       visibility();
     });
-  } catch(error) { $('status').textContent=`${error.message} Recargá la página para reintentar. Los datos también se pueden descargar.`; }
+  } catch(error) {finishPageLoad(true); $('status').textContent=`${error.message} Recargá la página para reintentar. Los datos también se pueden descargar.`; }
 }
 start();

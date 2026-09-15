@@ -1,3 +1,4 @@
+const finishschool_noise = SiteUI.begin('Cargando análisis…');
 /* Historical baseline, deliberately independent of proposal filters. */
 (async () => {
   const summary = document.getElementById('noise-summary');
@@ -40,4 +41,4 @@
     });
     overlay.addEventListener('pointerleave', () => { highlight.setAttribute('visibility','hidden'); note.textContent='Cada punto representa una cuadra. Los puntos pueden superponerse.'; });
   } catch (error) { summary.textContent = 'No se pudo cargar el cruce de ruido. Recargá la página para reintentar.'; }
-})();
+})().finally(() => finishschool_noise());

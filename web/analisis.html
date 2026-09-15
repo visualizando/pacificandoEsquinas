@@ -1,11 +1,13 @@
 <!doctype html>
 <html lang="es">
 <head>
+<link rel="stylesheet" href="site-ui.css?v=1">
+<script src="site-ui.js?v=1"></script>
   <meta charset="utf-8" />
   <title>Índice de Esquinas Peligrosas — CABA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
-  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <link href="vendor/maplibre-gl-4.7.1/maplibre-gl.css" rel="stylesheet" />
+  <script src="vendor/maplibre-gl-4.7.1/maplibre-gl.js"></script>
   <script>if(location.hash==='#tuneles') location.replace('tuneles.html');</script>
   <style>
     /* Paleta: chrome/ink del sistema de dataviz; la escala de RIESGO
@@ -173,8 +175,8 @@
     }
     .chart-tip .t { font-weight: 700; margin-bottom: 2px; }
 
-    footer { color: var(--muted); font-size: 12.5px; padding: 20px 0 50px; border-top: 1px solid var(--border); margin-top: 20px; }
-    footer a { color: var(--ink-2); }
+    #footer { color: var(--muted); font-size: 12.5px; padding: 20px 0 50px; border-top: 1px solid var(--border); margin-top: 20px; }
+    #footer a { color: var(--ink-2); }
     .theme-toggle {
       position: fixed; top: 14px; right: 16px; z-index: 60;
       background: var(--surface); border: 1px solid var(--border); color: var(--ink);
@@ -190,6 +192,7 @@
   </style>
 </head>
 <body>
+<div id="site-loading" class="site-loading" role="status" aria-live="polite"><span>Cargando datos y mapa…</span></div>
   <button class="theme-toggle" id="theme-toggle" title="Cambiar tema" aria-label="Cambiar tema claro u oscuro">◑</button>
   <div class="wrap">
     <header id="esquinas">
@@ -352,7 +355,7 @@
       </div>
     </section>
 
-    <footer class="wrap" id="footer"></footer>
+    <div class="wrap" id="footer"></div>
   </div>
 
   <div class="chart-tip" id="tip"></div>
@@ -546,6 +549,7 @@
       renderLegend();
       refreshMap();
       fitToActive();
+      SiteUI.watchMap(map, finishPageLoad);
 
       document.getElementById("color-by").addEventListener("change", refreshMap);
       document.getElementById("index-field").addEventListener("change", (e) => {
@@ -1111,7 +1115,8 @@
         </table>`;
     }
 
-    boot();
+    const finishPageLoad = SiteUI.begin('Cargando esquinas y mapa…');
+    boot().catch(error => { console.error(error); finishPageLoad(true); });
   </script>
-</body>
+<footer class="site-footer"><span>Pacificando la ciudad · Andrés</span><nav aria-label="Enlaces del proyecto"><a href="https://visualizando.ar">visualizando.ar</a><a href="https://github.com/visualizando/pacificandoEsquinas">GitHub · código y datos</a><a href="index.html">Inicio</a></nav></footer></body>
 </html>

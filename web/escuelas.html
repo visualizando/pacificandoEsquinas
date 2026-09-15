@@ -1,11 +1,14 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="es"><head>
+<link rel="stylesheet" href="site-ui.css?v=1">
+<script src="site-ui.js?v=1"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Calles escolares — Pacificando la ciudad</title>
 <link rel="stylesheet" href="landing.css?v=2"><link rel="stylesheet" href="schools.css?v=noise1"><link rel="stylesheet" href="school-intro.css?v=1">
-<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
-<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-<script src="school-address-search.js?v=1" defer></script><script src="school-filters.js?v=multilevel9" defer></script><script src="school-link.js?v=multilevel9" defer></script><script src="schools.js?v=multilevel9" defer></script><script src="school-share.js?v=multilevel9" defer></script></head>
-<body><a class="skip" href="#contenido">Saltar al contenido</a>
+<link rel="stylesheet" href="vendor/maplibre-gl-4.7.1/maplibre-gl.css">
+<script src="vendor/maplibre-gl-4.7.1/maplibre-gl.js" defer></script>
+<script src="school-address-search.js?v=1" defer></script><script src="school-filters.js?v=multilevel9" defer></script><script src="school-link.js?v=multilevel9" defer></script><script src="schools.js?v=loading1" defer></script><script src="school-share.js?v=multilevel9" defer></script></head>
+<body>
+<div id="site-loading" class="site-loading" role="status" aria-live="polite"><span>Cargando datos y mapa…</span></div><a class="skip" href="#contenido">Saltar al contenido</a>
 <header class="wrap topbar"><a class="brand" href="index.html">← Pacificando la ciudad<span>Buenos Aires</span></a><nav aria-label="Análisis"><a href="analisis.html">Esquinas</a><a href="tuneles.html">Túneles</a><a href="escuelas.html" aria-current="page">Escuelas</a></nav></header>
 <main id="contenido" class="school-main"><div class="heading"><h1>Calles escolares</h1><p>El entorno de una escuela también importa para aprender, llegar seguros y jugar.</p></div>
 <section class="school-intro" aria-label="Los problemas">
@@ -24,7 +27,7 @@
 <details><summary>Cómo se calculó</summary><p id="noise-coverage"></p><p>Se muestrea el eje de cada cuadra cada 5 m como máximo. El eje horizontal muestra qué porcentaje de los puntos con datos cae en rangos de 65 dBA o más. El corte de 65 dBA es exploratorio: no es un límite sanitario ni una medición dentro del aula. El gráfico incluye todas las cuadras escolares, sin aplicar los filtros de la propuesta.</p><p>Fuente: <a href="https://data.buenosaires.gob.ar/dataset/mapa-ruido/resource/ce377913-43ac-4686-b244-0ac4c55012da">Mapa de ruido diurno 2018, BA Data</a> · CC-BY-2.5-AR. Es una estimación histórica; no describe necesariamente el ruido actual. <a href="../data/processed/school-noise.json">Descargar cruce</a>.</p></details>
 </section>
 <section class="school-proposal" aria-labelledby="proposal-title"><h2 id="proposal-title">La propuesta: abrir la calle al juego</h2><p>Restringir el tránsito pasante frente a las escuelas durante el horario escolar puede reducir el ruido y la contaminación, mejorar la seguridad y abrir espacio para jugar, manteniendo el acceso de los frentistas.</p></section>
-<script src="school-noise.js?v=1" defer></script>
+<script src="school-noise.js?v=loading1" defer></script>
 <div class="workspace"><aside><form id="filters">
 <div class="filter-row"><span class="filter-label">Nivel</span><div id="level-chips" class="chips" role="group" aria-label="Nivel educativo">
 <button type="button" data-level="" aria-pressed="true">Todos</button><button type="button" data-level="inicial" aria-pressed="false">Jardines</button><button type="button" data-level="primaria" aria-pressed="false">Primarias</button><button type="button" data-level="secundaria" aria-pressed="false">Secundarias</button><button type="button" data-level="superior" aria-pressed="false">Superior</button><button type="button" data-level="otros" aria-pressed="false">Otros</button></div><input id="level" type="hidden" value=""></div>
@@ -46,4 +49,4 @@
 <p>Ubicación aproximada: el domicilio no permite identificar la cuadra con suficiente certeza. Se asignó una calle cercana.</p>
 <p id="surface-detail"></p><p>Superficie calculada entre veredas de 2019, con mediciones cada 5 m como máximo. Se excluyen intervalos sin datos y 10 m en cada extremo para no sumar cruces. El total es parcial, sin extrapolación. Los porcentajes usan totales fijos de CABA, no del área visible. Las manzanas son esquemáticas.</p>
 <p>Manzanas equivalentes: superficie temporal ÷ 10.000 m² (referencia de 100 × 100 m, no tamaño real de cada manzana).</p>
-<a href="../docs/CALLES_ESCOLARES.md">Método completo</a></details></main></body></html>
+<a href="../docs/CALLES_ESCOLARES.md">Método completo</a></details></main><footer class="site-footer"><span>Pacificando la ciudad · Andrés</span><nav aria-label="Enlaces del proyecto"><a href="https://visualizando.ar">visualizando.ar</a><a href="https://github.com/visualizando/pacificandoEsquinas">GitHub · código y datos</a><a href="index.html">Inicio</a></nav></footer></body></html>

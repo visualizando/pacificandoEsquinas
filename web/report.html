@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="es">
 <head>
+<link rel="stylesheet" href="site-ui.css?v=1">
+<script src="site-ui.js?v=1"></script>
   <meta charset="utf-8" />
   <title>Reporte de intervenciones — Esquinas Peligrosas CABA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -92,7 +94,7 @@
     .no-iv { font-size: 13px; color: var(--muted); font-style: italic; }
 
     .ctx { margin-top: 12px; font-size: 12.5px; color: var(--ink-2); }
-    footer { color: var(--muted); font-size: 12.5px; padding: 24px 0 50px; border-top: 1px solid var(--border); margin-top: 24px; }
+    #footer { color: var(--muted); font-size: 12.5px; padding: 24px 0 50px; border-top: 1px solid var(--border); margin-top: 24px; }
   </style>
 </head>
 <body>
@@ -122,7 +124,7 @@
 
     <div id="list"></div>
 
-    <footer id="footer"></footer>
+    <div id="footer"></div>
   </div>
 
   <script>
@@ -354,5 +356,5 @@
     }
     boot();
   </script>
-</body>
+<footer class="site-footer"><span>Pacificando la ciudad · Andrés</span><nav aria-label="Enlaces del proyecto"><a href="https://visualizando.ar">visualizando.ar</a><a href="https://github.com/visualizando/pacificandoEsquinas">GitHub · código y datos</a><a href="index.html">Inicio</a></nav></footer></body>
 </html>

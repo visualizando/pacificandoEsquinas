@@ -1,3 +1,4 @@
+const finishPageLoad = SiteUI.begin('Cargando datos y mapa…');
 const $=id=>document.getElementById(id), fmt=(n,d=0)=>n.toLocaleString('es-AR',{maximumFractionDigits:d});
 let data, selected=[], map, loaded=false, popup;
 const fc=features=>({type:'FeatureCollection',features});
@@ -47,7 +48,7 @@ function update(){
   if(addressQuery)renderAddress();
 }
 async function start(){
-  try{const response=await fetch('../data/processed/school-streets.json?v=surface-2019-1',{cache:'no-store'});if(!response.ok)throw Error('No se pudo descargar el archivo de cuadras.');data=await response.json();
+  try{const response=await fetch('../data/processed/school-streets.json?v=surface-2019-1');if(!response.ok)throw Error('No se pudo descargar el archivo de cuadras.');data=await response.json();
     if(!data.metadata.surface)throw Error('Faltan los datos de superficie. Recargá la página.');
     for(let i=1;i<=15;i++)$('commune').add(new Option(`Comuna ${i}`,String(i)));
     restoreSchoolLink();
@@ -57,10 +58,11 @@ async function start(){
     map=new maplibregl.Map({container:'map',preserveDrawingBuffer:true,attributionControl:false,center:[-58.44,-34.615],zoom:11.5,style:{version:8,sources:{blocks:{type:'geojson',data:'../data/processed/school-blocks-base.json',attribution:'Manzanas esquemáticas · Buenos Aires Data · CC-BY-2.5-AR'}},layers:[{id:'paper',type:'background',paint:{'background-color':'#fafbf8'}},{id:'blocks',type:'fill',source:'blocks',paint:{'fill-color':'#e3e6de'}},{id:'block-edges',type:'line',source:'blocks',paint:{'line-color':'#fafbf8','line-width':['interpolate',['linear'],['zoom'],10,.6,14,2,18,5]}}]}});
     map.addControl(new maplibregl.NavigationControl());
     map.addControl(new maplibregl.AttributionControl({compact:true}));
+    SiteUI.watchMap(map, finishPageLoad);
     map.on('load',()=>{map.addSource('selection',{type:'geojson',data:fc([])});map.addLayer({id:'selection',type:'line',source:'selection',layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':['step',['get','count'],'#79ae8c',2,'#3d8a61',3,'#176044'],'line-width':['interpolate',['linear'],['zoom'],10,2,14,4,18,8]}});loaded=true;update();});
     map.on('click','selection',e=>{const f=selected.find(f=>f.properties.id===e.features[0].properties.id);if(f)showBlock(f);});
     map.on('mouseenter','selection',()=>map.getCanvas().style.cursor='pointer');map.on('mouseleave','selection',()=>map.getCanvas().style.cursor='');
-  }catch(e){$('status').textContent=`${e.message} Recargá la página para reintentar.`;}
+  }catch(e){finishPageLoad(true);$('status').textContent=`${e.message} Recargá la página para reintentar.`;}
 }
 $('filters').addEventListener('submit',e=>e.preventDefault());
 $('filters').addEventListener('input',update);$('filters').addEventListener('reset',()=>setTimeout(()=>{$('level').value='';update();},0));

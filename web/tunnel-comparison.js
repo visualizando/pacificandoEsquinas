@@ -1,3 +1,4 @@
+const finishtunnel_comparison = SiteUI.begin('Cargando análisis…');
 /* Cards use exactly the saved route/context geometries from the detail view. */
 (async function(){
   const $=id=>document.getElementById(id),fmt=n=>Math.round(n).toLocaleString('es-AR');
@@ -51,4 +52,4 @@
     }
     $('comparison-search').addEventListener('input',render);$('tunnel-case').addEventListener('change',markSelection);render();
   }catch(e){$('comparison-status').textContent='No se pudieron cargar los cruces. Recargá la página para volver a intentar.';}
-})();
+})().finally(() => finishtunnel_comparison());

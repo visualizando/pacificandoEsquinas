@@ -1,3 +1,4 @@
+const finishtunnel_inventory = SiteUI.begin('Cargando análisis…');
 (async function () {
   'use strict';
   const status=document.getElementById('inventory-status');
@@ -75,4 +76,4 @@
       map.fitBounds(bounds,{padding:40,maxZoom:12,duration:0});
     });
   }catch(error){status.textContent='No se pudo cargar el inventario. Los tres análisis siguen disponibles abajo.';}
-})();
+})().finally(() => finishtunnel_inventory());

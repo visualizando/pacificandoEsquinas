@@ -1,3 +1,4 @@
+const finishPageLoad = SiteUI.begin('Cargando datos y mapa…');
 /* Independent from the corner pipeline: failures stay inside this subsection. */
 (async function () {
   'use strict';
@@ -136,6 +137,7 @@
     document.querySelectorAll('[data-tunnel-mode]').forEach(input=>input.addEventListener('change',()=>reviewer?reviewer.paint():visibility()));
     render();
     if (!window.maplibregl) {
+      finishPageLoad(true);
       $('tunnel-map').textContent='El mapa no pudo cargarse. Las mediciones y descargas siguen disponibles.';
       return;
     }
@@ -144,6 +146,7 @@
     map.addControl(new maplibregl.NavigationControl(),'top-right');
     map.on('moveend',mapLabels);
     map.on('resize',mapLabels);
+    SiteUI.watchMap(map, finishPageLoad);
     map.on('load',()=>{
       map.addSource('tunnel-context',{type:'geojson',data:empty,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> · ODbL 1.0'});
       map.addLayer({id:'context-streets',type:'line',source:'tunnel-context',filter:['==',['get','kind'],'street'],paint:{'line-color':'#e0e0d8','line-width':['interpolate',['linear'],['zoom'],13,0.7,17,2,19,4]}});
@@ -159,7 +162,7 @@
       reviewer=window.createEndpointReviewer({map,current,markers:()=>markers,restoreLayers:visibility});
       render();
     });
-  } catch(error) {
+  } catch(error) {finishPageLoad(true);
     $('tunnel-status').textContent=`No se pudieron cargar los recorridos. ${error.message}`;
   }
 })();
