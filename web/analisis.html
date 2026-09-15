@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="es">
 <head>
-<link rel="stylesheet" href="site-ui.css?v=1">
-<script src="site-ui.js?v=1"></script>
+<link rel="stylesheet" href="site-ui.css?v=nav2">
+<script src="site-ui.js?v=nav2"></script>
   <meta charset="utf-8" />
   <title>Índice de Esquinas Peligrosas — CABA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -123,6 +123,7 @@
     .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     @media (max-width: 860px) { .charts { grid-template-columns: 1fr; } }
     .card {
+      min-width: 0;
       background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
       padding: 16px 18px; box-shadow: var(--shadow);
     }
@@ -164,6 +165,7 @@
     .axis-picker .grp { font-size: 11px; color: var(--muted); align-self: center; margin-left: 4px; }
 
     /* evolución: scatter + tabla de mayores caídas lado a lado */
+    .evo-wrap > * { min-width: 0; }
     .evo-wrap { display: grid; grid-template-columns: 55% 1fr; gap: 20px; align-items: start; }
     @media (max-width: 860px) { .evo-wrap { grid-template-columns: 1fr; } }
 
@@ -192,21 +194,17 @@
   </style>
 </head>
 <body>
+<a class="site-skip" href="#contenido">Saltar al contenido</a>
+<header class="site-header"><div class="site-header-inner"><a class="site-brand" href="index.html#explorar" data-analysis-back><strong>Pacificando la ciudad</strong><span>← Todos los análisis</span></a><nav class="site-nav" aria-label="Análisis"><a href="analisis.html" aria-current="page">Esquinas</a><a href="tuneles.html">Túneles</a><a href="escuelas.html">Escuelas</a><a href="ciclovias.html">Ciclovías</a></nav><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Cambiar tema claro u oscuro" title="Cambiar tema">◑</button></div></header>
 <div id="site-loading" class="site-loading" role="status" aria-live="polite"><span>Cargando datos y mapa…</span></div>
-  <button class="theme-toggle" id="theme-toggle" title="Cambiar tema" aria-label="Cambiar tema claro u oscuro">◑</button>
-  <div class="wrap">
+
+  <main class="wrap" id="contenido" tabindex="-1">
     <header id="esquinas">
-      <a href="index.html" style="display:inline-block;padding:12px 0;color:var(--ink-2)">← Pacificando la ciudad</a>
-      <h1>Índice de Esquinas Peligrosas — CABA</h1>
-      <p class="lede">
-        Un puntaje de peligrosidad para cada intersección de la ciudad, pensado para
-        <strong>peatones e infancias</strong>. Combina la geometría del cruce, la mitigación existente
-        (semáforos, reductores) y la exposición (escuelas, siniestros, flujo de transporte).
-        <span id="lede-scope"></span>
-      </p>
+      <h1>¿Qué esquinas necesitan mejoras?</h1>
+      <p class="lede">Explorá el riesgo al cruzar y dónde priorizar mejoras para quienes caminan. <span id="lede-scope"></span></p>
 
       <details class="more">
-        <summary>Cómo se calcula y por qué se puede confiar en el índice</summary>
+        <summary>Cómo se calcula el índice</summary>
         <div class="body">
           <p>
             Cada esquina se detecta como un nodo de la red vial donde confluyen 3 o más calles.
@@ -248,8 +246,7 @@
       </details>
 
       <div class="cta-row">
-        <a class="cta" href="report.html">Ver reporte detallado de intervenciones →</a>
-        <a href="tuneles.html" style="display:inline-block;padding:12px 16px;color:var(--ink)">Explorar los pasos bajo nivel →</a>
+        <a class="cta" href="report.html">Ver propuestas por esquina →</a>
       </div>
 
       <div class="tiles" id="tiles"></div>
@@ -257,7 +254,7 @@
 
     <section class="block">
       <h2>Mapa de esquinas</h2>
-      <p class="note">Cada punto es una esquina, coloreada por su índice (verde = bajo riesgo, rojo = alto). Clic para ver el desglose. El deslizador filtra por umbral de índice.</p>
+      <p class="note">Cada punto es una esquina: verde indica menor riesgo y rojo, mayor. Seleccioná una para ver sus datos.</p>
       <div id="map-wrap">
         <div id="map"></div>
         <div id="panel">
@@ -302,7 +299,7 @@
 
     <section class="block">
       <h2>Distribución y validación</h2>
-      <p class="note">Más allá del mapa: cómo se reparte el riesgo, si la geometría efectivamente anticipa los siniestros, y qué esquinas encabezan el ranking. Los gráficos siguen el filtro de comuna y el ranking (global / por comuna) elegidos arriba.</p>
+      <p class="note">Los gráficos muestran cómo se distribuye el riesgo y cambian con los filtros del mapa.</p>
       <div class="charts">
         <div class="card">
           <h3>Longitud de los cruces peatonales</h3>
@@ -355,8 +352,8 @@
       </div>
     </section>
 
-    <div class="wrap" id="footer"></div>
-  </div>
+    <details class="source-note"><summary>Fuentes y actualización</summary><div id="footer"></div></details>
+  </main>
 
   <div class="chart-tip" id="tip"></div>
 
@@ -539,7 +536,7 @@
       const v = parseFloat(document.getElementById("threshold").value);
       const shown = activeProps().filter(p => (p[STATE.indexField] ?? 0) >= v).length;
       document.getElementById("count").textContent =
-        v > 0 ? `${shown} de ${total} esquinas mostradas` : `${total} esquinas en el scope`;
+        v > 0 ? `${shown} de ${total} esquinas mostradas` : `${total.toLocaleString("es-AR")} esquinas`;
     }
     // refresca todo lo que depende de los filtros (mapa + tiles + gráficos)
     function refreshAll() { refreshMap(); renderTiles(); drawAllCharts(); }
@@ -607,11 +604,11 @@
       const n = DATA.features.length.toLocaleString("es-AR");
       if (mode === "all") {
         document.getElementById("lede-scope").textContent =
-          `Esta corrida cubre toda la Ciudad de Buenos Aires: ${n} esquinas. Usá el filtro de comuna en el mapa para acercarte.`;
+          `${n} esquinas de Buenos Aires.`;
       } else if (c != null) {
         const name = COMUNA_NAMES[c] ? ` (${COMUNA_NAMES[c]})` : "";
         document.getElementById("lede-scope").textContent =
-          `Esta corrida cubre la Comuna ${c}${name}: ${n} esquinas.`;
+          `${n} esquinas de la Comuna ${c}${name}.`;
       }
       if (VALIDATION?.status === "ok") {
         const rc = VALIDATION.spearman_indice_compuesto_vs_siniestros?.rho;

@@ -9,7 +9,7 @@ window.SiteUI = (() => {
     el.classList.toggle('has-error', failed && !pending.size);
     el.querySelector('span').textContent = pending.size
       ? [...pending].at(-1).label
-      : 'No se pudo completar la carga. RecargÃ¡ la pÃ¡gina para reintentar.';
+      : 'No se pudo completar la carga. Recargá la página para reintentar.';
   }
   function begin(label) {
     const token = {label};
@@ -31,6 +31,24 @@ window.SiteUI = (() => {
     }
     map.once('idle', onIdle); map.once('error', onError);
   }
-  document.addEventListener('DOMContentLoaded', render);
+  document.addEventListener('DOMContentLoaded', () => {
+    render();
+    const header = document.querySelector('.site-header');
+    if (header) {
+      const measure = () => document.documentElement.style.setProperty('--site-header-height', `${header.offsetHeight}px`);
+      measure();
+      new ResizeObserver(measure).observe(header);
+    }
+    const back = document.querySelector('[data-analysis-back]');
+    if (!back || !document.referrer) return;
+    const previous = new URL(document.referrer);
+    const names = { 'index.html': 'los análisis', 'analisis.html': 'Esquinas', 'tuneles.html': 'Túneles', 'escuelas.html': 'Escuelas', 'ciclovias.html': 'Ciclovías', 'report.html': 'las propuestas' };
+    const file = previous.pathname.split('/').pop();
+    const sameDirectory = previous.pathname.slice(0, previous.pathname.lastIndexOf('/')) === location.pathname.slice(0, location.pathname.lastIndexOf('/'));
+    if (previous.origin === location.origin && sameDirectory && previous.pathname !== location.pathname && names[file]) {
+      back.href = previous.href;
+      back.querySelector('span').textContent = `← Volver a ${names[file]}`;
+    }
+  });
   return {begin, watchMap};
 })();

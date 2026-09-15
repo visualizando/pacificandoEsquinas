@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="es">
 <head>
-<link rel="stylesheet" href="site-ui.css?v=1">
-<script src="site-ui.js?v=1"></script>
+<link rel="stylesheet" href="site-ui.css?v=nav2">
+<script src="site-ui.js?v=nav2"></script>
   <meta charset="utf-8" />
   <title>Reporte de intervenciones — Esquinas Peligrosas CABA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -98,19 +98,14 @@
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="topbar">
-      <a class="back" href="analisis.html">← Volver al mapa</a>
-      <button class="theme-toggle" id="theme-toggle" title="Cambiar tema" aria-label="Cambiar tema claro u oscuro">◑</button>
-    </div>
+<a class="site-skip" href="#contenido">Saltar al contenido</a>
+<header class="site-header"><div class="site-header-inner"><a class="site-brand" href="analisis.html" data-analysis-back><strong>Pacificando la ciudad</strong><span>← Volver a Esquinas</span></a><nav class="site-nav" aria-label="Análisis"><a href="analisis.html" aria-current="page">Esquinas</a><a href="tuneles.html">Túneles</a><a href="escuelas.html">Escuelas</a><a href="ciclovias.html">Ciclovías</a></nav><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Cambiar tema claro u oscuro" title="Cambiar tema">◑</button></div></header>
+  <main class="wrap" id="contenido" tabindex="-1">
+
 
     <header class="main">
-      <h1>Reporte de intervenciones prioritarias</h1>
-      <p class="lede">
-        Las esquinas más peligrosas para peatones e infancias, con una propuesta de
-        <strong>intervención de bajo costo</strong> derivada de sus factores de riesgo:
-        acortar el cruce, enderezarlo, instalar semáforo peatonal o calmar el tránsito.
-      </p>
+      <h1>Propuestas por esquina</h1>
+      <p class="lede">Ideas de bajo costo para las esquinas prioritarias: acortar cruces, mejorar semáforos y calmar el tránsito.</p>
       <div class="meta" id="meta"></div>
     </header>
 
@@ -124,8 +119,8 @@
 
     <div id="list"></div>
 
-    <div id="footer"></div>
-  </div>
+    <details class="source-note"><summary>Fuentes y actualización</summary><div id="footer"></div></details>
+  </main>
 
   <script>
     const REPORTE_URL = "../data/processed/reporte.json";

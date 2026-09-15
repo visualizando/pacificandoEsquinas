@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="es"><head>
-<link rel="stylesheet" href="site-ui.css?v=1">
-<script src="site-ui.js?v=1"></script>
+<link rel="stylesheet" href="site-ui.css?v=nav2">
+<script src="site-ui.js?v=nav2"></script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cruzar las vías — Pacificando la ciudad</title>
 <link rel="stylesheet" href="landing.css?v=2"><link rel="stylesheet" href="tunnels.css?v=map3">
@@ -29,13 +29,13 @@
 </style><link rel="stylesheet" href="crossing-cards.css?v=colors1"><link rel="stylesheet" href="endpoint-review.css"><link rel="stylesheet" href="tunnel-detail.css?v=colors1"></head><body>
 <div id="site-loading" class="site-loading" role="status" aria-live="polite"><span>Cargando datos y mapa…</span></div>
 <a class="skip" href="#contenido">Saltar al contenido</a>
-<header class="wrap topbar"><a class="brand" href="index.html">← Pacificando la ciudad<span>Buenos Aires</span></a><nav aria-label="Secciones"><a href="analisis.html">Esquinas</a><a href="tuneles.html" aria-current="page">Túneles</a></nav></header>
+<header class="site-header"><div class="site-header-inner"><a class="site-brand" href="index.html#explorar" data-analysis-back><strong>Pacificando la ciudad</strong><span>← Todos los análisis</span></a><nav class="site-nav" aria-label="Análisis"><a href="analisis.html">Esquinas</a><a href="tuneles.html" aria-current="page">Túneles</a><a href="escuelas.html">Escuelas</a><a href="ciclovias.html">Ciclovías</a></nav></div></header>
 <main id="contenido" class="wrap">
-<div class="page-intro"><p class="eyebrow">Barreras urbanas</p><h1>Cruzar las vías</h1><p class="intro">El auto pasa derecho. ¿Qué recorrido queda para quienes caminan o necesitan evitar escaleras? Ubicamos los pasos bajo nivel y comparamos distancias, giros y obstáculos.</p><a class="primary" href="#comparacion">Explorar los cruces →</a></div>
-<section aria-labelledby="inventory-heading"><h2 id="inventory-heading">Los pasos bajo nivel de la ciudad</h2><p id="inventory-status" role="status">Cargando el inventario de OpenStreetMap…</p><div id="inventory-map" aria-label="Ubicación de pasos bajo nivel registrados en OpenStreetMap"></div><p class="inventory-note">Semáforo de metros extra a pie sin escaleras frente al auto, entre los mismos puntos A y B. Verde: menos de 5 m extra, incluidos los recorridos más cortos. Amarillo: de 5 a 50 m. Rojo: más de 50 m. Gris: comparación pendiente de revisión o sin datos. Los intervalos son una guía visual, no categorías oficiales. Ningún resultado certifica accesibilidad. Detección cartográfica, no censo exhaustivo: pueden faltar pasos o existir diferencias de etiquetado.</p><details><summary>Consultar ubicaciones y fuente</summary><p id="inventory-source"></p><ul id="inventory-list"></ul></details></section>
+<div class="page-intro"><h1>Cruzar las vías</h1><p class="intro">Compará cuánto hay que recorrer para cruzar las vías en auto, a pie o sin escaleras.</p><a class="primary" href="#comparacion">Explorar los cruces →</a></div>
+<section aria-labelledby="inventory-heading"><h2 id="inventory-heading">Los pasos bajo nivel de la ciudad</h2><p id="inventory-status" role="status">Cargando el inventario de OpenStreetMap…</p><div id="inventory-map" aria-label="Ubicación de pasos bajo nivel registrados en OpenStreetMap"></div><p class="inventory-note">Metros extra sin escaleras frente al auto: verde, menos de 5 m; amarillo, de 5 a 50 m; rojo, más de 50 m. Gris: pendiente o sin datos. No certifica accesibilidad.</p><details><summary>Ubicaciones, fuente y límites</summary><p>Los intervalos son una guía visual, no categorías oficiales. Es una detección cartográfica: pueden faltar pasos o existir diferencias de etiquetado.</p><p id="inventory-source"></p><ul id="inventory-list"></ul></details></section>
 <section id="comparacion" aria-labelledby="comparison-heading" style="margin-top:40px">
 <h2 id="comparison-heading">Comparar todos los pasos</h2>
-<p>La cifra destaca los metros de diferencia entre caminar sin escaleras e ir en auto. En túneles de mano única, A → B sigue el sentido permitido. Barras en metros, a la misma escala desde cero.</p>
+<p>Metros de diferencia entre ir sin escaleras y en auto. Las barras usan la misma escala; A → B respeta el sentido del túnel.</p>
 <div class="tunnel-controls"><label for="comparison-search">Buscar un paso<input id="comparison-search" type="search" placeholder="Nombre de calle" style="min-height:44px;font:inherit;padding:8px"></label></div>
 <p id="comparison-status" role="status">Cargando la comparación…</p>
 <div id="comparison-body" class="crossing-cards"></div>
@@ -43,9 +43,9 @@
 </section>
 
     <section class="block" id="tuneles" aria-labelledby="tunnels-heading">
-      <p class="tunnel-kicker">BARRERAS URBANAS · DETALLE POR PASO</p>
+
       <a href="#comparacion" style="display:inline-block;padding:12px 0">↑ Volver a los cruces</a>
-      <h2 id="tunnels-heading" tabindex="-1">Mapa y análisis del cruce seleccionado</h2>
+      <h2 id="tunnels-heading" tabindex="-1">Detalle del cruce</h2>
       <p id="tunnel-status" role="status">Cargando los recorridos…</p>
       <div id="tunnel-content" hidden>
         <div class="tunnel-controls">
