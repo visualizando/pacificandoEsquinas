@@ -42,7 +42,7 @@ window.SiteUI = (() => {
     const back = document.querySelector('[data-analysis-back]');
     if (!back || !document.referrer) return;
     const previous = new URL(document.referrer);
-    const names = { 'index.html': 'los análisis', 'analisis.html': 'Esquinas', 'tuneles.html': 'Túneles', 'escuelas.html': 'Escuelas', 'ciclovias.html': 'Ciclovías', 'report.html': 'las propuestas' };
+    const names = { 'index.html': 'los análisis', 'analisis.html': 'Pacificando esquinas', 'tuneles.html': 'Túneles antipeatonales', 'escuelas.html': 'Calles escolares', 'ciclovias.html': 'Red de ciclovías', 'report.html': 'las propuestas' };
     const file = previous.pathname.split('/').pop();
     const sameDirectory = previous.pathname.slice(0, previous.pathname.lastIndexOf('/')) === location.pathname.slice(0, location.pathname.lastIndexOf('/'));
     if (previous.origin === location.origin && sameDirectory && previous.pathname !== location.pathname && names[file]) {

@@ -1,44 +1,38 @@
 const finishschool_noise = SiteUI.begin('Cargando análisis…');
-/* Historical baseline, deliberately independent of proposal filters. */
-(async () => {
-  const summary = document.getElementById('noise-summary');
-  try {
-    const response = await fetch('../data/processed/school-noise.json');
-    if (!response.ok) throw new Error('noise data unavailable');
-    const data = await response.json();
-    const rows = data.rows.filter(r => r.coverage_pct >= 80 && r.high_pct !== null);
-    const high = rows.filter(r => r.high_pct >= 50).length;
-    const number = n => n.toLocaleString('es-AR');
-    summary.textContent = `${number(high)} de ${number(rows.length)} cuadras con cobertura suficiente tienen al menos la mitad de su recorrido con datos en zonas de 65 dBA o más.`;
-    document.getElementById('noise-coverage').textContent = `Se muestran ${number(rows.length)} de ${number(data.rows.length)} cuadras: al menos el 80% de sus puntos debe tener datos. Las restantes no se consideran silenciosas; quedan fuera del gráfico.`;
-    const svg = document.getElementById('noise-chart'), ns = 'http://www.w3.org/2000/svg';
-    function el(tag, attrs, text) { const node = document.createElementNS(ns, tag); Object.entries(attrs).forEach(([k,v]) => node.setAttribute(k,v)); if (text) node.textContent = text; svg.append(node); return node; }
-    const width = Math.max(360, Math.min(760, svg.clientWidth));
-    svg.setAttribute('viewBox', `0 0 ${width} 300`);
-    const right = width - 30;
-    const max = Math.max(1, ...rows.map(r => r.schools));
-    const x = v => 55 + v / 100 * (right - 55), y = v => 250 - v / max * 215;
-    el('text', {x:55,y:17}, 'Escuelas por cuadra');
-    for (let value=0; value<=max; value+=Math.max(1,Math.ceil(max/5))) {
-      el('line', {x1:55,x2:right,y1:y(value),y2:y(value),stroke:'#e0e3de'});
-      el('text', {x:45,y:y(value)+4,'text-anchor':'end'}, String(value));
-    }
-    for (const value of [0,25,50,75,100]) el('text', {x:x(value),y:271,'text-anchor':'middle'}, `${value}%`);
-    el('text', {x:width/2,y:295,'text-anchor':'middle'}, 'Recorrido con datos en zonas ≥65 dBA');
-    const points = rows.map(r => {
-      el('circle', {cx:x(r.high_pct),cy:y(r.schools),r:3,fill:'#216a52','fill-opacity':.3});
-      return {r,x:x(r.high_pct),y:y(r.schools)};
-    });
-    const highlight = el('circle', {r:5,fill:'none',stroke:'#102f22','stroke-width':2,visibility:'hidden'});
-    const overlay = el('rect', {x:50,y:25,width:right-45,height:230,fill:'transparent'});
-    const note = document.getElementById('noise-point');
-    overlay.addEventListener('pointermove', event => {
-      const point = new DOMPoint(event.clientX,event.clientY).matrixTransform(svg.getScreenCTM().inverse());
-      const nearest = points.reduce((best,p) => Math.hypot(p.x-point.x,p.y-point.y)<Math.hypot(best.x-point.x,best.y-point.y)?p:best,points[0]);
-      if (!nearest) return;
-      highlight.setAttribute('cx',nearest.x); highlight.setAttribute('cy',nearest.y); highlight.setAttribute('visibility','visible');
-      note.textContent = `${nearest.r.street} · ${nearest.r.schools} escuelas · ${number(nearest.r.high_pct)}% del recorrido con datos ≥65 dBA`;
-    });
-    overlay.addEventListener('pointerleave', () => { highlight.setAttribute('visibility','hidden'); note.textContent='Cada punto representa una cuadra. Los puntos pueden superponerse.'; });
-  } catch (error) { summary.textContent = 'No se pudo cargar el cruce de ruido. Recargá la página para reintentar.'; }
+/* One circle per street, packed inside its median noise band. */
+(async()=>{
+ const summary=document.getElementById('noise-summary'),svg=document.getElementById('noise-chart'),note=document.getElementById('noise-point');
+ try{
+ const response=await fetch('../data/processed/school-noise.json?v=2');if(!response.ok)throw Error();
+ const data=await response.json(),rows=data.rows.filter(r=>r.coverage_pct>=80&&Number.isFinite(r.noise_band));
+ const lo=Math.min(...rows.map(r=>r.noise_band)),hi=Math.max(...rows.map(r=>r.noise_band)),width=((hi-lo)/5+1)*100+60,nodes=[];
+ // Seeded randomness keeps the organic layout stable across reloads.
+ let seed=7319;const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
+ for(let band=lo;band<=hi;band+=5){
+ const placed=[];
+ for(const {row} of rows.filter(r=>r.noise_band===band).map(row=>({row,order:random()})).sort((a,b)=>a.order-b.order)){
+ const radius=2*Math.sqrt(row.schools);let chosen;
+ for(let level=0;!chosen;level++)for(const sign of level?[-1,1]:[1]){
+ for(const offset of Array.from({length:40},()=> (random()-.5)*96)){
+ if(Math.abs(offset)+radius>48)continue;
+ const p={x:offset,y:sign*level*2+(random()-.5)*3,radius,row};
+ if(placed.every(q=>Math.hypot(q.x-p.x,q.y-p.y)>=q.radius+radius+.35)){chosen=p;break;}
+ }if(chosen)break;
+ }
+ placed.push(chosen);
+ }placed.forEach(p=>nodes.push({...p,x:p.x+80+(band-lo)/5*100}));
+ }
+ const extent=Math.max(50,...nodes.map(p=>Math.abs(p.y)+p.radius)),height=extent*2+100;
+ svg.setAttribute('viewBox',`0 0 ${width} ${height}`);svg.style.minWidth=`${width}px`;
+ function el(tag,attrs,text){const n=document.createElementNS('http://www.w3.org/2000/svg',tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));if(text)n.textContent=text;svg.append(n);return n;}
+ const label=b=>b<=30?'≤35':b>=80?'≥80':`${b}–${b+5}`;
+ for(let b=lo;b<=hi;b+=5){const x=30+(b-lo)/5*100;el('line',{x1:x,x2:x,y1:30,y2:height-50,stroke:'var(--line)'});el('text',{x:x+50,y:height-28,'text-anchor':'middle'},label(b));}
+ el('text',{x:30,y:18},'Menos ruido');el('text',{x:width-30,y:18,'text-anchor':'end'},'Más ruido →');el('text',{x:width/2,y:height-7,'text-anchor':'middle'},'Ruido diurno estimado · dBA · 2018');
+ nodes.forEach(p=>{p.y+=extent+35;el('circle',{cx:p.x,cy:p.y,r:p.radius,fill:`hsl(18 65% ${83-(p.row.noise_band-lo)/Math.max(5,hi-lo)*53}%)`});});
+ const mark=el('circle',{r:6,fill:'none',stroke:'var(--ink)','stroke-width':2,visibility:'hidden'}),overlay=el('rect',{x:25,y:25,width:width-50,height:height-75,fill:'transparent'}),hint=note.textContent;
+ overlay.addEventListener('pointermove',event=>{const q=new DOMPoint(event.clientX,event.clientY).matrixTransform(svg.getScreenCTM().inverse());const p=nodes.reduce((a,b)=>Math.hypot(b.x-q.x,b.y-q.y)<Math.hypot(a.x-q.x,a.y-q.y)?b:a);Object.entries({cx:p.x,cy:p.y,r:p.radius+2,visibility:'visible'}).forEach(([k,v])=>mark.setAttribute(k,v));note.textContent=`${p.row.street} · ${p.row.schools} ${p.row.schools===1?'escuela':'escuelas'} · ${label(p.row.noise_band)} dBA`;});
+ overlay.addEventListener('pointerleave',()=>{mark.setAttribute('visibility','hidden');note.textContent=hint;});
+ summary.textContent=`${rows.length.toLocaleString('es-AR')} cuadras, ordenadas por su rango de ruido típico.`;
+ document.getElementById('noise-coverage').textContent=`Se excluyen ${data.rows.length-rows.length} cuadras con datos insuficientes. Se exige cobertura del mapa en al menos el 80% de las muestras de cada cuadra.`;
+ }catch(e){summary.textContent='No se pudo cargar el gráfico. Recargá la página para reintentar.';console.error(e);}
 })().finally(() => finishschool_noise());

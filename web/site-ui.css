@@ -17,7 +17,7 @@ html { scroll-padding-top: calc(var(--site-header-height) + 16px); }
 .site-skip:focus, .skip:focus { top: 8px; }
 .site-loading span { top: calc(var(--site-header-height) + 8px); }
 @media (hover: hover) { .site-nav a:hover, .site-brand:hover span { text-decoration: underline; text-underline-offset: 4px; } }
-@media (max-width: 680px) {
+@media (max-width: 980px) {
   :root { --site-header-height: 116px; }
   .site-header-inner { padding: 8px 16px 0; gap: 4px 12px; flex-wrap: wrap; }
   .site-header .site-nav { order: 3; width: 100%; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; }
@@ -27,3 +27,10 @@ html { scroll-padding-top: calc(var(--site-header-height) + 16px); }
 .source-note { margin: 24px 0; color: var(--ink-2, var(--secondary)); font-size: 13px; }
 .source-note summary, .school-intro summary { cursor: pointer; padding-block: 12px; font-weight: 600; }
 .source-note #footer { border: 0; margin: 0; padding: 12px 0; }
+
+.site-header .site-brand { flex-shrink: 0; }
+.site-nav a { text-align: center; }
+@media (max-width: 520px) {
+  .site-header .site-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .site-nav a { padding: 8px 6px; }
+}

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="es"><head>
-<link rel="stylesheet" href="site-ui.css?v=nav2">
-<script src="site-ui.js?v=nav2"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="site-ui.css?v=comments1">
+<script src="site-ui.js?v=comments1"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Calles escolares — Pacificando la ciudad</title>
 <link rel="stylesheet" href="landing.css?v=2"><link rel="stylesheet" href="schools.css?v=noise1"><link rel="stylesheet" href="school-intro.css?v=1">
 <link rel="stylesheet" href="vendor/maplibre-gl-4.7.1/maplibre-gl.css">
@@ -9,9 +9,9 @@
 <script src="school-address-search.js?v=1" defer></script><script src="school-filters.js?v=multilevel9" defer></script><script src="school-link.js?v=multilevel9" defer></script><script src="schools.js?v=loading1" defer></script><script src="school-share.js?v=multilevel9" defer></script></head>
 <body>
 <div id="site-loading" class="site-loading" role="status" aria-live="polite"><span>Cargando datos y mapa…</span></div><a class="skip" href="#contenido">Saltar al contenido</a>
-<header class="site-header"><div class="site-header-inner"><a class="site-brand" href="index.html#explorar" data-analysis-back><strong>Pacificando la ciudad</strong><span>← Todos los análisis</span></a><nav class="site-nav" aria-label="Análisis"><a href="analisis.html">Esquinas</a><a href="tuneles.html">Túneles</a><a href="escuelas.html" aria-current="page">Escuelas</a><a href="ciclovias.html">Ciclovías</a></nav></div></header>
+<header class="site-header"><div class="site-header-inner"><a class="site-brand" href="index.html#explorar" data-analysis-back><strong>Pacificando la ciudad</strong><span>← Todos los análisis</span></a><nav class="site-nav" aria-label="Análisis"><a href="analisis.html">Pacificando esquinas</a><a href="tuneles.html">Túneles antipeatonales</a><a href="escuelas.html" aria-current="page">Calles escolares</a><a href="ciclovias.html">Red de ciclovías</a></nav></div></header>
 <main id="contenido" class="school-main"><div class="heading"><h1>Calles escolares</h1><p>Explorá qué cuadras podrían abrirse al juego durante el horario escolar.</p></div>
-<details class="school-intro"><summary>Por qué proponemos calles escolares</summary>
+<details class="school-intro"><summary>Por qué propongo calles escolares</summary>
 <ul>
 <li><strong>Ruido.</strong> El tránsito puede interferir con las actividades escolares y la concentración. <a href="https://www.who.int/europe/health-topics/noise">OMS: ruido y salud</a>.</li>
 <li><strong>Contaminación.</strong> El NO₂ de la combustión de motores irrita las vías respiratorias. Los chicos son especialmente vulnerables a la contaminación porque sus pulmones todavía se desarrollan. <a href="https://www.who.int/teams/environment-climate-change-and-health/air-quality-and-health/health-impacts/types-of-pollutants">OMS: contaminantes</a> · <a href="https://www.who.int/publications-detail-redirect/air-pollution-and-child-health">Salud infantil</a>.</li>
@@ -22,11 +22,19 @@
 <section class="noise-evidence" aria-labelledby="noise-title">
 <h2 id="noise-title">¿Cuánto ruido hay en las cuadras escolares?</h2>
 <p id="noise-summary" role="status">Cargando el cruce con ruido diurno de 2018…</p>
-<svg id="noise-chart" viewBox="0 0 760 300" role="img" aria-label="Dispersión: proporción de cuadra en zonas de 65 dBA o más y cantidad de escuelas"></svg>
-<p id="noise-point" class="noise-note">Cada punto representa una cuadra. Los puntos pueden superponerse.</p>
-<details><summary>Cómo se calculó</summary><p id="noise-coverage"></p><p>Se muestrea el eje de cada cuadra cada 5 m como máximo. El eje horizontal muestra qué porcentaje de los puntos con datos cae en rangos de 65 dBA o más. El corte de 65 dBA es exploratorio: no es un límite sanitario ni una medición dentro del aula. El gráfico incluye todas las cuadras escolares, sin aplicar los filtros de la propuesta.</p><p>Fuente: <a href="https://data.buenosaires.gob.ar/dataset/mapa-ruido/resource/ce377913-43ac-4686-b244-0ac4c55012da">Mapa de ruido diurno 2018, BA Data</a> · CC-BY-2.5-AR. Es una estimación histórica; no describe necesariamente el ruido actual. <a href="../data/processed/school-noise.json">Descargar cruce</a>.</p></details>
+<div class="noise-scroll" tabindex="0" role="region" aria-label="Gráfico de ruido; desplazamiento horizontal en pantallas pequeñas"><svg id="noise-chart" role="img" aria-label="Una cuadra por círculo, de menor a mayor ruido diurno"></svg></div>
+<p id="noise-point" class="noise-note">Cada círculo es una cuadra. Más grande: más escuelas. Más a la derecha y más oscuro: más ruido.</p>
+<details><summary>Cómo se calculó</summary><p id="noise-coverage"></p><p>Se muestrea el eje de cada cuadra cada 5 m como máximo y se toma el rango de la mediana de esas muestras (la inferior en caso de empate). No es un promedio acústico ni una medición dentro del aula. Los círculos se acomodan dentro de su rango para no superponerse: su altura no representa otra variable. El área de cada círculo es proporcional a la cantidad de escuelas. El gráfico incluye todas las cuadras escolares, sin aplicar los filtros de la propuesta.</p><p>Fuente: <a href="https://data.buenosaires.gob.ar/dataset/mapa-ruido/resource/ce377913-43ac-4686-b244-0ac4c55012da">Mapa de ruido diurno 2018, BA Data</a> · CC-BY-2.5-AR. Es una estimación histórica; no describe necesariamente el ruido actual. <a href="../data/processed/school-noise.json">Descargar cruce</a>.</p></details>
 </section>
-<section class="school-proposal" aria-labelledby="proposal-title"><h2 id="proposal-title">La propuesta: abrir la calle al juego</h2><p>Proponemos limitar el tránsito frente a las escuelas durante el horario escolar y abrir espacio para jugar, manteniendo el acceso de los frentistas.</p></section>
+<section class="noise-evidence" aria-labelledby="crash-title">
+<h2 id="crash-title">Siniestros viales cerca de las escuelas</h2>
+<p id="crash-summary" role="status">Cargando siniestros de 2019–2025…</p>
+<div id="crash-bars" class="crash-bars"></div>
+<p id="crash-deaths"></p>
+<details><summary>Cómo se calculó</summary><p>Siniestros con víctimas leves, graves o mortales; no incluye choques sin lesionados. Hechos a 50 m o menos del eje de una cuadra escolar, incluidos sus extremos. Cada escuela se cuenta una sola vez. Si tiene varios frentes, se unen sus hechos sin duplicarlos. La distancia se mide a sus cuadras, no a la puerta de la escuela. Un hecho puede estar cerca de varias escuelas; el total de hechos y fallecidos se cuenta una sola vez. Se incluyen hechos desde las 07:00 inclusive hasta las 18:00 exclusive, de todas las edades y todos los días, incluidos fines de semana y vacaciones. Es una franja horaria, no un calendario escolar; no implica que las víctimas fueran estudiantes. La cercanía no demuestra que un cierre hubiera evitado el hecho.</p><p id="crash-missing"></p><p>Las escuelas corresponden al relevamiento usado en este mapa; pueden no haber estado allí durante todo el período. Sin hechos registrados no significa sin riesgo. Este cruce no compara con cuadras sin escuelas ni ajusta por tránsito.</p><p>Fuente: <a href="https://data.buenosaires.gob.ar/dataset/victimas-siniestros-viales">Siniestros viales, BA Data</a>, hechos 2019–2025. <a href="../data/processed/school-crashes.json">Descargar cruce</a>.</p></details>
+</section>
+<script src="school-crashes.js?v=loading1" defer></script>
+<section class="school-proposal" aria-labelledby="proposal-title"><h2 id="proposal-title">La propuesta: abrir la calle al juego</h2><p>Propongo limitar el tránsito frente a las escuelas durante el horario escolar y abrir espacio para jugar, manteniendo el acceso de los frentistas.</p></section>
 <script src="school-noise.js?v=loading1" defer></script>
 <div class="workspace"><aside><form id="filters">
 <div class="filter-row"><span class="filter-label">Nivel</span><div id="level-chips" class="chips" role="group" aria-label="Nivel educativo">
@@ -49,4 +57,4 @@
 <p>Ubicación aproximada: el domicilio no permite identificar la cuadra con suficiente certeza. Se asignó una calle cercana.</p>
 <p id="surface-detail"></p><p>Superficie calculada entre veredas de 2019, con mediciones cada 5 m como máximo. Se excluyen intervalos sin datos y 10 m en cada extremo para no sumar cruces. El total es parcial, sin extrapolación. Los porcentajes usan totales fijos de CABA, no del área visible. Las manzanas son esquemáticas.</p>
 <p>Manzanas equivalentes: superficie temporal ÷ 10.000 m² (referencia de 100 × 100 m, no tamaño real de cada manzana).</p>
-<a href="../docs/CALLES_ESCOLARES.md">Método completo</a></details></main><footer class="site-footer"><span>Pacificando la ciudad · Andrés</span><nav aria-label="Enlaces del proyecto"><a href="https://visualizando.ar">visualizando.ar</a><a href="https://github.com/visualizando/pacificandoEsquinas">GitHub · código y datos</a><a href="index.html">Inicio</a></nav></footer></body></html>
+<a href="../docs/CALLES_ESCOLARES.md">Método completo</a></details></main><footer class="site-footer"><span>Pacificando la ciudad · Andres Snitcofsky</span><nav aria-label="Enlaces del proyecto"><a href="https://twitter.com/rusosnith">@rusosnith</a><a href="https://visualizando.ar">visualizando.ar</a><a href="https://github.com/visualizando/pacificandoEsquinas">GitHub · código y datos</a><a href="index.html">Inicio</a></nav></footer></body></html>

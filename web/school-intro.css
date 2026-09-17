@@ -4,3 +4,7 @@
 .noise-evidence p,.school-proposal p{margin:8px 0}.noise-evidence svg{display:block;width:100%;height:auto;max-width:760px;overflow:visible;font:12px system-ui;font-variant-numeric:tabular-nums}.noise-evidence svg text{fill:var(--secondary)}
 .noise-note,.noise-evidence details{font-size:13px;color:var(--secondary)}.noise-note{min-height:40px}.noise-evidence details{padding:0;border:0}.noise-evidence summary{cursor:pointer}.school-proposal{margin-bottom:20px}
 @media(max-width:600px){.noise-evidence svg{font-size:15px}.school-intro,.noise-evidence,.school-proposal{font-size:14px}.school-intro li{margin:12px 0}}
+
+.noise-scroll{overflow-x:auto}.noise-scroll svg{max-width:none;font-size:13px}.noise-scroll:focus-visible{outline:2px solid var(--ink)}
+
+.crash-bars{max-width:760px}.crash-bars p{font-size:14px;margin:12px 0 4px}.crash-track{height:12px;background:var(--line)}.crash-track span{display:block;height:100%;background:#ac4825}

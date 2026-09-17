@@ -20,7 +20,9 @@ def sample(line, tree, lower):
         # Shared boundaries: use the higher band, without counting a point twice.
         if len(hits):
             bands.append(max(lower[int(j)] for j in hits))
-    return {'coverage_pct': round(len(bands) / n * 100, 1),
+    ordered = sorted(bands)
+    return {'noise_band': ordered[(len(ordered)-1)//2] if ordered else None,
+            'coverage_pct': round(len(bands) / n * 100, 1),
             'high_pct': round(sum(b >= 65 for b in bands) / len(bands) * 100, 1) if bands else None}
 
 def build():

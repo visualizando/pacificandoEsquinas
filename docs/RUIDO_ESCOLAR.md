@@ -11,3 +11,6 @@ El porcentaje alto usa puntos cubiertos como denominador y rangos con límite in
 Resultado: 1.717 de 1.741 cuadras con cobertura suficiente; 1.477 cumplen el corte de mayoría. Las 24 restantes no se clasifican como silenciosas. El gráfico cruza porcentaje de recorrido en rangos ≥65 dBA con establecimientos distintos por cuadra; hay puntos superpuestos. No mide exposición individual de estudiantes, accesos ni aulas. Las asignaciones aproximadas de escuelas se conservan. Es una línea de base histórica sin filtros; no estima la reducción de ruido que produciría la propuesta.
 
 Las cuatro explicaciones iniciales enlazan publicaciones de OMS y UNICEF. Se describe vulnerabilidad infantil a la contaminación sin afirmar que NO₂ sea el contaminante más peligroso ni atribuir niveles locales de NO₂ sin mediciones.
+
+## Beeswarm
+La vista usa ahora el rango de la mediana inferior de las muestras cubiertas, no high_pct. Cada círculo representa una cuadra; su área es proporcional a las escuelas. Se acomoda dentro de su banda sin atribuir precisión dentro del rango; la altura no codifica datos. Se conserva el corte de cobertura del 80%. El resumen anterior de 1.477 pertenece al indicador high_pct, no a la nueva mediana. Referencia visual: https://old.observablehq.com/@rusosnith/beeswarm-reutilizable .

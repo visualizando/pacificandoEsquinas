@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="es">
 <head>
-<link rel="stylesheet" href="site-ui.css?v=nav2">
-<script src="site-ui.js?v=nav2"></script>
+<link rel="stylesheet" href="site-ui.css?v=comments1">
+<script src="site-ui.js?v=comments1"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pacificando la ciudad — Buenos Aires</title>
-  <meta name="description" content="Analizamos las calles de Buenos Aires para caminar y pedalear con más seguridad.">
-  <link rel="stylesheet" href="landing.css?v=2">
+  <meta name="description" content="Ideas para mejorar las calles de Buenos Aires.">
+  <link rel="stylesheet" href="landing.css?v=compact2">
   <script>
     // Preserve previously shared links to the analysis.
     if (location.hash === '#tuneles') location.replace('tuneles.html');
@@ -16,54 +16,47 @@
 </head>
 <body>
   <a class="skip" href="#contenido">Saltar al contenido</a>
-  <header class="site-header"><div class="site-header-inner"><a class="site-brand" href="index.html"><strong>Pacificando la ciudad</strong><span>Buenos Aires</span></a><nav class="site-nav" aria-label="Análisis"><a href="analisis.html">Esquinas</a><a href="tuneles.html">Túneles</a><a href="escuelas.html">Escuelas</a><a href="ciclovias.html">Ciclovías</a></nav></div></header>
+  <header class="site-header"><div class="site-header-inner"><a class="site-brand" href="index.html"><strong>Pacificando la ciudad</strong><span>Buenos Aires</span></a><nav class="site-nav" aria-label="Análisis"><a href="analisis.html">Pacificando esquinas</a><a href="tuneles.html">Túneles antipeatonales</a><a href="escuelas.html">Calles escolares</a><a href="ciclovias.html">Red de ciclovías</a></nav></div></header>
   <main id="contenido" class="wrap">
     <section class="hero" aria-labelledby="proposito">
-      <p class="eyebrow">La ciudad, a escala de las personas</p>
-      <h1 id="proposito">Menos peligro.<br>Más ganas de caminar.</h1>
-      <p class="intro">Explorá las calles de Buenos Aires y las propuestas para caminar y pedalear con más seguridad.</p>
-      <a class="primary" href="#explorar">Explorar los análisis <span aria-hidden="true">↘</span></a>
+      <h1 id="proposito">Ideas para mejorar las calles de Buenos Aires</h1>
+      <p class="intro">Herramientas basadas en datos oficiales y colaborativos para tomar decisiones hacia una ciudad más amable y segura</p>
     </section>
-    <section id="explorar" aria-labelledby="lineas">
-      <div class="section-head"><h2 id="lineas">Explorá los análisis</h2></div>
+    <section id="explorar" aria-label="Análisis">
       <div class="projects">
         <article class="project">
-          <div class="project-meta"><span aria-hidden="true">01 / ESQUINAS</span></div>
           <img class="project-thumb" src="assets/esquinas.svg" alt="" width="600" height="300">
-          <h3>Esquinas más seguras</h3>
+          <h2>1. Esquinas más seguras</h2>
           <p>Identificar dónde priorizar intervenciones para reducir el peligro al cruzar. Explorar las esquinas, sus características y los siniestros registrados.</p>
-          <a class="project-cta" href="analisis.html#esquinas">Entrar al mapa de esquinas <span aria-hidden="true">→</span></a>
+          <a class="project-cta" href="analisis.html#esquinas">Ver mapa de esquinas</a>
         </article>
         <article class="project">
-          <div class="project-meta"><span aria-hidden="true">02 / TÚNELES</span><span class="status">Piloto disponible</span></div>
           <img class="project-thumb" src="assets/tuneles.svg" alt="" width="600" height="300">
-          <h3>Cruzar las vías</h3>
+          <h2>2. Pasos bajo nivel antipeatonales</h2>
           <p>Comparar recorridos en auto, a pie y sin escaleras. Mostrar cuánto se alarga el camino cuando necesitás una rampa, llevás un cochecito o caminás con una bicicleta.</p>
-          <a class="project-cta" href="tuneles.html">Comparar los recorridos <span aria-hidden="true">→</span></a>
+          <a class="project-cta" href="tuneles.html">Comparar recorridos</a>
         </article>
         <article class="project">
-          <div class="project-meta"><span aria-hidden="true">03 / ESCUELAS</span><span class="status">Explorador disponible</span></div>
           <img class="project-thumb" src="assets/escuelas.svg" alt="" width="600" height="300" loading="lazy">
-          <h3>Calles escolares</h3>
+          <h2>3. Calles escolares</h2>
           <p>Evaluar qué calles podrían cerrarse al tránsito motorizado durante horarios escolares para cuidar la llegada, la salida y el entorno de las escuelas.</p>
-          <a class="project-cta" href="escuelas.html">Explorar las calles escolares <span aria-hidden="true">→</span></a>
+          <a class="project-cta" href="escuelas.html">Ver calles escolares</a>
         </article>
         <article class="project">
-          <div class="project-meta"><span aria-hidden="true">04 / CICLOVÍAS</span><span class="status">Primera propuesta</span></div>
           <img class="project-thumb" src="assets/ciclovias.svg" alt="" width="600" height="300" loading="lazy">
-          <h3>Conectar las ciclovías</h3>
+          <h2>4. Completando la red de ciclovías</h2>
           <p>Identificar qué conexiones faltan para formar una red continua y evitar que un recorrido en bicicleta termine en un tramo peligroso.</p>
-          <a class="project-cta" href="ciclovias.html">Explorar la red de ciclovías <span aria-hidden="true">→</span></a>
+          <a class="project-cta" href="ciclovias.html">Ver red de ciclovías</a>
         </article>
       </div>
     </section>
     <section id="metodo" class="method" aria-labelledby="metodo-titulo">
-      <h2 id="metodo-titulo">Datos para empezar.<br>La calle para comprobar.</h2>
-      <div><p>Cruzamos datos de la ciudad y OpenStreetMap para comparar lugares y detectar posibles mejoras. Cada análisis explica qué mide, de dónde salen los datos y cuáles son sus límites.</p>
-      <p>Los resultados orientan preguntas y prioridades: no reemplazan una visita al lugar ni la experiencia de quienes lo usan. Un recorrido sin escaleras, por ejemplo, no garantiza una rampa accesible.</p>
-      <a href="../docs/TUNELES_PROCEDIMIENTO.md">Consultar el procedimiento del piloto de túneles</a></div>
+      <h2 id="metodo-titulo">Acerca del proyecto</h2>
+      <div><p>En este proyecto combino datos públicos oficiales, datos colaborativos de OpenStreetMap y propuestas propias para pensar una ciudad más caminable y accesible. Cada análisis explica qué mide, de dónde salen los datos y cuáles son sus límites.</p>
+      <p>Los resultados orientan preguntas y prioridades: no reemplazan una visita al lugar ni la experiencia de quienes lo usan.</p>
+      </div>
     </section>
   </main>
 
-<footer class="site-footer"><span>Pacificando la ciudad · Andrés</span><nav aria-label="Enlaces del proyecto"><a href="https://visualizando.ar">visualizando.ar</a><a href="https://github.com/visualizando/pacificandoEsquinas">GitHub · código y datos</a><a href="index.html">Inicio</a></nav></footer></body>
+<footer class="site-footer"><span>Pacificando la ciudad · Andres Snitcofsky</span><nav aria-label="Enlaces del proyecto"><a href="https://twitter.com/rusosnith">@rusosnith</a><a href="https://visualizando.ar">visualizando.ar</a><a href="https://github.com/visualizando/pacificandoEsquinas">GitHub · código y datos</a><a href="index.html">Inicio</a></nav></footer></body>
 </html>

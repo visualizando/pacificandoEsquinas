@@ -9,14 +9,14 @@ function visibility() {
   map.setLayoutProperty('existing', 'visibility', 'visible');
   map.setLayoutProperty('proposed', 'visibility', proposed ? 'visible' : 'none');
   if (popup) popup.remove();
-  $('status').textContent = proposed ? 'Red actual + nuevas ciclovías de nuestra propuesta.' : 'Situación actual: las ciclovías que ya existen.';
+  $('status').textContent = proposed ? 'Red actual + nuevas ciclovías de mi propuesta.' : 'Situación actual: las ciclovías que ya existen.';
   CycleCoverage.update?.();
 }
 function select(feature, lngLat) {
   const p = feature.properties;
   const content = document.createElement('div');
   const title = document.createElement('h3'); title.textContent = p.street;
-  const kind = document.createElement('p'); kind.textContent = p.kind === 'existing' ? 'Red actual' : 'Nuestra propuesta · nuevas ciclovías';
+  const kind = document.createElement('p'); kind.textContent = p.kind === 'existing' ? 'Red actual' : 'Mi propuesta · nuevas ciclovías';
   const length = document.createElement('p'); length.textContent = `${fmt(p.length_m)} m`;
   const link = document.createElement('a'); link.href = `https://www.openstreetmap.org/way/${p.osm_id}`; link.textContent = 'Ver calle en OpenStreetMap'; link.target = '_blank'; link.rel = 'noopener';
   content.append(title,kind,length,link);
@@ -30,7 +30,7 @@ async function start() {
     if(!response.ok) throw Error('No se pudieron cargar los datos de ciclovías.');
     data = await response.json();
     const m = data.metadata;
-    for (const [value,label,cls] of [[`${fmt(m.existing_km)} km`,'Red actual','existing-value'],[`${fmt(m.proposed_km)} km`,'Nuestra propuesta','proposed-value']]) {
+    for (const [value,label,cls] of [[`${fmt(m.existing_km)} km`,'Red actual','existing-value'],[`${fmt(m.proposed_km)} km`,'Mi propuesta','proposed-value']]) {
       const row=document.createElement('div'), name=document.createElement('span'), number=document.createElement('strong');
       name.textContent=label; number.textContent=value; number.className=cls; row.append(name,number); $('metrics').append(row);
     }

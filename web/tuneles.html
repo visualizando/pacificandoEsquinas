@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="es"><head>
-<link rel="stylesheet" href="site-ui.css?v=nav2">
-<script src="site-ui.js?v=nav2"></script>
+<link rel="stylesheet" href="site-ui.css?v=comments1">
+<script src="site-ui.js?v=comments1"></script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cruzar las vías — Pacificando la ciudad</title>
 <link rel="stylesheet" href="landing.css?v=2"><link rel="stylesheet" href="tunnels.css?v=map3">
@@ -29,7 +29,7 @@
 </style><link rel="stylesheet" href="crossing-cards.css?v=colors1"><link rel="stylesheet" href="endpoint-review.css"><link rel="stylesheet" href="tunnel-detail.css?v=colors1"></head><body>
 <div id="site-loading" class="site-loading" role="status" aria-live="polite"><span>Cargando datos y mapa…</span></div>
 <a class="skip" href="#contenido">Saltar al contenido</a>
-<header class="site-header"><div class="site-header-inner"><a class="site-brand" href="index.html#explorar" data-analysis-back><strong>Pacificando la ciudad</strong><span>← Todos los análisis</span></a><nav class="site-nav" aria-label="Análisis"><a href="analisis.html">Esquinas</a><a href="tuneles.html" aria-current="page">Túneles</a><a href="escuelas.html">Escuelas</a><a href="ciclovias.html">Ciclovías</a></nav></div></header>
+<header class="site-header"><div class="site-header-inner"><a class="site-brand" href="index.html#explorar" data-analysis-back><strong>Pacificando la ciudad</strong><span>← Todos los análisis</span></a><nav class="site-nav" aria-label="Análisis"><a href="analisis.html">Pacificando esquinas</a><a href="tuneles.html" aria-current="page">Túneles antipeatonales</a><a href="escuelas.html">Calles escolares</a><a href="ciclovias.html">Red de ciclovías</a></nav></div></header>
 <main id="contenido" class="wrap">
 <div class="page-intro"><h1>Cruzar las vías</h1><p class="intro">Compará cuánto hay que recorrer para cruzar las vías en auto, a pie o sin escaleras.</p><a class="primary" href="#comparacion">Explorar los cruces →</a></div>
 <section aria-labelledby="inventory-heading"><h2 id="inventory-heading">Los pasos bajo nivel de la ciudad</h2><p id="inventory-status" role="status">Cargando el inventario de OpenStreetMap…</p><div id="inventory-map" aria-label="Ubicación de pasos bajo nivel registrados en OpenStreetMap"></div><p class="inventory-note">Metros extra sin escaleras frente al auto: verde, menos de 5 m; amarillo, de 5 a 50 m; rojo, más de 50 m. Gris: pendiente o sin datos. No certifica accesibilidad.</p><details><summary>Ubicaciones, fuente y límites</summary><p>Los intervalos son una guía visual, no categorías oficiales. Es una detección cartográfica: pueden faltar pasos o existir diferencias de etiquetado.</p><p id="inventory-source"></p><ul id="inventory-list"></ul></details></section>
@@ -75,7 +75,7 @@
           <p>Los borradores quedan en este navegador. Para actualizar el análisis: exportar, importar y recalcular. <a href="../docs/REVISION_EXTREMOS.md">Ver instrucciones</a>.</p>
         </details>
         <p class="tunnel-caption">A y B: puntos de referencia. Gris discontinuo: ferrocarril. Las líneas superpuestas pueden ocultarse usando los controles.</p>
-        <details class="more"><summary>Qué estamos midiendo y qué falta verificar</summary><div class="body">
+        <details class="more"><summary>Qué mide este análisis y qué falta verificar</summary><div class="body">
           <p id="tunnel-endpoints"></p>
           <div id="tunnel-finding" class="tunnel-finding"></div>
           <p>Son caminos de menor distancia sobre una instantánea de OSM, calculados en ambos sentidos. El auto respeta manos y restricciones de giro simples; su ruta debe atravesar el túnel elegido. Los extremos se ajustan a nodos cercanos de cada red.</p>
@@ -88,4 +88,4 @@
         </div></details>
       </div>
     </section>
-</main><footer class="site-footer"><span>Pacificando la ciudad · Andrés</span><nav aria-label="Enlaces del proyecto"><a href="https://visualizando.ar">visualizando.ar</a><a href="https://github.com/visualizando/pacificandoEsquinas">GitHub · código y datos</a><a href="index.html">Inicio</a></nav></footer></body></html>
+</main><footer class="site-footer"><span>Pacificando la ciudad · Andres Snitcofsky</span><nav aria-label="Enlaces del proyecto"><a href="https://twitter.com/rusosnith">@rusosnith</a><a href="https://visualizando.ar">visualizando.ar</a><a href="https://github.com/visualizando/pacificandoEsquinas">GitHub · código y datos</a><a href="index.html">Inicio</a></nav></footer></body></html>
